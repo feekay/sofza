@@ -1,4 +1,0 @@
-from django.contrib import admin
-from mysite.models import E_Mail
-# Register your models here.
-admin.site.register(E_Mail)
