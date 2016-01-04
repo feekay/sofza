@@ -1,0 +1,15 @@
+from django.conf.urls import  patterns, url
+from projects import views
+from django.conf import settings
+
+urlpatterns = patterns('',
+    url(r'^$', views.projects, name = 'projects'),
+    url(r'^(?P<project_id>[\w\-]+)/(?P<name>[\w\-]+)/$', views.milestone_page, name= 'milestone_page'),
+    url(r'^(?P<project_id>[\w\-]+)/$', views.project_page, name= 'project_page'),
+    
+)
+#if settings.DEBUG:
+    # static files (images, css, javascript, etc.)
+#    urlpatterns += patterns('',
+#        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+#        'document_root': settings.MEDIA_ROOT}))

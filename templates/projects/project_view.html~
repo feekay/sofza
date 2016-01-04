@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Theme Made By www.w3schools.com - No Copyright -->
+  <title>Project</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  {% load staticfiles %}
+
+<style>
+
+    .add-btn{
+        margin-top: 20px;
+        margin-left: 10px;
+    }
+
+  html {
+  position: relative;
+  min-height: 100%;
+    }
+    body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+    }
+    .footer {
+
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 130px;
+  background-color: #222;
+    }
+    .table-responsive{
+        padding: 20px;
+    }
+
+    {% load staticfiles %}
+    .add_project a {
+    padding-left: 0px;
+    line-height: 30px;
+    background-size: 30px;
+    color: #000;
+    text-decoration: none;
+    }
+    
+    .header{
+        margin-top: 40px;
+        width:100%;
+        background:#000000;
+        padding-top:30px;
+        padding-bottom: 20px;
+        font-family: Calibre;
+        font-style: bold;
+        font-size: 20px;
+        color: #eee;
+    }
+    
+    .row{
+        margin-top: 20px;
+        margin-right:20px;
+    }
+    
+    
+    footer li{
+    list-style-type: none;
+    }
+    footer a{
+        color: #ffffff;
+    }
+</style>
+
+</head>
+<body id="start" data-spy="scroll" data-target=".navbar" data-offset="50">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand">Sofza</a>
+    </div>
+</div>
+</nav>
+
+<div class = "container-fluid header">
+    Milestones
+</div>
+
+{% if user.is_superuser and not project.completed %}
+
+<div class= "container">
+<div class= "container add-btn">
+    <div class="add_project">
+	    <a href="#myModal" role="button" class="btn" data-toggle="modal"><img src="{% static "images/add_project.jpg" %}" width="32px" height="32px"></img> New Milestone</a>
+    
+    <button id ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
+    <img src="{% static "images/add_project.jpg" %}" width="32" height="32" alt="submit" /> Completed
+    </button>
+    </div>
+
+</div>
+{% endif %}
+
+<!-- Pop-up Modal that will be displayed on clicking the add button-->
+<div class>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Milestone</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    
+                    <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form2.as_p }}
+                    {{ form.as_p }}
+
+                    <input type="submit" value="Send" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table Section, need to be fixed-->
+<div class ="container-fluid table-responsive">
+    <table class= "table table-hover">
+    <tr>
+        <th>Task</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+    </tr>
+    {% for milestone in milestones %}   
+    <tr>
+        <td><a href=/projects/{{project.id}}/{{milestone.title}}>{{milestone.title}}</a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.title}}>{{milestone.start_date}}</a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.title}}>{{milestone.deadline}}</a></td>
+    </tr>
+    
+    {% endfor %}
+    </table>
+</div>
+
+</div>
+
+<!--Footer-->
+<footer class="footer text-right">
+<div class=row>
+  <div class= col-sm-10>
+    <ul class="text-left">
+       <li><a href="/site">Home</a></li>
+       <li><a href="/site/portfolio/">Portfolio</a></li>
+       <li><a href="#">About</a></li>
+       <li><a href="#">Policy</a></li>
+       <li><a href="/site/faq/">FAQ</a></li>
+    </ul>
+  </div>
+  <div class= col-sm-2>
+  <a class="up-arrow" href="#start" data-toggle="tooltip" title="TO TOP">
+    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="32px" height="32px"></img>
+  </a>
+  </div>
+</div>
+</footer>
+
+<script>
+$(document).ready(function(){
+  // Initialize Tooltip
+  $('[data-toggle="tooltip"]').tooltip(); 
+  
+  
+  // Add smooth scrolling to all links in navbar + footer link
+  $(".navbar a, footer a[href='#start']").on('click', function(event) {
+
+    // Prevent default anchor click behavior
+    event.preventDefault();
+
+    // Store hash
+    var hash = this.hash;
+
+    // Using jQuery's animate() method to add smooth page scroll
+    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+    $('html, body').animate({
+      scrollTop: $(hash).offset().top
+    }, 900, function(){
+   
+      // Add hash (#) to URL when done scrolling (default click behavior)
+      window.location.hash = hash;
+    });
+  });
+});
+
+$('#complete').click(function() {    
+    $.ajax({
+        url: '/projects/6473b0c4-7918-44fd-a78d-bbb5f0d1b9c3',
+        method: 'GET', // or another (GET), whatever you need
+        data: {
+            //name: value, // data you need to pass to your function
+            click: "True"
+        }
+        /*success: function (data) {        
+            // success callback
+            // you can process data returned by function from views.py
+        }*/
+    });
+  });
+</script>
+</body>

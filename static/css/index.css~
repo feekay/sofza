@@ -1,0 +1,18 @@
+.carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 70%;
+      margin: auto;
+  }
+  
+.container > .img{
+    padding: 20px 20px 20px 20px;
+    display: inline;
+}
+
+.holder h3{
+    color: #fff;
+}
+
+.jumbotron{
+    background-color:#fff;
+}

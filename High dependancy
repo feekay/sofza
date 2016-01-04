@@ -1,0 +1,4 @@
+HIGHLY DEPENDANT CODE:
+-Multiple email checking strogly relies on the Exception returned by Django when the form is invalid.
+If this string changes, then the e-mails already in database won't be able to order again.
+
