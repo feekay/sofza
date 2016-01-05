@@ -65,15 +65,19 @@ def project_page(request, project_id):
     context_dic['project'] = project;
 #        print project.id
 
-    milestones = Milestone.objects.filter(project=project_id)
-    context_dic['milestones'] = milestones
-    print "OK"
-    if request.GET.get('click', False):
+    if request.GET.get('click', False) and not project.completed:
         project.completed= True
         project.save()
-        print project.completed
-        context_dic['project'] = project;
-        return None
+        try:
+            #context_dic['project'] = project;
+            return HttpResponse(status=200)
+        except:
+            print "Couldn't respond"
+
+    milestones = Milestone.objects.filter(project=project_id)
+    context_dic['milestones'] = milestones
+    print "Milestones fetched"
+
         
     if request.method == "POST":
         form2 = milestoneForm(request.POST)

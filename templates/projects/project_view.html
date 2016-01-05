@@ -103,7 +103,7 @@
 	    <a href="#myModal" role="button" class="btn" data-toggle="modal"><img src="{% static "images/add_project.jpg" %}" width="32px" height="32px"></img> New Milestone</a>
     
     <button id ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
-    <img src="{% static "images/add_project.jpg" %}" width="32" height="32" alt="submit" /> Completed
+    <img src="{% static "images/completed.jpg" %}" width="32" height="32" alt="submit" /> Completed
     </button>
     </div>
 
@@ -203,18 +203,21 @@ $(document).ready(function(){
   });
 });
 
-$('#complete').click(function() {    
+$('#complete').click(function() {
+    path = "{{project.id}}"
+    
     $.ajax({
-        url: '/projects/6473b0c4-7918-44fd-a78d-bbb5f0d1b9c3',
+        url: "/projects/".concat(path),
         method: 'GET', // or another (GET), whatever you need
         data: {
-            //name: value, // data you need to pass to your function
+            //name: value
+            // data you need to pass to your function
             click: "True"
+        },
+        success: function (data) {
+            console.log("Executed");
+            window.location = '/projects/';
         }
-        /*success: function (data) {        
-            // success callback
-            // you can process data returned by function from views.py
-        }*/
     });
   });
 </script>

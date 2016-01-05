@@ -19,7 +19,7 @@ class Project(models.Model):
         self.last_updated =datetime.now()
         if not self.id:
             self.id = uuid.uuid4()
-        print "TEST"
+        print "Project saved"
         super(Project, self).save(*args, **kwargs)
         
     def __unicode__(self):
@@ -34,7 +34,7 @@ class Milestone(models.Model):
 
     def save(self, *args, **kwargs):
         #project = kwargs.pop("project")
-        print "HEREEEEE!"
+        print "Milestone saved!"
         print self.project_id
         super(Milestone, self).save(*args, **kwargs)
 
