@@ -10,7 +10,6 @@ class projectForm(forms.ModelForm):
     client = forms.CharField(max_length = 50)
     client_mail = forms.EmailField()
     title = forms.CharField(max_length=50)
-    cost = forms.IntegerField()
     estimated_end_date= forms.DateField()
     start_date = forms.DateField()
 
@@ -19,16 +18,18 @@ class projectForm(forms.ModelForm):
         exclude = ['id', 'last_updated', 'completed']
 
 class milestoneForm(forms.ModelForm):
+    CHOICES = (('$', "Dollar"),('#',"Pound"),('?', "Euro"))
     title = forms.CharField(max_length = 50)
-    #Apply widget text area
     description = forms.CharField(max_length = 500, widget=forms.Textarea())
+    cost = forms.IntegerField()
+    pay_type = forms.ChoiceField(choices = CHOICES, label="", initial='', widget=forms.Select(), required=True)
     start_date = forms.DateField()
     deadline = forms.DateField()
 
-    
+
     class Meta:
         model = Milestone
         widgets = {
             'project': forms.HiddenInput()
         }
-        exclude=[]
+        exclude=['slug']

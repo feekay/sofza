@@ -142,12 +142,14 @@
         <th>Task</th>
         <th>Start Date</th>
         <th>End Date</th>
+        <th>Cost</th>
     </tr>
     {% for milestone in milestones %}   
     <tr>
-        <td><a href=/projects/{{project.id}}/{{milestone.title}}>{{milestone.title}}</a></td>
-        <td><a href=/projects/{{project.id}}/{{milestone.title}}>{{milestone.start_date}}</a></td>
-        <td><a href=/projects/{{project.id}}/{{milestone.title}}>{{milestone.deadline}}</a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.title}}</a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.start_date}}</a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.deadline}}</a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.pay_type}} {{milestone.cost}}</a></td>
     </tr>
     
     {% endfor %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 from datetime import datetime
 import uuid
 import os
@@ -9,9 +10,8 @@ class Project(models.Model):
     title = models.CharField(max_length=50)
     client = models.CharField(max_length = 50)
     client_mail = models.EmailField()
-    cost = models.IntegerField()
     start_date = models.DateField()
-    last_updated = models.DateField()
+    last_updated = models.DateTimeField()
     estimated_end_date = models.DateField()
     completed = models.BooleanField(default= False)
 
@@ -26,16 +26,22 @@ class Project(models.Model):
         return self.title + " ID: " + str(id)
 
 class Milestone(models.Model):
+    CHOICES = (('$', "Dollar"),('#',"Pound"),('?', "Euro"))
     title = models.CharField(max_length = 50)
     description = models.CharField(max_length = 500)
+    cost = models.IntegerField(default=0)
+    slug = models.SlugField(max_length =50)
+    pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
     start_date = models.DateField()
     deadline = models.DateField()
     project = models.ForeignKey(Project, null = True)
+    
 
     def save(self, *args, **kwargs):
-        #project = kwargs.pop("project")
+        self.slug = slugify(self.title)
+        parent = Project.objects.get(id= self.project_id)
+        parent.save()
         print "Milestone saved!"
-        print self.project_id
         super(Milestone, self).save(*args, **kwargs)
 
     def __unicode__(self):

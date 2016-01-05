@@ -45,7 +45,7 @@ def projects(request):
 def milestone_page(request, project_id, name):
     context_dic={}
     try:
-        milestone = Milestone.objects.get(project= project_id, title=name)
+        milestone = Milestone.objects.get(project= project_id, slug=name)
     except:
         return HttpResponseRedirect('/projects/'+project_id)
     context_dic['milestone'] = milestone
