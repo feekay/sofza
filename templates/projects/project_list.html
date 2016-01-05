@@ -138,15 +138,19 @@
     </tr>
 
     {% for project in projects %}
+        {% if project.completed %}
+        <tr class = "success">
+        {% else %}
         <tr>
+        {% endif %}
         <td><a href =/projects/{{project.id}}>{{project.client}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.client_mail}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.title}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.start_date}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.estimated_end_date}}</a></td>
-        <td><a href =/projects/{{project.id}}>{{project.cost}}</a></td>
+        <td><a href =/projects/{{project.id}}>{{project.pay_type}}{{project.cost}}</a></td>
         <td><a href=/projects/{{project.id}}>{{project.last_updated}}</a></td>
-    </tr>
+        </tr>
     
     {% endfor %}
     </table>

@@ -12,7 +12,7 @@ class Project(models.Model):
     client = models.CharField(max_length = 50)
     client_mail = models.EmailField()
     cost = models.IntegerField(default=0)
-    #pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
+    pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
     start_date = models.DateField()
     last_updated = models.DateTimeField()
     estimated_end_date = models.DateField()
@@ -29,13 +29,10 @@ class Project(models.Model):
         return self.title + " ID: " + str(id)
 
 class Milestone(models.Model):
-    CHOICES = (('$', "Dollar"),('#',"Pound"),('?', "Euro"))
     title = models.CharField(max_length = 50)
     description = models.CharField(max_length = 500)
     cost = models.IntegerField(default=0)
     slug = models.SlugField(max_length =50)
-    #Delete Pay Type in future and add in project instead
-    pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
     start_date = models.DateField()
     deadline = models.DateField()
     project = models.ForeignKey(Project, null = True)

@@ -8,9 +8,11 @@ class MyForm(forms.Form):
 
 
 class projectForm(forms.ModelForm):
+    CHOICES = (('$', "Dollar"),('#',"Pound"),('?', "Euro"))
     client = forms.CharField(max_length = 50, label= "Client Name", widget=forms.TextInput(attrs={'required': ''}))
     client_mail = forms.EmailField(widget=forms.EmailInput(attrs={'required': ''}))
     title = forms.CharField(max_length=50, label = "Project Title", widget=forms.TextInput(attrs={'required': ''}))
+    pay_type = forms.ChoiceField(choices = CHOICES, label="Payment Currency", initial='', widget=forms.Select(), required=True)
     estimated_end_date= forms.DateField(widget=SelectDateWidget())
     start_date = forms.DateField(widget=SelectDateWidget())
 
@@ -19,11 +21,9 @@ class projectForm(forms.ModelForm):
         exclude = ['id', 'cost', 'last_updated', 'completed']
 
 class milestoneForm(forms.ModelForm):
-    CHOICES = (('$', "Dollar"),('#',"Pound"),('?', "Euro"))
     title = forms.CharField(max_length = 50, label ="Task", widget=forms.TextInput(attrs={'required': ''}))
     description = forms.CharField(max_length = 500, widget=forms.Textarea(attrs={'required': ''}))
     cost = forms.IntegerField(widget=forms.NumberInput(attrs={'required': ''}))
-    pay_type = forms.ChoiceField(choices = CHOICES, label="", initial='', widget=forms.Select(), required=True)
     start_date = forms.DateField(widget=SelectDateWidget())
     deadline = forms.DateField(widget=SelectDateWidget())
 
@@ -33,4 +33,4 @@ class milestoneForm(forms.ModelForm):
         widgets = {
             'project': forms.HiddenInput()
         }
-        exclude=['slug']
+        exclude=['slug', 'completed']

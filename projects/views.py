@@ -27,7 +27,7 @@ def download_file(request, path, document_root):
 @user_passes_test(lambda u: u.is_superuser)
 def projects(request):
 
-    projects = Project.objects.all().exclude(completed= True)
+    projects = Project.objects.order_by('completed','start_date')
     context_dic= {'projects': projects}
     
     if request.method == "POST":

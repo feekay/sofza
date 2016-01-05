@@ -103,7 +103,7 @@
 	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.jpg" %}" width="32px" height="32px"></img> New Milestone</a>
     
     <button id ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
-    <img src="{% static "images/completed.jpg" %}" width="32" height="32" alt="submit" /> Completed
+    <img src="{% static "images/completed.jpg" %}" width="32" height="32" alt="submit" /> Close Project
     </button>
     </div>
 
@@ -147,12 +147,12 @@
         <th>End Date</th>
         <th>Cost</th>
     </tr>
-    {% for milestone in milestones %}   
+    {% for milestone in milestones %}
     <tr>
         <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.title}}</a></td>
         <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.start_date}}</a></td>
         <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.deadline}}</a></td>
-        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.pay_type}} {{milestone.cost}}</a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{project.pay_type}}{{milestone.cost}}</a></td>
     </tr>
     
     {% endfor %}
