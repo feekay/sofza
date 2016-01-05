@@ -1,17 +1,18 @@
 from django import forms
 from projects.models import Project, Milestone
 from multiupload.fields import MultiFileField
+from django.forms.extras.widgets import SelectDateWidget
 
 class MyForm(forms.Form):
     file = MultiFileField(min_num=0, max_num=5, max_file_size=1024*1024*5, required = False)
 
 
 class projectForm(forms.ModelForm):
-    client = forms.CharField(max_length = 50)
+    client = forms.CharField(max_length = 50, label= "Client Name")
     client_mail = forms.EmailField()
-    title = forms.CharField(max_length=50)
-    estimated_end_date= forms.DateField()
-    start_date = forms.DateField()
+    title = forms.CharField(max_length=50, label = "Project Title")
+    estimated_end_date= forms.DateField(widget=SelectDateWidget())
+    start_date = forms.DateField(widget=SelectDateWidget())
 
     class Meta:
         model = Project
@@ -19,12 +20,12 @@ class projectForm(forms.ModelForm):
 
 class milestoneForm(forms.ModelForm):
     CHOICES = (('$', "Dollar"),('#',"Pound"),('?', "Euro"))
-    title = forms.CharField(max_length = 50)
+    title = forms.CharField(max_length = 50, label ="Task")
     description = forms.CharField(max_length = 500, widget=forms.Textarea())
     cost = forms.IntegerField()
     pay_type = forms.ChoiceField(choices = CHOICES, label="", initial='', widget=forms.Select(), required=True)
-    start_date = forms.DateField()
-    deadline = forms.DateField()
+    start_date = forms.DateField(widget=SelectDateWidget())
+    deadline = forms.DateField(widget=SelectDateWidget())
 
 
     class Meta:
