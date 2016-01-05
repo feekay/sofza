@@ -11,7 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   {% load staticfiles %}
-
+  {% load custom %}
 <style>
 
     .add-btn{
@@ -100,7 +100,7 @@
 <div class= "container">
 <div class= "container add-btn">
     <div class="add_project">
-	    <a href="#myModal" role="button" class="btn" data-toggle="modal"><img src="{% static "images/add_project.jpg" %}" width="32px" height="32px"></img> New Milestone</a>
+	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.jpg" %}" width="32px" height="32px"></img> New Milestone</a>
     
     <button id ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
     <img src="{% static "images/completed.jpg" %}" width="32" height="32" alt="submit" /> Completed
@@ -122,13 +122,16 @@
                 <div class="modal-body">
                     
                     
-                    <form action="" method="post" enctype="multipart/form-data">
+                    <form action="" method="post" enctype="multipart/form-data" name ="milestone">
                     {% csrf_token %}
                     {{ form2.as_p }}
                     {{ form.as_p }}
 
                     <input type="submit" value="Add" />
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -153,6 +156,12 @@
     </tr>
     
     {% endfor %}
+    <tr>
+        <td>Total</td>
+        <td></td>
+        <td></td>
+        <td>{{milestones|total}}</td>
+    </tr>
     </table>
 </div>
 
