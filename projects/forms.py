@@ -16,7 +16,7 @@ class projectForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        exclude = ['id', 'last_updated', 'completed']
+        exclude = ['id', 'cost', 'last_updated', 'completed']
 
 class milestoneForm(forms.ModelForm):
     CHOICES = (('$', "Dollar"),('#',"Pound"),('?', "Euro"))

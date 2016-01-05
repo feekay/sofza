@@ -6,10 +6,13 @@ import os
 # Create your models here.
 
 class Project(models.Model):
+    CHOICES = (('$', "Dollar"),('#',"Pound"),('?', "Euro"))
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=50)
     client = models.CharField(max_length = 50)
     client_mail = models.EmailField()
+    cost = models.IntegerField(default=0)
+    #pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
     start_date = models.DateField()
     last_updated = models.DateTimeField()
     estimated_end_date = models.DateField()
@@ -31,15 +34,18 @@ class Milestone(models.Model):
     description = models.CharField(max_length = 500)
     cost = models.IntegerField(default=0)
     slug = models.SlugField(max_length =50)
+    #Delete Pay Type in future and add in project instead
     pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
     start_date = models.DateField()
     deadline = models.DateField()
     project = models.ForeignKey(Project, null = True)
+    completed = models.BooleanField(default= False)
     
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         parent = Project.objects.get(id= self.project_id)
+        parent.cost += self.cost
         parent.save()
         print "Milestone saved!"
         super(Milestone, self).save(*args, **kwargs)
@@ -47,7 +53,7 @@ class Milestone(models.Model):
     def __unicode__(self):
         return str(self.title)
 
-    
+
 class Attachment(models.Model):
     file = models.FileField(upload_to='attachments')
     milestone = models.ForeignKey(Milestone, null=True)

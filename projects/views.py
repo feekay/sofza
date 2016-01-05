@@ -42,6 +42,7 @@ def projects(request):
     context_dic['form'] = form;
     return render(request, 'projects/project_list.html', context_dic)
 
+
 def milestone_page(request, project_id, name):
     context_dic={}
     try:
@@ -54,6 +55,7 @@ def milestone_page(request, project_id, name):
     context_dic['attachments'] = attachments
     
     return render(request, 'projects/milestone_view.html', context_dic)
+
 
 def project_page(request, project_id):
 
