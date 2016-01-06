@@ -66,12 +66,35 @@
         margin-right:20px;
     }
     
-    
+      .btn {
+      padding: 10px 20px;
+      color: #333;
+      border-radius: 0;
+      transition: .2s;
+  }
+  .btn:hover, .btn:focus {
+      border: 1px solid #333;
+      background-color: #fff;
+      color: #000;
+  }
+  .modal-header, h4, .close {
+      background-color: #333;
+      color: #fff !important;
+      text-align: center;
+      font-size: 30px;
+  }
+  .modal-header, .modal-body {
+      padding: 40px 50px;
+  }
+  
     footer li{
     list-style-type: none;
     }
     footer a{
         color: #ffffff;
+    }
+    #errors{
+    color: #ff0000 !important
     }
 </style>
 
@@ -101,7 +124,9 @@
 <div class= "container add-btn">
     <div class="add_project">
 	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.jpg" %}" width="32px" height="32px"></img> New Milestone</a>
+        <a id="edit" href="#myModal2" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/icon-edit.png" %}" width="32px" height="32px"></img> Edit Project</a>
     
+
     <button id ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
     <img src="{% static "images/completed.jpg" %}" width="32" height="32" alt="submit" /> Close Project
     </button>
@@ -121,11 +146,33 @@
                 </div>
                 <div class="modal-body">
                     
-                    
-                    <form action="" method="post" enctype="multipart/form-data" name ="milestone">
+                    <p id="errors"></p>
+                    <form action="" method="post" enctype="multipart/form-data" name ="milestone" onsubmit="return validateData()">
                     {% csrf_token %}
                     {{ form2.as_p }}
                     {{ form.as_p }}
+
+                    <input type="submit" class="btn" value="Add" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pop-up Modal that will be displayed on clicking the edit button-->
+<div class>
+    <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Milestone</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <form id="edit_form" action="" method="post" enctype="multipart/form-data" name ="edit_milestone">
 
                     <input type="submit" value="Add" />
                     </form>
@@ -137,6 +184,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Table Section, need to be fixed-->
 <div class ="container-fluid table-responsive">
@@ -188,6 +236,23 @@
 </footer>
 
 <script>
+function validateData(){
+
+    var start_m = document.forms["milestone"]["start_date_month"].value;
+    var end_m = document.forms["milestone"]["deadline_month"].value;
+    
+    var start_d = document.forms["milestone"]["start_date_day"].value;
+    var end_d = document.forms["milestone"]["deadline_day"].value;
+    
+    var start_y = document.forms["milestone"]["start_date_year"].value;
+    var end_y = document.forms["milestone"]["deadline_year"].value;
+
+    if (start_y> end_y || (start_y === end_y && start_m > end_m) ||(start_y === end_y && start_m === end_m && start_d > end_d)){
+        $("#errors").html("Invalid dates, can't end before start!");
+        return false;
+    }
+}
+
 $(document).ready(function(){
   // Initialize Tooltip
   $('[data-toggle="tooltip"]').tooltip(); 
@@ -228,6 +293,25 @@ $('#complete').click(function() {
         success: function (data) {
             console.log("Executed");
             window.location = '/projects/';
+        }
+    });
+  });
+  
+  $('#edit').click(function() {
+    path = "{{project.id}}"
+    
+    $.ajax({
+        url: "/projects/",
+        method: 'GET', // or another (GET), whatever you need
+        
+        success: function (data) {
+            console.log("Executed");
+            initial = $('#edit_form').html()
+            var response = $(data)
+            console.log(response.filter('#form'))
+            //$('#edit_form').html(data.form)
+            
+            
         }
     });
   });

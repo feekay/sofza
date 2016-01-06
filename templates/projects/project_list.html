@@ -62,13 +62,37 @@
         margin-right:20px;
     }
     
-    
+      .btn {
+      padding: 10px 20px;
+      color: #333;
+      border-radius: 0;
+      transition: .2s;
+  }
+  .btn:hover, .btn:focus {
+      border: 1px solid #333;
+      background-color: #fff;
+      color: #000;
+  }
+  .modal-header, h4, .close {
+      background-color: #333;
+      color: #fff !important;
+      text-align: center;
+      font-size: 30px;
+  }
+  .modal-header, .modal-body {
+      padding: 40px 50px;
+  }
+  
     footer li{
     list-style-type: none;
     }
     footer a{
         color: #ffffff;
     }
+    #errors{
+    color: #ff0000 !important
+    }
+    
 </style>
   
 </head>
@@ -110,16 +134,17 @@
                     <h4 class="modal-title">Add Project</h4>
                 </div>
                 <div class="modal-body">
+                    <p id="errors">
+                    </p>
                     
-                    <form action="" method="post" enctype="multipart/form-data" name ="project">
+                    <form action="" method="post" enctype="multipart/form-data" name ="project" onsubmit="return validateData()">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input type="submit" value="Add" />
+                    <input type="submit" class="btn" value="Add" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -177,6 +202,32 @@
 </footer>
 
 <script>
+function validateData(){
+
+    var x = document.forms["project"]["client_mail"].value;
+    var atpos = x.indexOf("@");
+    var dotpos = x.lastIndexOf(".");
+    if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+        $("#errors").html("Enter a valid e-mail address");
+        return false;
+    }
+
+
+    var start_m = document.forms["project"]["start_date_month"].value;
+    var end_m = document.forms["project"]["estimated_end_date_month"].value;
+    
+    var start_d = document.forms["project"]["start_date_day"].value;
+    var end_d = document.forms["project"]["estimated_end_date_day"].value;
+    
+    var start_y = document.forms["project"]["start_date_year"].value;
+    var end_y = document.forms["project"]["estimated_end_date_year"].value;
+
+    if (start_y> end_y || (start_y === end_y && start_m > end_m) ||(start_y === end_y && start_m === end_m && start_d > end_d)){
+        $("#errors").html("Invalid dates, can't end before start!");
+        return false;
+    }
+}
+
 $(document).ready(function(){
   // Initialize Tooltip
   $('[data-toggle="tooltip"]').tooltip(); 

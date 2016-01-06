@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +29,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
-            <li><button type="button" class= "btn btn-primary order-btn" data-toggle="modal" data-target="#myModal">Place Order</button></li>
+            <li><button type="button" class= "btn btn-primary order-btn" data-toggle="modal" data-target="#myModal" data-keyboard="true">Place Order</button></li>
         </ul>
     </div>
   </div>
@@ -45,8 +44,8 @@
                     <h4 class="modal-title">Place Order</h4>
                 </div>
                 <div class="modal-body">
-                    
-                    <form method= "POST" action=/site/>
+                    <p id="errors"></p>
+                    <form name="contact" method= "POST" action=/site/ onsubmit="return validateData()">
                         {% csrf_token %}
         
                         {{ form.as_p}}
@@ -94,6 +93,19 @@
 </footer>
 
 <script>
+function validateData(){
+
+    var x = document.forms["contact"]["email"].value;
+    var atpos = x.indexOf("@");
+    var dotpos = x.lastIndexOf(".");
+    if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+        $("#errors").html("Enter a valid e-mail address");
+        return false;
+    }
+
+}
+
+
 $(document).ready(function(){
   // Initialize Tooltip
   $('[data-toggle="tooltip"]').tooltip(); 
