@@ -99,6 +99,11 @@
     }
 </style>
 
+<script>
+jQuery(document).ready(function() {
+  jQuery("time.timeago").timeago();
+});
+</script>
 </head>
 <body id="start" data-spy="scroll" data-target=".navbar" data-offset="50">
 
@@ -119,7 +124,7 @@
     <div class="row">
     <div class="col-sm-8">Milestones</div>
     <div class="col-sm-4 text-right">
-        <time class="timeago" >{{project.last_updated}}</time>
+        <time class="timeago" datetime={{updated}}>project.last_updated</time>
     </div>
     </div>
 </div>
@@ -231,6 +236,7 @@
         <td></td>
         <td></td>
         <td>{{project.cost}}</td>
+        <td></td>
     </tr>
     </table>
 </div>
@@ -260,14 +266,14 @@
 <script>
 function validateData(){
 
-    var start_m = document.forms["milestone"]["start_date_month"].value;
-    var end_m = document.forms["milestone"]["deadline_month"].value;
+    var start_m = parseInt(document.forms["milestone"]["start_date_month"].value);
+    var end_m = parseInt(document.forms["milestone"]["deadline_month"].value);
     
-    var start_d = document.forms["milestone"]["start_date_day"].value;
-    var end_d = document.forms["milestone"]["deadline_day"].value;
+    var start_d = parseInt(document.forms["milestone"]["start_date_day"].value);
+    var end_d = parseInt(document.forms["milestone"]["deadline_day"].value);
     
-    var start_y = document.forms["milestone"]["start_date_year"].value;
-    var end_y = document.forms["milestone"]["deadline_year"].value;
+    var start_y = parseInt(document.forms["milestone"]["start_date_year"].value);
+    var end_y = parseInt(document.forms["milestone"]["deadline_year"].value);
 
     if (start_y> end_y || (start_y === end_y && start_m > end_m) ||(start_y === end_y && start_m === end_m && start_d > end_d)){
         $("#errors").html("Invalid dates, can't end before start!");
@@ -278,10 +284,6 @@ function validateData(){
 $(document).ready(function(){
   // Initialize Tooltip
   $('[data-toggle="tooltip"]').tooltip(); 
-
-
-  $('time.timeago').attr('datetime', new Date().toISOString());
-
 
   //Add Deadlines
   $('td.deadline a').bind('change keyup', function(){
@@ -396,10 +398,5 @@ $('#edit').click(function() {
         }
     });
   });
-</script>
-<script>
-jQuery(document).ready(function() {
-  jQuery("time.timeago").timeago();
-});
 </script>
 </body>

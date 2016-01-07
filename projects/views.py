@@ -90,18 +90,23 @@ def project_page(request, project_id):
     milestones = Milestone.objects.filter(project=project_id)
     context_dic['milestones'] = milestones
     print "Milestones fetched"
+    return milestone_form(request, project_id, context_dic)
 
-        
+
+def milestone_form(request, project_id, context_dic={}):
+
+    project = context_dic["project"]
     if request.method == "POST":
         form2 = milestoneForm(request.POST)
         form = MyForm(request.POST, request.FILES)
+
 
         form2.data['project'] = project.id
         if form2.is_valid():
             form2.save(commit= False)
             data = form2.cleaned_data
-            print data['title']
-            print data['project'], "DATA"
+            #print data['title']
+            #print data['project'], "DATA"
             form2.save()
 
             current = Milestone.objects.get(title=data['title'], project = project_id)
@@ -110,7 +115,6 @@ def project_page(request, project_id):
                 for f in request.FILES.getlist('file'):
                     Attachment.objects.create(milestone=current, file=f)
                 return HttpResponseRedirect('/projects/'+project_id)
-
         else:
             print form2.errors
 
@@ -118,6 +122,7 @@ def project_page(request, project_id):
         form2 = milestoneForm()
         form = MyForm()
 
+    context_dic['updated'] = project.last_updated.isoformat()
     context_dic['form'] = form
     context_dic['form2'] = form2
     return render(request,'projects/project_view.html', context_dic)
