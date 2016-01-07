@@ -23,7 +23,7 @@ class projectForm(forms.ModelForm):
 class milestoneForm(forms.ModelForm):
     title = forms.CharField(max_length = 50, label ="Task", widget=forms.TextInput(attrs={'required': ''}))
     description = forms.CharField(max_length = 500, widget=forms.Textarea(attrs={'required': ''}))
-    cost = forms.IntegerField(widget=forms.NumberInput(attrs={'required': '', 'min':'0'}))
+    cost = forms.IntegerField(widget=forms.NumberInput(attrs={'required': '', 'min':'0', 'onkeypress':'return event.charCode >= 48 && event.charCode <= 57'}))
     start_date = forms.DateField(widget=SelectDateWidget())
     deadline = forms.DateField(widget=SelectDateWidget())
 

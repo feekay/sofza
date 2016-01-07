@@ -134,12 +134,12 @@ jQuery(document).ready(function() {
 <div class= "container">
 <div class= "container add-btn">
     <div class="add_project">
-	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.jpg" %}" width="32px" height="32px"></img> New Milestone</a>
+	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img> New Milestone</a>
         <a id="edit" href="#myModal2" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/icon-edit.png" %}" width="32px" height="32px"></img> Edit Project</a>
     
 
     <button class ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
-    <img src="{% static "images/completed.jpg" %}" width="32" height="32" alt="submit" /> Close Project
+    <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" /> Close Project
     </button>
     </div>
 
@@ -148,7 +148,7 @@ jQuery(document).ready(function() {
 
 <!-- Pop-up Modal that will be displayed on clicking the add button-->
 <div class>
-    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal fade" id="myModal" role="dialog" tabindex=-1>
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -222,7 +222,7 @@ jQuery(document).ready(function() {
         
         {% if not milestone.completed %}
         <td><button class ="m_complete" type="submit" name="closed" value="closed"  data ="/projects/{{project.id}}/{{milestone.slug}}"style ="border: 0; background: transparent">
-    <img src="{% static "images/completed.jpg" %}" width="32" height="32" alt="submit" />
+    <img src="{% static "images/success.png" %}" width="32" height="32" alt="submit" />
     </button></td>
         {% else %}
         <td></td>
