@@ -49,8 +49,19 @@ def milestone_page(request, project_id, name):
         milestone = Milestone.objects.get(project= project_id, slug=name)
     except:
         return HttpResponseRedirect('/projects/'+project_id)
-    context_dic['milestone'] = milestone
 
+    if request.GET.get('click', False) and not milestone.completed:
+        #print ("In Milestone")
+        milestone.completed= True
+        milestone.save()
+        #print ("Saved")
+        try:
+            #context_dic['project'] = project;
+            return HttpResponse(status=200)
+        except:
+            print "Couldn't respond"
+
+    context_dic['milestone'] = milestone
     attachments = Attachment.objects.all().filter(milestone= milestone)
     context_dic['attachments'] = attachments
     

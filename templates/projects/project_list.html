@@ -172,7 +172,7 @@
         <td><a href =/projects/{{project.id}}>{{project.client_mail}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.title}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.start_date}}</a></td>
-        <td><a href =/projects/{{project.id}}>{{project.estimated_end_date}}</a></td>
+        <td class="deadline"><a href =/projects/{{project.id}}>{{project.estimated_end_date}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.pay_type}}{{project.cost}}</a></td>
         <td><a href=/projects/{{project.id}}>{{project.last_updated}}</a></td>
         </tr>
@@ -231,6 +231,28 @@ function validateData(){
 $(document).ready(function(){
   // Initialize Tooltip
   $('[data-toggle="tooltip"]').tooltip(); 
+  
+  //Add Deadlines
+  $('td.deadline a').bind('change keyup', function(){
+        var tr=$(this).closest('tr');
+
+        var deadline = new Date($(this).text());
+        var today = new Date();
+        today.setHours(0,0,0,0);
+        
+        if(!tr.hasClass('success'))
+        {
+            if (deadline.valueOf() === today.valueOf())
+            {
+                tr.addClass('warning');
+            }   
+            else if(deadline<today)
+            {            
+                tr.addClass('danger');
+            }
+
+        }
+    }).trigger('change');
   
   // Add smooth scrolling to all links in navbar + footer link
   $(".navbar a, footer a[href='#myPage']").on('click', function(event) {

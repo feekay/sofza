@@ -19,10 +19,10 @@ class Project(models.Model):
     completed = models.BooleanField(default= False)
 
     def save(self, *args, **kwargs):
-        self.last_updated =datetime.now()
+        self.last_updated =datetime.now().isoformat()
         if not self.id:
             self.id = uuid.uuid4()
-        print "Project saved"
+        #print "Project saved"
         super(Project, self).save(*args, **kwargs)
         
     def __unicode__(self):
@@ -44,7 +44,7 @@ class Milestone(models.Model):
         parent = Project.objects.get(id= self.project_id)
         parent.cost += self.cost
         parent.save()
-        print "Milestone saved!"
+        #print "Milestone saved!"
         super(Milestone, self).save(*args, **kwargs)
 
     def __unicode__(self):

@@ -10,8 +10,9 @@
   <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  {% load staticfiles %}
 
+  {% load staticfiles %}
+  <script src="{% static "js/jquery.timeago.js"%}"></script>
 <style>
 
     .add-btn{
@@ -115,7 +116,12 @@
 </nav>
 
 <div class = "container-fluid header">
-    Milestones
+    <div class="row">
+    <div class="col-sm-8">Milestones</div>
+    <div class="col-sm-4 text-right">
+        <time class="timeago" >{{project.last_updated}}</time>
+    </div>
+    </div>
 </div>
 
 {% if user.is_superuser and not project.completed %}
@@ -127,7 +133,7 @@
         <a id="edit" href="#myModal2" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/icon-edit.png" %}" width="32px" height="32px"></img> Edit Project</a>
     
 
-    <button id ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
+    <button class ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
     <img src="{% static "images/completed.jpg" %}" width="32" height="32" alt="submit" /> Close Project
     </button>
     </div>
@@ -190,21 +196,37 @@
 <div class ="container-fluid table-responsive">
     <table class= "table table-hover">
     <tr>
+        <th>No.</th>
         <th>Task</th>
         <th>Start Date</th>
         <th>End Date</th>
         <th>Cost</th>
+        <th></th>
     </tr>
     {% for milestone in milestones %}
-    <tr>
+        {% if milestone.completed %}
+            <tr class = "success">
+        {% else %}
+            <tr>
+        {% endif %}
+        <td class ="serial"><a href=/projects/{{project.id}}/{{milestone.slug}}></a></td>
         <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.title}}</a></td>
         <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.start_date}}</a></td>
-        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.deadline}}</a></td>
+        <td class="deadline"><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.deadline}}</a></td>
         <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{project.pay_type}}{{milestone.cost}}</a></td>
+        
+        {% if not milestone.completed %}
+        <td><button class ="m_complete" type="submit" name="closed" value="closed"  data ="/projects/{{project.id}}/{{milestone.slug}}"style ="border: 0; background: transparent">
+    <img src="{% static "images/completed.jpg" %}" width="32" height="32" alt="submit" />
+    </button></td>
+        {% else %}
+        <td></td>
+        {% endif %}
     </tr>
     
     {% endfor %}
     <tr>
+        <td></td>
         <td>Total</td>
         <td></td>
         <td></td>
@@ -256,8 +278,44 @@ function validateData(){
 $(document).ready(function(){
   // Initialize Tooltip
   $('[data-toggle="tooltip"]').tooltip(); 
-  
-  
+
+
+  $('time.timeago').attr('datetime', new Date().toISOString());
+
+
+  //Add Deadlines
+  $('td.deadline a').bind('change keyup', function(){
+        var tr=$(this).closest('tr');
+
+        var deadline = new Date($(this).text());
+        var today = new Date();
+        today.setHours(0,0,0,0);
+        
+        if(!tr.hasClass('success'))
+        {
+            if (deadline.valueOf() === today.valueOf())
+            {
+                tr.addClass('warning');
+            }   
+            else if(deadline<today)
+            {            
+                tr.addClass('danger');
+            }
+
+        }
+    }).trigger('change');
+    
+    //Adding serial numbers
+    var counter =1; 
+    $('td.serial a').bind('update keyup', function(){
+        var tr=$(this).closest('tr');
+        $(this).text(counter);
+        counter++;
+    }).trigger('update');
+    
+    
+
+
   // Add smooth scrolling to all links in navbar + footer link
   $(".navbar a, footer a[href='#start']").on('click', function(event) {
 
@@ -279,11 +337,31 @@ $(document).ready(function(){
   });
 });
 
-$('#complete').click(function() {
-    path = "{{project.id}}"
+$('.m_complete').click(function() {
+    console.log("Executed");
+    console.log($(this).attr('data'));
     
+    
+    path =$(this).attr('data')
     $.ajax({
-        url: "/projects/".concat(path),
+        url: path,
+        method: 'GET', // or another (GET), whatever you need
+        data: {
+            //name: value
+            // data you need to pass to your function
+            click: "True"
+        },
+        success: function (data) {
+            console.log("Executed");
+            window.location = '/projects/{{project.id}}';
+        }
+    });
+  });
+  
+$('.complete').on('click', function(){
+    path="{{project.id}}/{{milestone.slug}}"
+    $.ajax({
+        url:'projects/',
         method: 'GET', // or another (GET), whatever you need
         data: {
             //name: value
@@ -295,9 +373,12 @@ $('#complete').click(function() {
             window.location = '/projects/';
         }
     });
+  
   });
   
-  $('#edit').click(function() {
+  
+  
+$('#edit').click(function() {
     path = "{{project.id}}"
     
     $.ajax({
@@ -315,5 +396,10 @@ $('#complete').click(function() {
         }
     });
   });
+</script>
+<script>
+jQuery(document).ready(function() {
+  jQuery("time.timeago").timeago();
+});
 </script>
 </body>
