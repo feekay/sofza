@@ -80,6 +80,7 @@ def project_page(request, project_id):
 
     if request.GET.get('click', False) and not project.completed:
         project.completed= True
+        print(project.completed)
         project.save()
         try:
             #context_dic['project'] = project;
@@ -87,7 +88,7 @@ def project_page(request, project_id):
         except:
             print "Couldn't respond"
 
-    milestones = Milestone.objects.filter(project=project_id)
+    milestones = Milestone.objects.filter(project=project_id).order_by("completed", "start_date")
     context_dic['milestones'] = milestones
     print "Milestones fetched"
     return milestone_form(request, project_id, context_dic)

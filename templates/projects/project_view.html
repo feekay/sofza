@@ -361,9 +361,10 @@ $('.m_complete').click(function() {
   });
   
 $('.complete').on('click', function(){
-    path="{{project.id}}/{{milestone.slug}}"
+    console.log("This")
+    console.log("{{project.id}}");
     $.ajax({
-        url:'projects/',
+        url:'/projects/{{project.id}}',
         method: 'GET', // or another (GET), whatever you need
         data: {
             //name: value
