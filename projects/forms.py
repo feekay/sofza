@@ -1,7 +1,22 @@
 from django import forms
-from projects.models import Project, Milestone
+from projects.models import Project, Milestone, Staff
+from django.contrib.auth.models import User
 from multiupload.fields import MultiFileField
 from django.forms.extras.widgets import SelectDateWidget
+
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    
+    class Meta:
+        model = User
+        fields= ['username', 'email', 'password']
+
+class StaffForm(forms.ModelForm):
+    picture = forms.FileField(required=False)
+    class Meta:
+        model= Staff
+        exclude = ['user']
 
 class MyForm(forms.Form):
     file = MultiFileField(min_num=0, max_num=5, max_file_size=1024*1024*5, required = False)

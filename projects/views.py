@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
-from projects.forms import projectForm, milestoneForm
+from projects.forms import projectForm, milestoneForm, MyForm, UserForm, StaffForm
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.edit import FormView
 from datetime import datetime
-from .forms import MyForm
-from projects.models import Attachment, Project, Milestone
+from projects.models import Attachment, Project, Milestone, Staff, Allocation, Message
 import os
 import mimetypes
 from django.http import StreamingHttpResponse
@@ -208,10 +207,36 @@ def invoice(request, project_id):
     print unpaid
     return HttpResponse("WOW")
     
-@user_passes_test(lambda u: u.is_superuser)      
+#@user_passes_test(lambda u: u.is_superuser)      
 def staff(request):
-    return HttpResponse("WOW")
+   
+    staff = Staff.objects.all()
+    if request.method == "POST":
+        print request.FILES
+        user_form = UserForm(request.POST)
+        staff_form = StaffForm(request.POST)
+        
+        if user_form.is_valid() and staff_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            
+            staff = staff_form.save(commit=False)
+            staff.user = user
 
+            if 'picture' in request.FILES:
+                staff.picture = request.FILES['picture']
+            staff.save()
+            print "Saved"
+            return HttpResponseRedirect('/projects/staff/')
+
+        else:
+            print user_form.errors, staff_form.errors
+    else:
+        user_form = UserForm()
+        staff_form = StaffForm()
+
+    return render(request, "projects/staff.html", {'staff': staff, 'user_form': user_form, 'staff_form': staff_form})
 
 @user_passes_test(lambda u: u.is_superuser)  
 def analytics(request):

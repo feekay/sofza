@@ -17,19 +17,6 @@ class Staff(models.Model):
     def __unicode__(self):
         return str(self.user.username)
 
-class Allocation(model.Model):
-    milestone = models.ForeignKey(Milestone, null = False)
-    person = models.ForeignKey(Staff, null = False)
-    pay = models.IntegerField(null = False)
-    pay_type = models.(choices = CHOICES, default ='$', max_length =2)
-    active = models.BooleanField(default= False)
-    
-    def save(self):
-        self.pay_type = Project.objects.get(id= self.milestone.project).pay_type
-    
-    def __unicode__(self):
-        return self.pay_type + str(self.pay)
-
 class Project(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -43,6 +30,7 @@ class Project(models.Model):
     last_updated = models.DateTimeField()
     estimated_end_date = models.DateField()
     completed = models.BooleanField(default= False)
+    completed_date = models.DateField(null = True)
     success = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
@@ -78,8 +66,8 @@ class Project(models.Model):
 class Message(models.Model):
     text = models.CharField(max_length = 500)
     project = models.ForeignKey(Project, null = False)
-    to = models.ManyToManyField(User, null = True)
-    frm = models.ForeignKey(User, null = False)
+#    to = models.ManyToManyField(User, null = True)
+#    frm = models.ForeignKey(User, null = False)
 
     def __unicode__(self):
         return str(self.text)
@@ -93,6 +81,7 @@ class Milestone(models.Model):
     start_date = models.DateField()
     deadline = models.DateField()
     project = models.ForeignKey(Project, null = True)
+    #Remove Completed
     completed = models.BooleanField(default= False)
     paid = models.BooleanField(default=False)
 
@@ -102,6 +91,21 @@ class Milestone(models.Model):
 
     def __unicode__(self):
         return str(self.title)
+
+
+class Allocation(models.Model):
+    milestone = models.ForeignKey(Milestone, null = False)
+    person = models.ForeignKey(Staff, null = False)
+    pay = models.IntegerField(null = False)
+    pay_type = models.CharField(choices = CHOICES, default ='$', max_length =2)
+    active = models.BooleanField(default= False)
+    
+    def save(self):
+        self.pay_type = Project.objects.get(id= self.milestone.project).pay_type
+    
+    def __unicode__(self):
+        return self.pay_type + str(self.pay)
+
 
 
 class Attachment(models.Model):
