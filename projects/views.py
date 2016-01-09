@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from projects.forms import projectForm, milestoneForm, MyForm, UserForm, StaffForm
 from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.auth import logout, login, authenticate
 from django.views.generic.edit import FormView
 from datetime import datetime
 from projects.models import Attachment, Project, Milestone, Staff, Allocation, Message
@@ -97,7 +99,7 @@ def projects(request, year=0,month=None):
     context_dic['form'] = form;
     return render(request, 'projects/project_list.html', context_dic)
 
-
+@ensure_csrf_cookie
 def milestone_page(request, project_id, mile_id):
     context_dic={}
     try:
@@ -106,32 +108,45 @@ def milestone_page(request, project_id, mile_id):
     except:
         return HttpResponseRedirect('/projects/'+project_id)
 
-    if request.GET.get('success', False) and not milestone.success:
-        #print ("In Milestone")
-        project.revenue += milestone.cost
-        project.save()
-        milestone.completed = True
-        milestone.success = True
-        milestone.save()
-        #print ("Saved")
-        try:
-            #context_dic['project'] = project;
-            return HttpResponse(status=200)
-        except:
-            print "Couldn't respond"
-    if request.GET.get('fail', False) and not milestone.completed:
-        #print ("In Milestone")
-        milestone.completed = True
-        milestone.success = False
-        milestone.save()
-        #print ("Saved")
-        try:
-            #context_dic['project'] = project;
-            return HttpResponse(status=200)
-        except:
-            print "Couldn't respond"
+    #In case on input request
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username = username, password = password)
 
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+            else:
+                pass
+        else:
+            HttpResponse("Invalid Username or Password")
+#    if request.GET.get('success', False) and not milestone.success:
+        #print ("In Milestone")
+#        project.revenue += milestone.cost
+#        project.save()
+#        milestone.completed = True
+#        milestone.success = True
+#        milestone.save()
+#        #print ("Saved")
+#        try:
+            #context_dic['project'] = project;
+#            return HttpResponse(status=200)
+#        except:
+#            print "Couldn't respond"
+#    if request.GET.get('fail', False) and not milestone.completed:
+#        #print ("In Milestone")
+#        milestone.completed = True
+#        milestone.success = False
+#        milestone.save()
+#        #print ("Saved")
+#        try:
+#            #context_dic['project'] = project;
+#            return HttpResponse(status=200)
+#        except:
+#            print "Couldn't respond"
 
+    context_dic['project_id'] = project_id
     context_dic['milestone'] = milestone
     attachments = Attachment.objects.all().filter(milestone= milestone)
     context_dic['attachments'] = attachments
@@ -243,3 +258,6 @@ def analytics(request):
     return HttpResponse("WOW")
 
 
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/site/')

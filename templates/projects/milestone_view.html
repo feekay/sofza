@@ -53,6 +53,8 @@
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
+  <div class =row>
+    <div class= col-sm-6>
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
@@ -60,6 +62,24 @@
         <span class="icon-bar"></span>                        
       </button>
       <a class="navbar-brand">Sofza</a>
+    </div>
+    </div>
+
+    <div class = col-sm-6>
+        {% if not user.is_authenticated %}
+        <form action = "/projects/{{project_id}}/{{milestone.url_id}}/" method = "POST">
+            {% csrf_token %}
+            <label>Username: </label>
+            <input type = text name="username" />
+            <label>Password: </label>
+            <input type = password name="password" />
+            <input type = submit value ="login" name ="login"/>
+        </form>
+        {% else %}
+        <button><a href= '/projects/logout'> Logout</a></button>
+        {% endif %}
+        
+    </div>
     </div>
 </div>
 </nav>
