@@ -206,7 +206,8 @@ jQuery(document).ready(function() {
         <th>Start Date</th>
         <th>End Date</th>
         <th>Cost</th>
-        <th></th>
+        <th>Success</th>
+        <th>Failed</th>
     </tr>
     {% for milestone in milestones %}
         {% if milestone.completed %}
@@ -214,17 +215,21 @@ jQuery(document).ready(function() {
         {% else %}
             <tr>
         {% endif %}
-        <td class ="serial"><a href=/projects/{{project.id}}/{{milestone.slug}}></a></td>
-        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.title}}</a></td>
-        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.start_date}}</a></td>
-        <td class="deadline"><a href=/projects/{{project.id}}/{{milestone.slug}}>{{milestone.deadline}}</a></td>
-        <td><a href=/projects/{{project.id}}/{{milestone.slug}}>{{project.pay_type}}{{milestone.cost}}</a></td>
+        <td class ="serial"><a href=/projects/{{project.id}}/{{milestone.url_id}}></a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{milestone.title}}</a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{milestone.start_date}}</a></td>
+        <td class="deadline"><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{milestone.deadline}}</a></td>
+        <td><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{project.pay_type}}{{milestone.cost}}</a></td>
         
         {% if not milestone.completed %}
-        <td><button class ="m_complete" type="submit" name="closed" value="closed"  data ="/projects/{{project.id}}/{{milestone.slug}}"style ="border: 0; background: transparent">
+        <td><button class ="m_success" type="submit" name="closed" value="closed"  data ="/projects/{{project.id}}/{{milestone.url_id}}"style ="border: 0; background: transparent">
     <img src="{% static "images/success.png" %}" width="32" height="32" alt="submit" />
     </button></td>
+    <td><button class ="m_fail" type="submit" name="closed" value="closed"  data ="/projects/{{project.id}}/{{milestone.url_id}}"style ="border: 0; background: transparent">
+    <img src="{% static "images/failed.png" %}" width="32" height="32" alt="submit" />
+    </button></td>
         {% else %}
+        <td></td>
         <td></td>
         {% endif %}
     </tr>
@@ -236,7 +241,8 @@ jQuery(document).ready(function() {
         <td></td>
         <td></td>
         <td>{{project.cost}}</td>
-        <td></td>
+        <td>Revenue</td>
+        <td>{{project.revenue}}</td>
     </tr>
     </table>
 </div>
@@ -339,7 +345,7 @@ $(document).ready(function(){
   });
 });
 
-$('.m_complete').click(function() {
+$('.m_success').click(function() {
     console.log("Executed");
     console.log($(this).attr('data'));
     
@@ -351,7 +357,8 @@ $('.m_complete').click(function() {
         data: {
             //name: value
             // data you need to pass to your function
-            click: "True"
+            click: "True",
+            success:"True"
         },
         success: function (data) {
             console.log("Executed");
@@ -360,6 +367,29 @@ $('.m_complete').click(function() {
     });
   });
   
+$('.m_fail').click(function() {
+    console.log("Executed");
+    console.log($(this).attr('data'));
+    
+    
+    path =$(this).attr('data')
+    $.ajax({
+        url: path,
+        method: 'GET', // or another (GET), whatever you need
+        data: {
+            //name: value
+            // data you need to pass to your function
+            click: "True",
+            fail:"True"
+        },
+        success: function (data) {
+            console.log("Executed");
+            window.location = '/projects/{{project.id}}';
+        }
+    });
+  });
+  
+
 $('.complete').on('click', function(){
     console.log("This")
     console.log("{{project.id}}");

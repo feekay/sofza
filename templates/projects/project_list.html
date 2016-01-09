@@ -115,7 +115,21 @@
 </nav>
 
 <div class = "container-fluid header">
-    Projects
+    <div class=row>
+        <div class=col-sm-9>
+        Projects
+        </div>
+
+        <div class=col-sm-1>
+            <a href = "/projects/{{prev_month}}">Prev </a>
+        </div>
+        <div class=col-sm-1>
+            {{current_month}}
+        </div>
+        <div class=col-sm-1>
+            <a href = "/projects/{{next_month}}">Next </a>
+        </div>
+    </div>
 </div>
 
 <div class= "container">

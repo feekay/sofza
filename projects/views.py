@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from projects.forms import projectForm, milestoneForm
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.edit import FormView
-from datetime import date
+from datetime import datetime
 from .forms import MyForm
 from projects.models import Attachment, Project, Milestone
 import os
@@ -25,10 +25,66 @@ def download_file(request, path, document_root):
     return response
 
 @user_passes_test(lambda u: u.is_superuser)
-def projects(request):
+def projects(request, year=0,month=None):
+    MONTHS = {
+    'jan' : 0,
+    'feb':1,
+    'mar':2,
+    'apr':3,
+    'may':4,
+    'jun':5,
+    'jul':6,
+    'aug':7,
+    'sep':8,
+    'oct':9,
+    'nov':10,
+    'dec':11,
+    }
+    
+    MONTH_NAMES = [
+    'jan',
+    'feb',
+    'mar',
+    'apr',
+    'may',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'oct',
+    'nov',
+    'dec',
+    ]
+    if not year:
+        year = datetime.now().year
+    else:
+        year = int(year)
+    if month is None or month not in MONTHS:
+        current_month = datetime.now().month
+    else:
+        current_month = MONTHS[month]+1
 
-    projects = Project.objects.order_by('completed','start_date')
-    context_dic= {'projects': projects}
+    print month
+
+    projects = Project.objects.filter(start_date__month = current_month, start_date__year = year).order_by('completed','start_date')
+    
+    context_dic= {}
+    current_month -=1
+    prev_month = (current_month-1)%12
+    next_month = (current_month+1)%12
+
+    context_dic["current_month"] = MONTH_NAMES[current_month]
+    if prev_month > current_month:
+        context_dic["prev_month"] = str(year-1) + '/' + MONTH_NAMES[prev_month]
+    else:
+        context_dic["prev_month"] = str(year) + '/' + MONTH_NAMES[prev_month]
+        
+    if next_month < current_month:
+        context_dic["next_month"] = str(year+1) + '/' + MONTH_NAMES[next_month]
+    else:
+        context_dic["next_month"] = str(year) + '/' + MONTH_NAMES[next_month]
+
+    context_dic['projects'] = projects
     
     if request.method == "POST":
         form = projectForm(request.POST)
@@ -43,16 +99,31 @@ def projects(request):
     return render(request, 'projects/project_list.html', context_dic)
 
 
-def milestone_page(request, project_id, name):
+def milestone_page(request, project_id, mile_id):
     context_dic={}
     try:
-        milestone = Milestone.objects.get(project= project_id, slug=name)
+        project = Project.objects.get(pk=project_id)
+        milestone = Milestone.objects.get(project= project_id, url_id=mile_id)
     except:
         return HttpResponseRedirect('/projects/'+project_id)
 
-    if request.GET.get('click', False) and not milestone.completed:
+    if request.GET.get('success', False) and not milestone.success:
         #print ("In Milestone")
-        milestone.completed= True
+        project.revenue += milestone.cost
+        project.save()
+        milestone.completed = True
+        milestone.success = True
+        milestone.save()
+        #print ("Saved")
+        try:
+            #context_dic['project'] = project;
+            return HttpResponse(status=200)
+        except:
+            print "Couldn't respond"
+    if request.GET.get('fail', False) and not milestone.completed:
+        #print ("In Milestone")
+        milestone.completed = True
+        milestone.success = False
         milestone.save()
         #print ("Saved")
         try:
@@ -61,6 +132,7 @@ def milestone_page(request, project_id, name):
         except:
             print "Couldn't respond"
 
+
     context_dic['milestone'] = milestone
     attachments = Attachment.objects.all().filter(milestone= milestone)
     context_dic['attachments'] = attachments
@@ -68,7 +140,7 @@ def milestone_page(request, project_id, name):
     return render(request, 'projects/milestone_view.html', context_dic)
 
 
-def project_page(request, project_id):
+def project_page(request, project_id, month=0):
 
     context_dic = {id: 'project_id'}
     try:
@@ -77,7 +149,7 @@ def project_page(request, project_id):
         return HttpResponseRedirect('/site/')
     context_dic['project'] = project;
 #        print project.id
-
+    project.update_cost()
     if request.GET.get('click', False) and not project.completed:
         project.completed= True
         print(project.completed)
@@ -109,6 +181,7 @@ def milestone_form(request, project_id, context_dic={}):
             #print data['title']
             #print data['project'], "DATA"
             form2.save()
+            project.update_cost()
 
             current = Milestone.objects.get(title=data['title'], project = project_id)
             print current
@@ -127,3 +200,21 @@ def milestone_form(request, project_id, context_dic={}):
     context_dic['form'] = form
     context_dic['form2'] = form2
     return render(request,'projects/project_view.html', context_dic)
+
+@user_passes_test(lambda u: u.is_superuser)  
+def invoice(request, project_id):
+    project = Project.objects.get(id=project_id)
+    unpaid = project.milestone_set.all().filter(paid=False)
+    print unpaid
+    return HttpResponse("WOW")
+    
+@user_passes_test(lambda u: u.is_superuser)      
+def staff(request):
+    return HttpResponse("WOW")
+
+
+@user_passes_test(lambda u: u.is_superuser)  
+def analytics(request):
+    return HttpResponse("WOW")
+
+

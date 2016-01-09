@@ -18,7 +18,7 @@ class projectForm(forms.ModelForm):
 
     class Meta:
         model = Project
-        exclude = ['id', 'cost', 'last_updated', 'completed']
+        exclude = ['id', 'cost', 'last_updated', 'completed', 'revenue', 'success']
 
 class milestoneForm(forms.ModelForm):
     title = forms.CharField(max_length = 50, label ="Task", widget=forms.TextInput(attrs={'required': ''}))
@@ -33,4 +33,5 @@ class milestoneForm(forms.ModelForm):
         widgets = {
             'project': forms.HiddenInput()
         }
-        exclude=['slug', 'completed']
+        exclude=['url_id', 'completed', 'success', 'paid']
+
