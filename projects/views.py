@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from projects.forms import projectForm, milestoneForm, MyForm, UserForm, StaffForm
 from django.contrib.auth.decorators import user_passes_test
@@ -12,10 +12,37 @@ import os
 import mimetypes
 from django.http import StreamingHttpResponse
 from django.core.servers.basehttp import FileWrapper
+from django.core import serializers
 
 
-def staff_list(max_results =0, starts_with=""):
-    
+def get_staff_list(max_results =0, starts_with=""):
+    user_list = []
+    staff_list = []
+    print("Searching for staff", starts_with)
+    if starts_with:
+        user_list = User.objects.filter(first_name__istartswith=starts_with)
+        for user in user_list:
+            staff_list.append(Staff.objects.get(user = user))
+        print(staff_list)
+#    if max_results > 0:
+#        if staff_list.count() > max_results:
+#            staff_list = staff_list[:max_results]
+    print("Returning")
+    return staff_list
+
+def suggest_staff(request):
+
+    staff_list = []
+    starts_with = ''
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+        print("Request Recieved", starts_with)
+
+    staff_list = get_staff_list(4,starts_with)
+    print("Response Ready")
+    data = serializers.serialize("json",staff_list)
+    print( data)
+    return HttpResponse(data, content_type='application/json')
 
 def allocations(request, milestone_id):
     try:
@@ -147,6 +174,7 @@ def milestone_page(request, project_id, mile_id):
         elif 'name' in request.POST:
             name = request.POST['name']
             allocation = request.POST['allocation']
+            user_id = request.POST['user_id']
             try:
                 print("Trying Allocation")
                 pay = int(allocation)
@@ -156,14 +184,15 @@ def milestone_page(request, project_id, mile_id):
             else:
                 try:
                     print("Trying User")
-                    user = User.objects.get(username = name)
+                    person = Staff.objects.get(user= user_id)
+                    #user = User.objects.get(username = name)
                 except:
                     #produce an error saying incorect username or something
                     pass
                 else:
                     print("Found User")
                     pay_type = project.pay_type
-                    person = Staff.objects.get(user= user)
+
                     try:
                         prev = milestone.allocation_set.get(active = True)
                     except:

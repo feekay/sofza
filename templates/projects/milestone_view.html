@@ -66,6 +66,37 @@
   .modal-header, .modal-body {
       padding: 40px 50px;
   }
+  .staff ul{
+    position: absolute;
+  }
+  
+  .staff li{
+    background: white;
+    display: block;
+    position: relative;
+    border: 1px solid black;
+    border-top: 0px;
+    z-index: 2;
+  }
+  
+    .staff li:hover{
+    background: blue;
+    display: block;
+    position: relative;
+    border: 1px solid black;
+    border-top: 0px;
+    z-index: 2;
+  }
+    .staff li img{
+    padding: 4px;
+    display: inline;
+  }
+  
+    .staff li p{
+    padding: 4px;
+    margin: 3px;
+    display: inline;
+  }
   
   </style>
 </head>
@@ -143,12 +174,17 @@
                 <div class="modal-body">
                     
                     <p id="errors"></p>
-                    <form action="" method="post" enctype="multipart/form-data" name ="milestone" >
+                    <form action=""  name ="search" method="post" enctype="multipart/form-data" >
                     {% csrf_token %}
-                    <label>Name</label>
-                    <input  type= text name="name"/>
+                    <input name ="user_id" type="hidden" value="">
+                    <label>Add Person</label>
+                    <input  class="search-query span10" type="text" name="name" autocomplete="off" value="" id="suggestion" />
                     <br>
-                    <label>Allocation</label>
+                    <ul class="staff">
+                    </ul>
+                    <br>
+                    
+                    <label position = "relative">Allocation</label>
                     <input  type=number name="allocation" />
                     <br>
                     <input type="submit" class="btn" value="Add" />
@@ -196,6 +232,37 @@
 
 
 <script>
+$(document).ready(function(){
+$('ul.staff').on('click','li' ,function(){
+
+   document.forms["search"]["user_id"].value = $(this).attr("data");
+   para=$(this).children('p')[0];
+   console.log(para.text)
+   document.forms["search"]["name"].value = $(this).attr("data-name");
+});
+});
+
+$('#suggestion').keyup(function(){
+        var query;
+        query = $(this).val();
+        $.get('/projects/suggest_staff/', {'suggestion': query}, function(data){
+         console.log(data)
+         if (data[0]){
+            div=""
+            for(i=0; i<data.length; ++i){
+            console.log(i)
+            view ="<p>"+ data[i]["fields"]["full_name"]+"</p>";
+            img = "<img src=/media/" +data[i]["fields"]["picture"]+ " width=40px height=40px></img>"; 
+            list= "<li data=\"" +data[i]["fields"]["user"]+"\" data-name= \""+data[i]["fields"]["full_name"]+"\">"+img + view +"</li>"
+            div += "<div>"+list+"</div>"
+            $('.staff').html(div);}
+            }
+         else{
+            $('.staff').html("\n");
+         }
+        }, "json");
+});
+
 $('.important').on('click', function(){
     console.log("This")
     $.ajax({

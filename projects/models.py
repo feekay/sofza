@@ -13,7 +13,11 @@ class Staff(models.Model):
     type = models.CharField(max_length = 50)
     phone = models.CharField(max_length=16)
     picture = models.ImageField(upload_to="profile_pictures", blank = False)
-    
+    full_name = models.CharField(max_length=50)
+    def save(self, *args, **kwargs):
+        self.full_name = (self.user.first_name + " " + self.user.last_name)
+        super(Staff, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return str(self.user.username)
 

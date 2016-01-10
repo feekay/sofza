@@ -10,7 +10,7 @@ class UserForm(forms.ModelForm):
     
     class Meta:
         model = User
-        fields= ['username', 'email', 'password']
+        fields= ['first_name','last_name','username', 'email', 'password']
 
 class StaffForm(forms.ModelForm):
     picture = forms.FileField(required=False)
