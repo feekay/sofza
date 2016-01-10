@@ -20,10 +20,10 @@ class StaffForm(forms.ModelForm):
 
 class MyForm(forms.Form):
     file = MultiFileField(min_num=0, max_num=5, max_file_size=1024*1024*5, required = False)
-
+   
 
 class projectForm(forms.ModelForm):
-    CHOICES = (('$', "Dollar"),('#',"Pound"),('?', "Euro"))
+    CHOICES = (('$', "Dollar"),(u'\u00A3',"Pound"),(u'\u20AC', "Euro"))
     client = forms.CharField(max_length = 50, label= "Client Name", widget=forms.TextInput(attrs={'required': ''}))
     client_mail = forms.EmailField(widget=forms.EmailInput(attrs={'required': ''}))
     title = forms.CharField(max_length=50, label = "Project Title", widget=forms.TextInput(attrs={'required': ''}))

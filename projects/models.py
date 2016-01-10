@@ -56,7 +56,7 @@ class Project(models.Model):
             try:
                 temp= milestone.allocation_set.get(active = True).pay
             except:
-                pass
+                temp = None
             if temp:
                 revenue += temp
     
@@ -81,7 +81,7 @@ class Milestone(models.Model):
     start_date = models.DateField()
     deadline = models.DateField()
     project = models.ForeignKey(Project, null = True)
-    #Remove Completed
+    important = models.BooleanField(default = False)
     completed = models.BooleanField(default= False)
     paid = models.BooleanField(default=False)
 
@@ -99,10 +99,8 @@ class Allocation(models.Model):
     pay = models.IntegerField(null = False)
     pay_type = models.CharField(choices = CHOICES, default ='$', max_length =2)
     active = models.BooleanField(default= False)
-    
-    def save(self):
-        self.pay_type = Project.objects.get(id= self.milestone.project).pay_type
-    
+
+
     def __unicode__(self):
         return self.pay_type + str(self.pay)
 

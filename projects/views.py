@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.models import User
 from projects.forms import projectForm, milestoneForm, MyForm, UserForm, StaffForm
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -12,6 +13,18 @@ import mimetypes
 from django.http import StreamingHttpResponse
 from django.core.servers.basehttp import FileWrapper
 
+
+def staff_list(max_results =0, starts_with=""):
+    
+
+def allocations(request, milestone_id):
+    try:
+        milestone = Milestone.objects.get(url_id = milestone_id)
+    except:
+        return HttpResponse("No such milestone", status = 404)
+
+    allocations = milestone.allocation_set.all().order_by("-active")
+    return allocations
 
 def download_file(request, path, document_root):
     the_file = os.path.join(document_root,path)
@@ -108,32 +121,76 @@ def milestone_page(request, project_id, mile_id):
     except:
         return HttpResponseRedirect('/projects/'+project_id)
 
+    if request.GET.get("complete", False):
+        milestone.completed = True;
+        milestone.save()
+
+    if request.GET.get("important", False):
+        current = milestone.important
+        milestone.important = not current
+        milestone.save()  
     #In case on input request
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username = username, password = password)
-
-        if user is not None:
-            if user.is_active:
-                login(request, user)
+        if 'username' in request.POST:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username = username, password = password)
+    
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                else:
+                    pass
             else:
+                HttpResponse("Invalid Username or Password")
+
+        elif 'name' in request.POST:
+            name = request.POST['name']
+            allocation = request.POST['allocation']
+            try:
+                print("Trying Allocation")
+                pay = int(allocation)
+            except:
+                #produce an error saying incorect field or something
                 pass
-        else:
-            HttpResponse("Invalid Username or Password")
+            else:
+                try:
+                    print("Trying User")
+                    user = User.objects.get(username = name)
+                except:
+                    #produce an error saying incorect username or something
+                    pass
+                else:
+                    print("Found User")
+                    pay_type = project.pay_type
+                    person = Staff.objects.get(user= user)
+                    try:
+                        prev = milestone.allocation_set.get(active = True)
+                    except:
+                        pass
+                    else:
+                        prev.active = False
+                        prev.save()
+                    
+                    alloc = milestone.allocation_set.create(person=person,
+                    pay= pay,
+                    pay_type= pay_type,
+                    active=True,
+                    )
+                    return HttpResponseRedirect('/projects/'+project_id+"/"+mile_id)
+
 #    if request.GET.get('success', False) and not milestone.success:
-        #print ("In Milestone")
-#        project.revenue += milestone.cost
+#        print ("In Milestone")
 #        project.save()
 #        milestone.completed = True
-#        milestone.success = True
 #        milestone.save()
 #        #print ("Saved")
 #        try:
-            #context_dic['project'] = project;
+#            context_dic['project'] = project;
 #            return HttpResponse(status=200)
 #        except:
 #            print "Couldn't respond"
+#
 #    if request.GET.get('fail', False) and not milestone.completed:
 #        #print ("In Milestone")
 #        milestone.completed = True
@@ -145,12 +202,11 @@ def milestone_page(request, project_id, mile_id):
 #            return HttpResponse(status=200)
 #        except:
 #            print "Couldn't respond"
-
     context_dic['project_id'] = project_id
     context_dic['milestone'] = milestone
     attachments = Attachment.objects.all().filter(milestone= milestone)
     context_dic['attachments'] = attachments
-    
+    context_dic['allocations'] = allocations(request, milestone.url_id)
     return render(request, 'projects/milestone_view.html', context_dic)
 
 
@@ -187,7 +243,6 @@ def milestone_form(request, project_id, context_dic={}):
         form2 = milestoneForm(request.POST)
         form = MyForm(request.POST, request.FILES)
 
-
         form2.data['project'] = project.id
         if form2.is_valid():
             form2.save(commit= False)
@@ -214,14 +269,6 @@ def milestone_form(request, project_id, context_dic={}):
     context_dic['form'] = form
     context_dic['form2'] = form2
     return render(request,'projects/project_view.html', context_dic)
-
-@user_passes_test(lambda u: u.is_superuser)  
-def invoice(request, project_id):
-    project = Project.objects.get(id=project_id)
-    unpaid = project.milestone_set.all().filter(paid=False)
-    print unpaid
-    return HttpResponse("WOW")
-    
 #@user_passes_test(lambda u: u.is_superuser)      
 def staff(request):
    
@@ -261,3 +308,67 @@ def analytics(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/site/')
+
+#@user_passes_test(lambda u: u.is_superuser)  
+def invoice(request, project_id):
+    project = Project.objects.get(id=project_id)
+
+    if request.method == "POST":
+        data= []
+        total = 0
+        print(request.POST)
+        address = request.POST['address']
+        discount = int(request.POST["discount"])
+        
+        for key in request.POST:
+            try:
+                x = project.milestone_set.get(title = key)
+            except:
+                pass
+            else:
+                x.paid = True
+                x.save()
+                total += x.cost
+                data.append({'title' : x.title, 'cost' : x.cost})
+            
+        name = generate(project.client, project.client_mail, data, address,total, discount)
+        chunk_size = 8192
+        response = StreamingHttpResponse(FileWrapper(open(name+".pdf"), chunk_size),
+                           content_type=mimetypes.guess_type(name+".pdf"))
+        response['Content-Length'] = os.path.getsize(name+".pdf")
+        response['Content-Disposition'] = "attachment; filename=%s" % (name+".pdf")
+        return response
+    else:
+        unpaid = project.milestone_set.all().filter(paid=False)
+        return render(request,'projects/invoice.html', {'unpaid':unpaid, 'project_id':project.id})
+
+
+def generate(name, email, data, addr, total, discount=0):
+    print ("Generating PDF")
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.units import inch
+    from reportlab.lib.pagesizes import letter
+    c = canvas.Canvas(name+".pdf", pagesize = letter)
+    c.drawString(1*inch, 9*inch, "Sofza")
+    c.drawString(1*inch, 8.7*inch, "Haris Mehmood")
+    c.drawString(1*inch, 8.4*inch, "Invoice Payment Notice")
+    c.line(0, 8.1*inch, 8*inch, 8.1*inch)
+    c.drawString(1*inch, 7.7*inch, "Invoiced to:")
+    c.drawString(1*inch, 7.4*inch, name)
+    c.drawString(1*inch, 7.1*inch, email)
+    c.drawString(1*inch, 6.8*inch, addr)
+    c.line(0, 6.5*inch, 8*inch, 6.5*inch)
+    
+    point = 6.2
+    for x in data:
+        c.drawString(1*inch, point*inch, x['title'] + " " + str(x['cost']))
+        point -= 0.3
+    if discount:
+        c.drawString(1*inch, point*inch, "Discount: "+ str(discount))
+        point -= 0.3
+        total-=discount
+    c.drawString(1*inch, point*inch, "Total: "+str(total))
+    point -= 0.3
+    c.save()
+    return name
+#x_max = 8.3", y_max = 11.7"

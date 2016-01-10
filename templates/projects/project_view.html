@@ -135,8 +135,6 @@ jQuery(document).ready(function() {
 <div class= "container add-btn">
     <div class="add_project">
 	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img> New Milestone</a>
-        <a id="edit" href="#myModal2" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/icon-edit.png" %}" width="32px" height="32px"></img> Edit Project</a>
-    
 
     <button class ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
     <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" /> Close Project
@@ -172,30 +170,6 @@ jQuery(document).ready(function() {
     </div>
 </div>
 
-<!-- Pop-up Modal that will be displayed on clicking the edit button-->
-<div class>
-    <div class="modal fade" id="myModal2" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Add Milestone</h4>
-                </div>
-                <div class="modal-body">
-                    
-                    <form id="edit_form" action="" method="post" enctype="multipart/form-data" name ="edit_milestone">
-
-                    <input type="submit" value="Add" />
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <!-- Table Section, need to be fixed-->
 <div class ="container-fluid table-responsive">
@@ -205,32 +179,18 @@ jQuery(document).ready(function() {
         <th>Task</th>
         <th>Start Date</th>
         <th>End Date</th>
+        {% if user.is_superuser %}
         <th>Cost</th>
-        <th>Success</th>
-        <th>Failed</th>
+        {% endif %}
     </tr>
     {% for milestone in milestones %}
-        {% if milestone.completed %}
-            <tr class = "success">
-        {% else %}
-            <tr>
-        {% endif %}
+        <tr>
         <td class ="serial"><a href=/projects/{{project.id}}/{{milestone.url_id}}></a></td>
         <td><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{milestone.title}}</a></td>
         <td><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{milestone.start_date}}</a></td>
         <td class="deadline"><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{milestone.deadline}}</a></td>
+        {% if user.is_superuser %}
         <td><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{project.pay_type}}{{milestone.cost}}</a></td>
-        
-        {% if not milestone.completed %}
-        <td><button class ="m_success" type="submit" name="closed" value="closed"  data ="/projects/{{project.id}}/{{milestone.url_id}}"style ="border: 0; background: transparent">
-    <img src="{% static "images/success.png" %}" width="32" height="32" alt="submit" />
-    </button></td>
-    <td><button class ="m_fail" type="submit" name="closed" value="closed"  data ="/projects/{{project.id}}/{{milestone.url_id}}"style ="border: 0; background: transparent">
-    <img src="{% static "images/failed.png" %}" width="32" height="32" alt="submit" />
-    </button></td>
-        {% else %}
-        <td></td>
-        <td></td>
         {% endif %}
     </tr>
     
@@ -238,8 +198,6 @@ jQuery(document).ready(function() {
     <tr>
         <td></td>
         <td>Total</td>
-        <td></td>
-        <td></td>
         <td>{{project.cost}}</td>
         <td>Revenue</td>
         <td>{{project.revenue}}</td>
@@ -409,25 +367,5 @@ $('.complete').on('click', function(){
   
   });
   
-  
-  
-$('#edit').click(function() {
-    path = "{{project.id}}"
-    
-    $.ajax({
-        url: "/projects/",
-        method: 'GET', // or another (GET), whatever you need
-        
-        success: function (data) {
-            console.log("Executed");
-            initial = $('#edit_form').html()
-            var response = $(data)
-            console.log(response.filter('#form'))
-            //$('#edit_form').html(data.form)
-            
-            
-        }
-    });
-  });
 </script>
 </body>

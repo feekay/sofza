@@ -45,7 +45,28 @@
     footer a{
         color: #ffffff;
     }
-
+    
+      .btn {
+      padding: 10px 20px;
+      color: #333;
+      border-radius: 0;
+      transition: .2s;
+  }
+  .btn:hover, .btn:focus {
+      border: 1px solid #333;
+      background-color: #fff;
+      color: #000;
+  }
+  .modal-header, h4, .close {
+      background-color: #333;
+      color: #fff !important;
+      text-align: center;
+      font-size: 30px;
+  }
+  .modal-header, .modal-body {
+      padding: 40px 50px;
+  }
+  
   </style>
 </head>
 
@@ -84,9 +105,61 @@
 </div>
 </nav>
 
+
 <div class = "container-fluid header">
-     {{milestone.title}}
+     <span>{{milestone.title}}</span>
+     {% if milestone.important %}
+        <span>Important</span>
+     {% endif %}
 </div>
+
+{% if user.is_superuser and not milestone.completed %}
+<div class= "container">
+<div class= "container add-btn">
+    <div class="add_project">
+	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img>Switch Person</a>
+
+    <button class ="important" type="submit" name="important" value="important" style="border: 0; background: transparent">
+    <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" />  Important
+    </button>
+    <button class ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
+    <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" /> Close Milestone
+    </button>
+    </div>
+
+</div>
+</div>
+{% endif %}
+
+<!-- Pop-up Modal that will be displayed on clicking the add button-->
+<div class>
+    <div class="modal fade" id="myModal" role="dialog" tabindex=-1>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Switch Person</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <p id="errors"></p>
+                    <form action="" method="post" enctype="multipart/form-data" name ="milestone" >
+                    {% csrf_token %}
+                    <label>Name</label>
+                    <input  type= text name="name"/>
+                    <br>
+                    <label>Allocation</label>
+                    <input  type=number name="allocation" />
+                    <br>
+                    <input type="submit" class="btn" value="Add" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class = "container-fluid">
     <p>{{milestone.description}}</p>
@@ -96,25 +169,70 @@
     {% endfor %}
 
 </div>
+<!-- Table Section, need to be fixed-->
+<div class ="container-fluid table-responsive">
+    <table class= "table table-hover">
+    <tr>
+        <th>Person</th>
+        {% if user.is_superuser %}
+        <th>Allocation</th>
+        {% endif %}
+        <th>Active</th>
 
-<!--Footer-->
-<footer class="footer text-right">
-<div class=row>
-  <div class= col-sm-10>
-    <ul class="text-left">
-       <li><a href="/site">Home</a></li>
-       <li><a href="/site/portfolio/">Portfolio</a></li>
-       <li><a href="#">About</a></li>
-       <li><a href="#">Policy</a></li>
-       <li><a href="/site/faq/">FAQ</a></li>
-    </ul>
-  </div>
-  <div class= col-sm-2>
-  <a class="up-arrow" href="#start" data-toggle="tooltip" title="TO TOP">
-    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="32px" height="32px"></img>
-  </a>
-  </div>
+    </tr>
+    {% for allocation in allocations %}
+     <tr>
+        <td >{{allocation.person}}</td>
+        {% if user.is_superuser %}
+        <td>{{allocation.pay}}</td>
+        {% endif %}
+        <td>{{allocation.active}}</td>
+
+    </tr>
+    {% endfor %}
 </div>
-</footer>
 
+</div>
+
+
+<script>
+$('.important').on('click', function(){
+    console.log("This")
+    $.ajax({
+        url:window.location.href,
+        method: 'GET', // or another (GET), whatever you need
+        data: {
+            //name: value
+            // data you need to pass to your function
+            important: "True"
+        },
+        success: function (data) {
+            console.log("Executed");
+            location.reload();
+        }
+    });
+  
+  });
+  
+  $('.complete').on('click', function(){
+    console.log("This")
+
+    $.ajax({
+        url:window.location.href,
+        method: 'GET', // or another (GET), whatever you need
+        data: {
+            //name: value
+            // data you need to pass to your function
+            complete: "True"
+        },
+        success: function (data) {
+            console.log("Executed");
+            location.reload();
+        }
+    });
+  
+  });
+  
+
+</script>
 </body>

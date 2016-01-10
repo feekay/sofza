@@ -1,0 +1,19 @@
+<html>
+<body>
+    <form method = "post" action ="/projects/{{project_id}}/invoice/">
+        {% csrf_token %}
+        <label>Address</label>
+        <input type = "text" name = "address" />
+        {% for milestone in unpaid %}
+        <br>
+        <input type= "checkbox" name = "{{milestone.title}}" />
+        <label>{{milestone.title}}</label>
+        {% endfor %}<br>
+        <label>Discount</label>
+        <input type = "number" name = "discount" pattern="" />
+        <br>
+        <input type = "submit" />
+    </form>
+
+</body>
+</html>
