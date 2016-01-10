@@ -93,6 +93,11 @@
     color: #ff0000 !important
     }
     
+    .photo_frame{
+        display:inline !important;
+    }
+
+    
 </style>
   
 </head>
@@ -147,9 +152,61 @@
 </div>
 
 <div class = container>
+    <div class ="row">
     {% for person in staff %}
-        <p>{{person.name}}</p>
-        <img src ="/media/{{person.picture}}" alt="profile picture"/>    
+        <a  href="#" class="modal-btn" data-src="/projects/persons/{{person.user}}" data-toggle="modal" data-target="#photoModal">
+        <div class="photo_frame col-sm-2">
+            <img src ="/media/{{person.picture}}" alt="profile picture" width = "160" height = "160" />    
+            <p>{{person.full_name}}</p>
+        </div>
+        </a>
     {% endfor %}
+    </div>
 </div>
+
+<!--Photo Modal-->
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body dynamic">
+                <div></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default">Dishonour</button>
+        </div>
+    </div>
+  </div>
+</div>
+
 </body>
+
+<script>
+$(document).ready(function(){
+    $('.modal-btn').click(function(){
+        console.log($(this).attr('data-src'));
+        $.ajax({
+            url: $(this).attr('data-src'),
+            
+            success: function(data){
+                picture = "<img src=\"/media/"+ data['picture'] +"\" height= \"100px\" width= \"100px\" ></img>"
+                email= "<p>E-Mail: "+data['email']+"</p>"
+                contact = "<p>Contact: "+data['contact']+"</p>"
+                total="<p>Total: "+data['total']+"</p>"
+                completed="<p>Completed: "+data['completed']+"</p>"
+                //working="<p>Working: "+data['working']+"</p>"
+                failed="<p>Failed: "+data['failed']+"</p>"
+                gained = "<p>Gained: <span>$" + data['pay_gain'][0] + "</span>"  + "<span>    &#128;" + data['pay_gain'][1] + "</span>"  + "<span>    &#163;" + data['pay_gain'][2] + "</span></p>"
+            lost = "<p>Lost:  <span>$" + data['pay_lost'][0] + "</span>" + "<span>    &#128;"+data['pay_lost'][1] + "</span>" + "<span>   &#163;" + data['pay_lost'][2] + "</span></p>"
+                view = "<div>"+picture+"</div>" + email + contact + total + completed + failed + gained + lost
+                $(".dynamic").html(view)
+            }
+        });
+    });
+
+});
+
+</script>

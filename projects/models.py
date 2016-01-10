@@ -9,6 +9,7 @@ import os
 CHOICES = (('$', "Dollar"),(u'\u00A3',"Pound"),(u'\u20AC', "Euro"))
 
 class Staff(models.Model):
+    #Don't add active user has it covered for you
     user =  models.OneToOneField(User)
     type = models.CharField(max_length = 50)
     phone = models.CharField(max_length=16)
@@ -19,7 +20,7 @@ class Staff(models.Model):
         super(Staff, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return str(self.user.username)
+        return str(self.full_name)
 
 class Project(models.Model):
     

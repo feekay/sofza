@@ -198,6 +198,7 @@
 
 
 <div class = "container-fluid">
+    <p>DESCRIPTION</p>
     <p>{{milestone.description}}</p>
     <p>{{media_root}}</p>
     {% for attachment in attachments %}
@@ -246,7 +247,7 @@ $('#suggestion').keyup(function(){
         var query;
         query = $(this).val();
         $.get('/projects/suggest_staff/', {'suggestion': query}, function(data){
-         console.log(data)
+         //console.log(data)
          if (data[0]){
             div=""
             for(i=0; i<data.length; ++i){

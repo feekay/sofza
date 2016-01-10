@@ -16,7 +16,7 @@ class StaffForm(forms.ModelForm):
     picture = forms.FileField(required=False)
     class Meta:
         model= Staff
-        exclude = ['user']
+        exclude = ['user', 'full_name']
 
 class MyForm(forms.Form):
     file = MultiFileField(min_num=0, max_num=5, max_file_size=1024*1024*5, required = False)

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from projects.forms import projectForm, milestoneForm, MyForm, UserForm, StaffForm
 from django.contrib.auth.decorators import user_passes_test
@@ -9,11 +9,78 @@ from django.views.generic.edit import FormView
 from datetime import datetime
 from projects.models import Attachment, Project, Milestone, Staff, Allocation, Message
 import os
+import json
 import mimetypes
 from django.http import StreamingHttpResponse
 from django.core.servers.basehttp import FileWrapper
 from django.core import serializers
 
+
+def get_person(request, person_id):
+    try:
+        user = User.objects.get(username= person_id)
+        person = Staff.objects.get(user=user)
+    except:
+        
+        print("Failed")
+        HttpResponse("No such person found", status= 404)
+
+    whole = person.allocation_set.all()
+    total = len(whole)
+    #Add completed
+#    current = whole.filter(active = True, completed = False)
+    filtered = whole.filter(active = True)
+#    woriking = len(current)
+    completed = len(filtered)
+    failed = total - (completed)
+
+    pay_dollar=0
+    pay_euro=0
+    pay_pound=0
+    for job in filtered:
+        if job.pay_type == '$':
+            pay_dollar += job.pay
+        elif job.pay_type == u'\u00A3':
+            pay_pound += job.pay
+        elif job.pay_type == u'\u20AC':
+            pay_euro += job.pay
+    
+    failure = whole.filter(active = False)
+    lost_dollar=0
+    lost_euro=0
+    lost_pound=0
+
+    for job in failure:
+        if job.pay_type == '$':
+            lost_dollar += job.pay
+        elif job.pay_type == u'\u00A3':
+            lost_pound += job.pay
+        elif job.pay_type == u'\u20AC':
+            lost_euro += job.pay
+    
+    person_details = {'email': person.user.email}
+    #person_details = {}
+    person_details['picture'] = str(person.picture)
+    person_details['contact'] = person.phone
+    person_details['type']= person.type
+    person_details['total']=total
+#    person_details['working']=working
+    person_details['completed']=completed
+    person_details['failed']= failed
+    person_details['pay_gain']= [pay_dollar, pay_euro, pay_pound]
+    person_details['pay_lost']= [lost_dollar, lost_euro, lost_pound]
+    print("here")
+    print(person_details)
+    try:
+    #For normal Dictionaries, Use serializer for QuerySet
+        data = json.dumps(person_details)
+    except Exception as inst:
+        print( inst)
+    print("Sending data")
+    return HttpResponse(data, content_type='application/json')
+
+    #person.allocation_set.all().filter(active = True)
+    #return HttpResponse(status=200)
 
 def get_staff_list(max_results =0, starts_with=""):
     user_list = []
@@ -36,12 +103,12 @@ def suggest_staff(request):
     starts_with = ''
     if request.method == 'GET':
         starts_with = request.GET['suggestion']
-        print("Request Recieved", starts_with)
+        #print("Request Recieved", starts_with)
 
     staff_list = get_staff_list(4,starts_with)
-    print("Response Ready")
+    #print("Response Ready")
     data = serializers.serialize("json",staff_list)
-    print( data)
+    #print( data)
     return HttpResponse(data, content_type='application/json')
 
 def allocations(request, milestone_id):
