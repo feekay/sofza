@@ -6,16 +6,6 @@
 {% block import %}
 <link rel="stylesheet" href="{% static "css/index.css" type="text/css"%}">
 <style>
-.carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-      width: 70%;
-      margin: auto;
-  }
-  
-.container > .img{
-    padding: 20px 20px 20px 20px;
-    display: inline;
-}
 
 .holder h3{
     color: #fff;
@@ -23,8 +13,11 @@
 }
 .jumbotron{
     background-color:#fff;
+    margin: 0px
 }
-
+.portfolio{
+    padding: 80px 120px;
+}
 .message{
         width:100%;
         background:#ddd;
@@ -36,13 +29,22 @@
         color: #111;
     } 
 
-</style>
-{% endblock %}
+.bg-1 {
+    background: #2d2d30;
+    color: #bdbdbd;
+}
+.bg-1 h3 {color: #fff;}
+.bg-1 p {font-style: italic;}
 
+.thumbnail{
+    border-radius: 8px;
+}
+</style>
+
+{% endblock %}
 
 {% block body %}
 
-<div >
 
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
@@ -57,7 +59,7 @@
     <div class="carousel-inner" role="listbox">
 
       <div class="item active">
-        <img src="{% static "images/cars3.jpg" %}" alt="Flower" width="460" height="345">
+        <img src="{% static "images/cars3.jpg" %}" alt="Flower">
         <div class="carousel-caption">
           <h3>Flowers</h3>
           <p>Beatiful flowers in Kolymbari, Crete.</p>
@@ -65,14 +67,14 @@
       </div>
 
       <div class="item">
-        <img src="{% static "images/cars2.jpg" %}" alt="Flower" width="460" height="345">
+        <img src="{% static "images/cars2.jpg" %}" alt="Flower">
         <div class="carousel-caption">
           <h3>Flowers</h3>
           <p>Beatiful flowers in Kolymbari, Crete.</p>
         </div>
       </div>
       <div class="item">
-        <img src="{% static "images/cars4.jpg" %}" alt="Flower" width="460" height="345">
+        <img src="{% static "images/cars4.jpg" %}" alt="Flower">
         <div class="carousel-caption">
           <h3>Flowers</h3>
           <p>Beatiful flowers in Kolymbari, Crete.</p>
@@ -80,7 +82,7 @@
       </div>
 
       <div class="item">
-        <img src={% static "images/cars1.jpg" %} alt="Flower" width="460" height="345">
+        <img src={% static "images/cars1.jpg" %} alt="Flower" >
         <div class="carousel-caption">
           <h3>Flowers</h3>
           <p>Beatiful flowers in Kolymbari, Crete.</p>
@@ -88,7 +90,6 @@
       </div>
   
     </div>
-
     <!-- Left and right controls -->
     <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -98,81 +99,82 @@
       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
-  </div>
 </div>
 
 
 <div class="jumbotron text-center">
 
-    <div class= "container">
-        <div class="img">
-            <img src="{% static "images/img1.jpg" %}" class="img-rounded" >
+    <div>
+        <p>Lorem ipsum dolor sit amet.</p>
+    </div>
+    <div class= "row">
+        <div class="col-sm-4">
+            <img src="{% static "images/img1.jpg" %}" >
         </div>
-        <div class="img">
-            <img src="{% static "images/img2.jpg" %}" class="img-rounded" >
+        <div class="col-sm-4">
+            <img src="{% static "images/img2.jpg" %}" >
         </div>
-        <div class="img">
-            <img src="{% static "images/img3.jpg" %}" class="img-rounded" >
+        <div class="col-sm-4">
+            <img src="{% static "images/img3.jpg" %}" >
         </div>
     </div>
 </div>
 
-<div class="container-fluid text-center">
+<div class="bg-1">
+  <div class="container portfolio">
+    <h2 class="text-center">LOREM IPSUM</h2><!--
+    <p class="text-center">Lorem ipsum we'll play you some music.<br></p>
+--><br>
+    <br>
     <div class="row text-center">
-    <h1>Lorem Ipsum</h1>
-    <div class= "col-sm-4">
-        <div class="holder">
-            <img src="{% static "images/img4.jpg" %}" class="img-rounded" >
-            <h3>Lorem Ipsum</h3>
-        </div>
+  <div class="col-sm-4">
+    <div class="thumbnail">
+      <img src="{% static "images/design1.jpg" class="img-rounded" %}" >
+      <p><strong>Lorem ipsum</strong></p>
     </div>
-
-    <div class= "col-sm-4">
-        <div class="holder">
-            <img src="{% static "images/img4.jpg" %}" class="img-rounded" >
-            <h3>Lorem Ipsum</h3>
-        </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="thumbnail">
+      <img src="{% static "images/design2.jpg" class="img-rounded" %}" >
+      <p><strong>Lorem ipsum</strong></p>
     </div>
-
-    <div class= "col-sm-4">
-        <div class="holder">
-            <img src="{% static "images/img4.jpg" %}" class="img-rounded" >
-            <h3>Lorem Ipsum</h3>
-        </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="thumbnail">
+      <img src="{% static "images/design3.jpg" class="img-rounded" %}">
+      <p><strong>Lorem ipsum</strong></p>
     </div>
-    </div>
+  </div>
 </div>
 
-<div class="container-fluid text-center">
-    <div class="row text-center">
-    
-    <div class= "col-sm-4">
-        <div class="holder">
-            <img src="{% static "images/img4.jpg" %}" class="img-rounded" >
-            <h3>Lorem Ipsum</h3>
-        </div>
-    </div>
 
-    <div class= "col-sm-4">
-        <div class="holder">
-            <img src="{% static "images/img4.jpg" %}" class="img-rounded" >
-            <h3>Lorem Ipsum</h3>
-        </div>
+<div class="row text-center">
+  <div class="col-sm-4">
+    <div class="thumbnail">
+      <img src="{% static "images/design5.jpg" class="img-thumbnail" %}" >
+      <p><strong>Lorem ipsum</strong></p>
     </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="thumbnail">
+      <img src="{% static "images/design5.jpg" class="img-thumbnail" %}" >
+      <p><strong>Lorem ipsum</strong></p>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="thumbnail">
+      <img src="{% static "images/design6.jpg" class="img-thumbnail" %}">
+      <p><strong>Lorem ipsum</strong></p>
+    </div>
+  </div>
+ </div>
 
-    <div class= "col-sm-4">
-        <div class="holder">
-            <img src="{% static "images/img4.jpg" %}" class="img-rounded" >
-            <h3>Lorem Ipsum</h3>
-        </div>
-    </div>
-    </div>
+ </div>
 </div>
+
 
 <div class = "container-fluid message text-center">
     <p>SECTION</p>
-    <br>
-    <br>
     <p>Message</p>
 </div>
 
