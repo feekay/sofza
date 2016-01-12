@@ -173,6 +173,7 @@
                 </div>
                 <div class="modal-body">
                     
+                    <img id="id-picture" src="#" width="60px" height="60px"></img>
                     <p id="errors"></p>
                     <form action=""  name ="search" method="post" enctype="multipart/form-data" >
                     {% csrf_token %}
@@ -240,6 +241,7 @@ $('ul.staff').on('click','li' ,function(){
    para=$(this).children('p')[0];
    console.log(para.text)
    document.forms["search"]["name"].value = $(this).attr("data-name");
+   $("#id-picture").attr('src', $(this).children('img').attr("src"));
 });
 });
 
@@ -253,6 +255,7 @@ $('#suggestion').keyup(function(){
             for(i=0; i<data.length; ++i){
             console.log(i)
             view ="<p>"+ data[i]["fields"]["full_name"]+"</p>";
+            view +="<p>"+data[i]["fields"]["type"]+"</p>"
             img = "<img src=/media/" +data[i]["fields"]["picture"]+ " width=40px height=40px></img>"; 
             list= "<li data=\"" +data[i]["fields"]["user"]+"\" data-name= \""+data[i]["fields"]["full_name"]+"\">"+img + view +"</li>"
             div += "<div>"+list+"</div>"
