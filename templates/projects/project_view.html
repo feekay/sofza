@@ -88,6 +88,13 @@
       padding: 40px 50px;
   }
   
+  .message-dialog{
+    position: absolute;
+    z-index:2;
+    margin: 20px;
+    padding: 20px;
+  
+  }
     footer li{
     list-style-type: none;
     }
@@ -96,6 +103,12 @@
     }
     #errors{
     color: #ff0000 !important
+    }
+    #message-box{
+        overflow: scroll;
+        height: 80px;
+        width: 100%;
+    
     }
 </style>
 
@@ -124,7 +137,7 @@ jQuery(document).ready(function() {
     <div class="row">
     <div class="col-sm-8">Milestones</div>
     <div class="col-sm-4 text-right">
-        <time class="timeago" datetime={{updated}}>project.last_updated</time>
+        <time class="timeago" datetime={{updated}}>{{updated}}</time>
     </div>
     </div>
 </div>
@@ -136,9 +149,8 @@ jQuery(document).ready(function() {
     <div class="add_project">
 	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img> New Milestone</a>
 
-    <button class ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
-    <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" /> Close Project
-    </button>
+        <a href="#completeModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/completed.png" %}" width="32px" height="32px"></img> Complete</a>
+
     </div>
 
 </div>
@@ -164,6 +176,25 @@ jQuery(document).ready(function() {
                     <input type="submit" class="btn" value="Add" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Pop-up Modal that will be displayed on clicking the complete button-->
+<div class>
+    <div class="modal fade" id="completeModal" role="dialog" tabindex=-1>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">How was the project</h4>
+                </div>
+                <div class="modal-body">
+                <button id="success" class="btn btn-default" >Success!</button>
+                <button id="failure" class="btn btn-primary" >Failure</button>
                 </div>
             </div>
         </div>
@@ -207,6 +238,30 @@ jQuery(document).ready(function() {
 
 </div>
 
+<!-- Person Table Section-->
+<div class ="container-fluid table-responsive">
+    <table class= "table table-hover person_list">
+    <tr>
+        <th>Name</th>
+        <th>Status</th>
+        {% if user.is_superuser %}
+        <th>Cost</th>
+        {% endif %}
+    </tr>
+
+    </table>
+</div>   
+</div>
+
+
+<!--Message box-->
+<div class="message-dialog">
+    <div id= "message-box">
+    </div>
+    <input type="text" id="message" name="message"/><button class="btn btn-primary send-message">Send</button>
+</div>
+
+
 <!--Footer-->
 <footer class="footer text-right">
 <div class=row>
@@ -249,6 +304,7 @@ $(document).ready(function(){
   // Initialize Tooltip
   $('[data-toggle="tooltip"]').tooltip(); 
 
+
   //Add Deadlines
   $('td.deadline a').bind('change keyup', function(){
         var tr=$(this).closest('tr');
@@ -257,14 +313,14 @@ $(document).ready(function(){
         var today = new Date();
         today.setHours(0,0,0,0);
         
-        if(!tr.hasClass('success'))
+       if(!tr.hasClass('success'))
         {
             if (deadline.valueOf() === today.valueOf())
             {
                 tr.addClass('warning');
             }   
             else if(deadline<today)
-            {            
+            {
                 tr.addClass('danger');
             }
 
@@ -278,8 +334,7 @@ $(document).ready(function(){
         $(this).text(counter);
         counter++;
     }).trigger('update');
-    
-    
+
 
 
   // Add smooth scrolling to all links in navbar + footer link
@@ -301,52 +356,55 @@ $(document).ready(function(){
       window.location.hash = hash;
     });
   });
-  
+
   //Load Persons working on this project
-  
+  $('.person_list').bind('change', function(){
+        $.ajax({
+            url: "/projects/list/{{project.id}}/",
+            success: function(data){
+                console.log(data);
+             }
+
+        });
+  }).trigger('change');
+  //Update the message box
+  setInterval(message_box, 30000);
+  function message_box() {
+    console.log("Refreshed");
+    $("#message-box").load('/projects/get/{{project.id}}');
+  }
   
 });
 
-$('.m_success').click(function() {
-    console.log("Executed");
-    console.log($(this).attr('data'));
-    
-    
-    path =$(this).attr('data')
+$('#success').click(function() {
+    console.log("Executed Success");
     $.ajax({
-        url: path,
+        url: window.location,
         method: 'GET', // or another (GET), whatever you need
         data: {
-            //name: value
             // data you need to pass to your function
-            click: "True",
             success:"True"
         },
         success: function (data) {
             console.log("Executed");
-            window.location = '/projects/{{project.id}}';
+            location.reload();
         }
     });
   });
   
-$('.m_fail').click(function() {
-    console.log("Executed");
-    console.log($(this).attr('data'));
-    
-    
-    path =$(this).attr('data')
+$('#failure').click(function() {
+    console.log("Executed Fail");
+
     $.ajax({
-        url: path,
+        url: window.location,
         method: 'GET', // or another (GET), whatever you need
         data: {
-            //name: value
             // data you need to pass to your function
-            click: "True",
             fail:"True"
         },
         success: function (data) {
             console.log("Executed");
-            window.location = '/projects/{{project.id}}';
+            location.reload();
         }
     });
   });
@@ -371,5 +429,38 @@ $('.complete').on('click', function(){
   
   });
   
+$('.send-message').click(function(){
+    console.log("Send");
+    message= $('#message').val();
+    $.ajax({
+        url: "/projects/send/{{project.id}}",
+        method:'GET',
+        data:{
+         message: message
+        },
+        success: function(){
+        console.log("Clearing");
+        $('#message').val("");
+        text = "<li> You: " + message +"</li>"
+        $('#message-box').append(message);
+        }
+    });
+});  
+
+$('#message').on('enter', function(){
+    console.log("Send");
+    console.log($(this).val());
+    $.ajax({
+        url: "/projects/send/{{project.id}}",
+        method:'GET',
+        data:{
+         message: $(this).val()
+        },
+        success: function(){
+        
+        }
+    });
+});  
+
 </script>
 </body>

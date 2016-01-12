@@ -7,6 +7,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import logout, login, authenticate
 from django.views.generic.edit import FormView
 from datetime import datetime
+from django.db.models import Q
 from projects.models import Attachment, Project, Milestone, Staff, Allocation, Message
 import os
 import json
@@ -14,7 +15,76 @@ import mimetypes
 from django.http import StreamingHttpResponse
 from django.core.servers.basehttp import FileWrapper
 from django.core import serializers
+from itertools import chain
 
+
+def send_message(request, project_id):
+    if request.GET.get('message'):
+        message = request.GET.get('message')
+        text = message
+        link_id = project_id
+        frm = request.user
+        try:       
+            project = Project.objects.get(id=link_id)
+            project.message_set.create(
+            time = datetime.now(),
+            text = text,
+            frm = frm,
+            )
+        except Exception as inst:
+            print(inst)
+            return HttpResponse(status=404)
+        print("Create")
+        return HttpResponse(status=200)
+
+def get_messages(request, project_id):
+    try:
+        project = Project.objects.get(id=project_id)
+    except Exception as isnt:
+        print(inst)
+        return HttpResponse(status=404)
+
+    username = request.user
+    user = User.objects.get(username = username)
+    if user.is_superuser:
+        messages = project.message_set.all().order_by('time')
+        #data = serializers.serialize('json', messages)
+        #return HttpResponse(data, content_type='application/json')        
+    else:
+        messages = project.message_set.all().filter(Q(to = user)|Q(to=None)|Q(frm=user)).order_by('time')
+
+    try:
+        return render(request,'projects/messages.html',{'messages': messages})
+    except:
+        return HttpResponse("Error in template")
+
+
+def person_list(request, project_id):
+    
+    worker_list = []
+    try:
+        milestones = Project.objects.get(id=project_id).milestone_set.all()
+    
+    except Exception as inst:
+        print(inst)
+        return HttpResponse("Not found", status=404)
+
+    for milestone in milestones:
+        worker_list.append( allocations(request, milestone.url_id) )
+
+    result =[]
+    for worker in worker_list:
+        result = list(chain(result, worker))
+    
+    sorted_result = sorted(
+    result,
+    key=lambda instance: not instance.active)
+    print("Here")
+    try:
+        data = serializers.serialize('json',sorted_result)
+    except Exception as inst:
+        print(inst)
+    return HttpResponse(data, content_type='application/json')
 
 def get_person(request, person_id):
     try:
@@ -24,6 +94,12 @@ def get_person(request, person_id):
         
         print("Failed")
         HttpResponse("No such person found", status= 404)
+
+    if request.GET.get("toggle", False):
+        print("Status")
+        user.active = not user.active
+        user.save()
+        return HttpResponse(status=200)
 
     whole = person.allocation_set.all()
     total = len(whole)
@@ -59,6 +135,7 @@ def get_person(request, person_id):
             lost_euro += job.pay
     
     person_details = {'email': person.user.email}
+    person_details['active']= person.user.is_active
     #person_details = {}
     person_details['picture'] = str(person.picture)
     person_details['contact'] = person.phone
@@ -315,6 +392,18 @@ def project_page(request, project_id, month=0):
         return HttpResponseRedirect('/site/')
     context_dic['project'] = project;
 #        print project.id
+
+    if request.GET.get("success", False):
+        project.success = True
+        project.completed = True
+        project.save()
+        
+    if request.GET.get("fail", False):
+        project.success = False
+        project.completed = True
+        project.save()
+
+
     project.update_cost()
     if request.GET.get('click', False) and not project.completed:
         project.completed= True
@@ -360,7 +449,7 @@ def milestone_form(request, project_id, context_dic={}):
     else:
         form2 = milestoneForm()
         form = MyForm()
-
+    print(project.last_updated)
     context_dic['updated'] = project.last_updated.isoformat()
     context_dic['form'] = form
     context_dic['form2'] = form2

@@ -39,12 +39,14 @@ class Project(models.Model):
     success = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        self.last_updated =datetime.now()
         if not self.id:
             self.id = uuid.uuid4()
         #print "Project saved"
         super(Project, self).save(*args, **kwargs)
-        
+    
+    def update_time(self):
+        self.last_updated =datetime.now()
+        self.save()
     def __unicode__(self):
         return self.title + " ID: " + str(id)
     def update_cost(self):
@@ -64,15 +66,16 @@ class Project(models.Model):
                 temp = None
             if temp:
                 revenue += temp
-    
+
         self.revenue = revenue
         self.save()
                 
 class Message(models.Model):
+    time = models.DateTimeField(default = datetime.now)
     text = models.CharField(max_length = 500)
     project = models.ForeignKey(Project, null = False)
-#    to = models.ManyToManyField(User, null = True)
-#    frm = models.ForeignKey(User, null = False)
+    to = models.ManyToManyField(User, related_name = "reciever")
+    frm = models.ForeignKey(User, related_name = "sender", null = False)
 
     def __unicode__(self):
         return str(self.text)
@@ -92,6 +95,7 @@ class Milestone(models.Model):
 
     def save(self, *args, **kwargs):
         #print "Milestone saved!"
+        Project.objects.get(self.project_id).save()
         super(Milestone, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -108,8 +112,6 @@ class Allocation(models.Model):
 
     def __unicode__(self):
         return self.pay_type + str(self.pay)
-
-
 
 class Attachment(models.Model):
     file = models.FileField(upload_to='attachments')

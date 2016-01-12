@@ -3,6 +3,9 @@ from projects import views
 
 urlpatterns = patterns('',
     url(r'^$', views.projects, name = 'projects'),
+    url(r'^get/(?P<project_id>[\w\-]+)/$', views.get_messages, name='get_messages'),
+    url(r'^send/(?P<project_id>[\w\-]+)/$', views.send_message, name='send_message'),
+    url(r'^list/(?P<project_id>[\w\-]+)/$', views.person_list, name='person_list'),
     url(r'^suggest_staff/$', views.suggest_staff, name = 'suggest_staff'),
     url(r'^logout/$', views.logout_view, name = 'projects'),
     url(r'^persons/(?P<person_id>[\w\-\_]+)/$', views.get_person, name = 'person_detail'),
