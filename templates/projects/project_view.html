@@ -24,19 +24,6 @@
   position: relative;
   min-height: 100%;
     }
-    body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-    }
-    .footer {
-
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 130px;
-  background-color: #222;
-    }
     .table-responsive{
         padding: 20px;
     }
@@ -54,23 +41,18 @@
         margin-top: 40px;
         width:100%;
         background:#000000;
-        padding-top:30px;
-        padding-bottom: 20px;
+        padding-top:10px;
+        padding-bottom: 10px;
         font-family: Calibre;
         font-style: bold;
         font-size: 20px;
         color: #eee;
     }
     
-    .row{
-        margin-top: 20px;
-        margin-right:20px;
-    }
-    
-      .btn {
+     .btn {
       padding: 10px 20px;
       color: #333;
-      border-radius: 0;
+      border-radius: 8px;
       transition: .2s;
   }
   .btn:hover, .btn:focus {
@@ -89,27 +71,60 @@
   }
   
   .message-dialog{
-    position: absolute;
-    z-index:2;
-    margin: 20px;
-    padding: 20px;
-  
+    margin-top: 20px;
+    padding-top:20px;
+    padding-bottom: 30px;
+    min-height: 100px;
+    background-color: #DCDCDC;  
   }
-    footer li{
-    list-style-type: none;
-    }
-    footer a{
-        color: #ffffff;
-    }
     #errors{
     color: #ff0000 !important
     }
     #message-box{
+        background-color: #fff;
+        border: 1px solid black;
+        min-height: 80px;
         overflow: scroll;
-        height: 80px;
-        width: 100%;
+        overflow-x: hidden;
+        width: inherit;    
+    }
+    #message-box ul{
+        padding-left: 0px;
+    }
+
+    #message-box li{
+        margin: 0px 10px;
+        list-style-type: none;
+    }
+    #message{
+        margin: 10px 0px;
+        width: inherit;
+        height: 40px;
+        padding-left: 10px;
+
+    }
+    .send-message{
+    margin-top: 10px;
     
     }
+  footer {
+      background-color: #2d2d30;
+      color: #f5f5f5;
+      padding: 32px;
+  }
+  footer a {
+      color: #f5f5f5;
+  }
+  footer a:hover {
+      color: #777;
+      text-decoration: none;
+  }
+  footer li
+  {
+    list-style-type: none;
+  }
+  
+    
 </style>
 
 <script>
@@ -255,16 +270,23 @@ jQuery(document).ready(function() {
 
 
 <!--Message box-->
-<div class="message-dialog">
+<div class="container-fluid message-dialog">
     <div id= "message-box">
     </div>
-    <input type="text" id="message" name="message"/><button class="btn btn-primary send-message">Send</button>
+    <div class="row">
+        <div class="col-sm-11">
+        <input type="text" id="message" name="message" placeholder="Type a message"/>
+        </div>
+        <div class="col-sm-1">
+        <button class="btn btn-primary send-message">Send</button>
+        </div>
+    </div>
 </div>
 
 
-<!--Footer-->
 <footer class="footer text-right">
 <div class=row>
+
   <div class= col-sm-10>
     <ul class="text-left">
        <li><a href="/site">Home</a></li>
@@ -274,11 +296,11 @@ jQuery(document).ready(function() {
        <li><a href="/site/faq/">FAQ</a></li>
     </ul>
   </div>
-  <div class= col-sm-2>
-  <a class="up-arrow" href="#start" data-toggle="tooltip" title="TO TOP">
-    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="32px" height="32px"></img>
+    <div class= "col-sm-2">
+      <a class="up-arrow" href="#start" data-toggle="tooltip" title="TO TOP">
+    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="64px" height="64px"></img>
   </a>
-  </div>
+  </div>  
 </div>
 </footer>
 

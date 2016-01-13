@@ -97,7 +97,7 @@ def get_person(request, person_id):
 
     if request.GET.get("toggle", False):
         #Set active
-        user.active = not user.active
+        user.is_active = not user.is_active
         print("Status")
         user.save()
         

@@ -16,40 +16,26 @@
         margin-top: 40px;
         width:100%;
         background:#000000;
-        padding-top:30px;
-        padding-bottom: 20px;
         font-family: Calibre;
         font-style: bold;
         font-size: 20px;
         color: #eee;
     }
-    .footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        /* Set the fixed height of the footer here */
-        height: 130px;
-        background-color: #222;
-    }
-
-        
-    .row{
-        margin-top: 20px;
-        margin-right:20px;
+    
+    .options{
+        margin-top: 40px;
+        margin-left: 30px
     }
     
-    footer li{
-    list-style-type: none;
+    .option-btn{
+        padding-right: 30px;
     }
 
-    footer a{
-        color: #ffffff;
-    }
     
-      .btn {
+    .btn {
       padding: 10px 20px;
       color: #333;
-      border-radius: 0;
+      border-radius: 8px;
       transition: .2s;
   }
   .btn:hover, .btn:focus {
@@ -58,16 +44,20 @@
       color: #000;
   }
   .modal-header, h4, .close {
-      background-color: #333;
-      color: #fff !important;
+      background-color: #fff;
+      color: #000 !important;
       text-align: center;
       font-size: 30px;
   }
   .modal-header, .modal-body {
       padding: 40px 50px;
   }
-  .staff ul{
+  .modal-body{
+    background-color: #ccc;
+  }
+  ul.staff {
     position: absolute;
+    padding-left: 0px;
   }
   
   .staff li{
@@ -97,6 +87,69 @@
     margin: 3px;
     display: inline;
   }
+  .search-query{
+  width: 80%;
+  }
+  
+  .placeholding-box{
+    padding: 10px;
+    margin:10px;
+  
+  }
+  
+  .logout-btn{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    
+  }
+  .logout-btn a{
+    color: #000;
+    font-style: normal;
+  }
+
+  .lighter{
+    background-color: #222;
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+  .description-box{
+    margin-left: 30px;
+    margin-top: 20px;
+    min-height: 300px;
+  }
+
+  .attachment-box{
+
+    padding-top: 20px;
+    background-color: #DCDCDC;
+    min-height: 300px;
+  }
+  .link-button{
+    color: inherit;
+    font-style: normal;
+  }
+  .link-button:hover{
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  footer {
+      background-color: #2d2d30;
+      color: #f5f5f5;
+      padding: 32px;
+  }
+  footer a {
+      color: #f5f5f5;
+  }
+  footer a:hover {
+      color: #777;
+      text-decoration: none;
+  }
+  footer li
+  {
+    list-style-type: none;
+  }
+  
   
   </style>
 </head>
@@ -117,18 +170,21 @@
     </div>
     </div>
 
-    <div class = col-sm-6>
         {% if not user.is_authenticated %}
+        <div class = col-sm-6>
         <form action = "/projects/{{project_id}}/{{milestone.url_id}}/" method = "POST">
             {% csrf_token %}
             <label>Username: </label>
             <input type = text name="username" />
             <label>Password: </label>
             <input type = password name="password" />
-            <input type = submit value ="login" name ="login"/>
+            <input  class="btn btn-primary" type = submit value ="Login" name ="login"/>
         </form>
         {% else %}
-        <button><a href= '/projects/logout'> Logout</a></button>
+        <div class = col-sm-5>
+        </div>
+        <div class = col-sm-1>
+        <button class="btn btn-primary logout-btn"><a href= '/projects/logout'> Logout</a></button>
         {% endif %}
         
     </div>
@@ -138,28 +194,40 @@
 
 
 <div class = "container-fluid header">
+  <div class = "row">
+    <div class="col-sm-2 lighter">
      <span>{{milestone.title}}</span>
+    </div>
+    <div class="col-sm-10"> 
      {% if milestone.important %}
         <span>Important</span>
      {% endif %}
+     </div>
+  </div>
 </div>
 
 {% if user.is_superuser and not milestone.completed %}
-<div class= "container">
-<div class= "container add-btn">
-    <div class="add_project">
-	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img>Switch Person</a>
+<div class= "container-fluid">
+    <div class="options">
+	    <a href="#myModal" class="link-button option-btn" role="button" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img> Switch Person</a>
 
-    <button class ="important" type="submit" name="important" value="important" style="border: 0; background: transparent">
-    <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" />  Important
-    </button>
-    <button class ="complete" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
-    <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" /> Close Milestone
-    </button>
+        {% if not milestone.important %}
+        <button class ="important option-btn" type="submit" name="important" value="important" style="border: 0; background: transparent">
+        <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" />  Important
+        </button>
+        {% else %}
+        <button class ="important option-btn" type="submit" name="important" value="important" style="border: 0; background: transparent">
+        <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" />  Unimportant
+        </button>
+        {% endif %}
+        <button class ="complete option-btn" type="submit" name="closed" value="closed" style="border: 0; background: transparent">
+        <img src="{% static "images/completed.png" %}" width="32" height="32" alt="submit" /> Close Milestone
+        </button>
     </div>
+</div>
 
-</div>
-</div>
+{% else %}
+<div class="container placeholding-box"></div>
 {% endif %}
 
 <!-- Pop-up Modal that will be displayed on clicking the add button-->
@@ -178,18 +246,34 @@
                     <form action=""  name ="search" method="post" enctype="multipart/form-data" >
                     {% csrf_token %}
                     <input name ="user_id" type="hidden" value="">
-                    <label>Add Person</label>
-                    <input  class="search-query span10" type="text" name="name" autocomplete="off" value="" id="suggestion" />
-                    <br>
-                    <ul class="staff">
-                    </ul>
-                    <br>
-                    
-                    <label position = "relative">Allocation</label>
-                    <input  type=number name="allocation" />
-                    <br>
-                    <input type="submit" class="btn" value="Add" />
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <div class="row">
+                            <div class="col-sm-2">
+                            <label>Add Person</label>
+                            </div>
+
+                            <div class=col-sm-10>
+                            <input  class="search-query span10" type="text" name="name" autocomplete="off" value="" id="suggestion" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-10">
+                                <ul class="staff">
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label>Allocation</label>
+                             </div>
+                             <div class="col-sm-10">
+                                <input  type=number name="allocation" />
+                            </div>
+                        </div>
+                        <input type="submit" class="btn" value="Add" />
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </form>
                 </div>
             </div>
@@ -198,17 +282,19 @@
 </div>
 
 
-<div class = "container-fluid">
-    <p>DESCRIPTION</p>
+<div class = "container-fluid description-box">
+    <h2>Description</h2>
     <p>{{milestone.description}}</p>
+</div>
+<div class= "container-fluid attachment-box">
     <p>{{media_root}}</p>
     {% for attachment in attachments %}
-        <a href= /media/{{attachment.file.name}} target="_blank">{{attachment.file.name}}</a>
+        <img src="#"></img><a href= /media/{{attachment.file.name}} target="_blank">{{attachment.file.name}}</a>
     {% endfor %}
 
 </div>
 <!-- Table Section, need to be fixed-->
-<div class ="container-fluid table-responsive">
+<!--<div class ="container-fluid table-responsive">
     <table class= "table table-hover">
     <tr>
         <th>Person</th>
@@ -228,21 +314,72 @@
 
     </tr>
     {% endfor %}
+    </table>
 </div>
-
+-->
+<!--Footer-->
 </div>
+<footer class="footer text-right">
+<div class=row>
 
+  <div class= col-sm-10>
+    <ul class="text-left">
+       <li><a href="/site">Home</a></li>
+       <li><a href="/site/portfolio/">Portfolio</a></li>
+       <li><a href="#">About</a></li>
+       <li><a href="#">Policy</a></li>
+       <li><a href="/site/faq/">FAQ</a></li>
+    </ul>
+  </div>
+    <div class= "col-sm-2">
+      <a class="up-arrow" href="#start" data-toggle="tooltip" title="TO TOP">
+    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="64px" height="64px"></img>
+  </a>
+  </div>  
+</div>
+</footer>
 
 <script>
 $(document).ready(function(){
+
+  // Initialize Tooltip
+  $('[data-toggle="tooltip"]').tooltip(); 
+ 
+
+//Attach event to suggestion list
 $('ul.staff').on('click','li' ,function(){
 
    document.forms["search"]["user_id"].value = $(this).attr("data");
    para=$(this).children('p')[0];
    console.log(para.text)
    document.forms["search"]["name"].value = $(this).attr("data-name");
+   $('.staff').html("\n");
    $("#id-picture").attr('src', $(this).children('img').attr("src"));
 });
+
+ 
+  
+  // Add smooth scrolling to all links in navbar + footer link
+  $(".navbar a, footer a[href='#start']").on('click', function(event) {
+
+    // Prevent default anchor click behavior
+    event.preventDefault();
+
+    // Store hash
+    var hash = this.hash;
+
+    // Using jQuery's animate() method to add smooth page scroll
+    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+    $('html, body').animate({
+      scrollTop: $(hash).offset().top
+    }, 900, function(){
+   
+      // Add hash (#) to URL when done scrolling (default click behavior)
+      window.location.hash = hash;
+    });
+  });
+})
+
 });
 
 $('#suggestion').keyup(function(){
@@ -263,6 +400,7 @@ $('#suggestion').keyup(function(){
             }
          else{
             $('.staff').html("\n");
+            $("#id-picture").attr('src','#');
          }
         }, "json");
 });
