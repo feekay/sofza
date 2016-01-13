@@ -13,8 +13,7 @@
 <style>
 
     .add-btn{
-        margin-top: 20px;
-        margin-left: 10px;
+        margin-top: 10px;
     }
 
   html {
@@ -57,11 +56,7 @@
         font-size: 20px;
         color: #eee;
     } 
-    .row{
-        margin-top: 20px;
-        margin-right:20px;
-    }
-    
+
       .btn {
       padding: 10px 20px;
       color: #333;
@@ -73,14 +68,18 @@
       background-color: #fff;
       color: #000;
   }
-  .modal-header, h4, .close {
-      background-color: #333;
-      color: #fff !important;
+   .modal-header, h4, .close {
+      background-color: #fff;
+      color: #000 !important;
       text-align: center;
       font-size: 30px;
   }
+  
+  .modal-body{
+  background-color: #ccc;
+  }
   .modal-header, .modal-body {
-      padding: 40px 50px;
+      padding: 20px 50px;
   }
   
     footer li{
@@ -93,10 +92,78 @@
     color: #ff0000 !important
     }
     
-    .photo_frame{
+   .photo_frame{
         display:inline !important;
     }
+  .thumbnail {
+      margin: 10px;
+      padding: 0px;
+      border-radius: 8px;
+      height:160px;
+      width: 200px
+      
+  }
+  .thumbnail>img{
+    max-width: inherit;
+    width: inherit;
+    height: inherit;
+  }
+  .thumbnail p {
+      width: inherit;
+      padding-top: 5px;
+      padding-left: 10px;
+      padding-bottom: 5px;
+      color: #fff;
+      background: #000;
+      position: absolute;
+      z-index:2;
+      margin-bottom: 20px;
+  }
 
+  .navbar {
+      font-family: Montserrat, sans-serif;
+      margin-bottom: 0;
+      background-color: #2d2d30;
+      border: 0;
+      font-size: 11px !important;
+      letter-spacing: 4px;
+      opacity: 1;
+      background-color: #ffffff;
+  }
+  .navbar li a, .navbar .navbar-brand { 
+      color: #d5d5d5 !important;
+  }
+  .navbar-nav li a:hover {
+      color: #fff !important;
+  }
+  .navbar-nav li.active a {
+      color: #fff !important;
+      background-color: #29292c !important;
+  }
+    
+  .nav2{
+    padding-top: 50px;
+    background: #333;
+  }
+  
+  .nav2 li a{ 
+      color: #d5d5d5 !important;
+  }
+  .nav2 li a:hover {
+      color: #000 !important;
+  }
+  .nav2 li.active a {
+      color: #000 !important;
+      background-color: #29292c !important;
+  }
+  .profile-image{
+    height: 200px;
+    width: 200px;
+    padding: 10px;
+  }  
+  .profile-label{
+    font-weight: bolder;
+  }
     
 </style>
   
@@ -119,6 +186,20 @@
   </div>
 </nav>
 
+<div class="nav2">
+
+  <div class="container-fluid">
+    <div>
+      <ul class="nav navbar-nav">
+        <li><a href="/projects/">Projects</a></li>
+        <li><a href="/projects/staff/">Staff</a></li>
+        <li><a href="/projects/analytics/">Analytics</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>
+
 <div class= "container">
 <div class= "container add-btn">
     <div class="add_project">
@@ -132,7 +213,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Add Person</h4>
+                    <h4 class="modal-title"> Add Person</h4>
                 </div>
                 <div class="modal-body">
                     <p id="errors">
@@ -156,7 +237,7 @@
     {% for person in staff %}
         <a  href="#" class="modal-btn" data-src="/projects/persons/{{person.user}}" data-toggle="modal" data-target="#photoModal">
         <div class="thumbnail col-sm-2">
-            <img src ="/media/{{person.picture}}" alt="profile picture" width = "160" height = "160" />    
+            <img src ="/media/{{person.picture}}" alt="profile picture" width = "100px" height = "100px" />    
             <p>{{person.full_name}}</p>
         </div>
         </a>
@@ -176,7 +257,7 @@
                 <div></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default dismiss" data-src="/projects/persons/{{person.user}}">Dishonour</button>
+                <button type="button" class="btn btn-default" id= "dismiss" data-src="/projects/persons/{{person.user}}">Dishonour</button>
             </div>
     </div>
   </div>
@@ -187,34 +268,46 @@
 <script>
 $(document).ready(function(){
     $('.modal-btn').click(function(){
+        profile_url = $(this).attr('data-src')
+        
         $.ajax({
-            url: $(this).attr('data-src'),
+            url: profile_url,
             
             success: function(data){
-                picture = "<img src=\"/media/"+ data['picture'] +"\" height= \"100px\" width= \"100px\" ></img>"
-                email= "<p>E-Mail: "+data['email']+"</p>"
-                contact = "<p>Contact: "+data['contact']+"</p>"
-                total="<p>Total: "+data['total']+"</p>"
-                completed="<p>Completed: "+data['completed']+"</p>"
-                //working="<p>Working: "+data['working']+"</p>"
-                failed="<p>Failed: "+data['failed']+"</p>"
-                gained = "<p>Gained: <span>$" + data['pay_gain'][0] + "</span>"  + "<span>    &#128;" + data['pay_gain'][1] + "</span>"  + "<span>    &#163;" + data['pay_gain'][2] + "</span></p>"
-            lost = "<p>Lost:  <span>$" + data['pay_lost'][0] + "</span>" + "<span>    &#128;"+data['pay_lost'][1] + "</span>" + "<span>   &#163;" + data['pay_lost'][2] + "</span></p>"
+                row="<div class=\"row\">"
+                end="</div>"
+                col="<div class=\"col-sm-8\">"
+                col3="<div class=\"col-sm-3\">"
+                col4="<div class=\"col-sm-4 profile-label\">"
+                picture = row+col3+end+col+"<img class=\"profile-image\" src=\"/media/"+ data['picture'] +"\" ></img>"+end+col3+end+end
+
+                email= row+col4+"<p>E-Mail: "+"</p>"+end +col+"<p>"+data['email']+"</p>"+end+end
+                contact = row+col4+"<p>Contact: "+"</p>"+end+col+ "<p>"+data['contact']+"</p>"+end+end
+                contact = row+col4+"<p>Type: "+"</p>"+end+col+ "<p>"+data['type']+"</p>"+end+end
+                total=row+col4+"<p>Total: "+"</p>"+end +col+"<p>"+data['total']+"</p>"+end+end
+                completed=row+col4+"<p>Completed: "+"</p>"+end +col+"<p>"+data['completed']+"</p>"+end+end
+                //working=row+col+"<p>Working: "+"</p>"+end +col+"<p>"+data['working']+"</p>"+end+end
+                failed=row+col4+"<p>Failed: "+"</p>"+end +col+"<p>"+data['failed']+"</p>"+end+end
+                gained = row+col4+"<p>Gained:"+end +col +"<span>$" + data['pay_gain'][0] + "</span>"  + "<span>    &#128;"+ data['pay_gain'][1] + "</span>"  + "<span>    &#163;" + data['pay_gain'][2] + "</span></p>"+end+end
+            lost = row+col4+"<p>Lost: "+ end+col+"<span>$" + data['pay_lost'][0] + "</span>" + "<span>    &#128;"+data['pay_lost'][1] + "</span>" + "<span>   &#163;" + data['pay_lost'][2] + "</span></p>"+end+end
                 view = "<div>"+picture+"</div>" + email + contact + total + completed + failed + gained + lost
-                $(".dynamic").html(view)
+                $(".dynamic").html(view);
+                $('#dismiss').attr('data-src', profile_url);
             }
         });
     });
 
 });
 
-$('.dismiss').click(function(){
+$('#dismiss').click(function(){
         $.ajax({
             //URL not getting person id;
-            url: $('.modal-button').attr('data-src'),
-            
+            url: $(this).attr('data-src'),
+            data:{
+            toggle : true
+            },
             success: function(data){
-                toggle = true;
+                console.log(data);
             }
         });
     });

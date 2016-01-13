@@ -96,9 +96,11 @@ def get_person(request, person_id):
         HttpResponse("No such person found", status= 404)
 
     if request.GET.get("toggle", False):
-        print("Status")
+        #Set active
         user.active = not user.active
+        print("Status")
         user.save()
+        
         return HttpResponse(status=200)
 
     whole = person.allocation_set.all()
@@ -135,6 +137,7 @@ def get_person(request, person_id):
             lost_euro += job.pay
     
     person_details = {'email': person.user.email}
+    person_details['full_name'] = person.full_name
     person_details['active']= person.user.is_active
     #person_details = {}
     person_details['picture'] = str(person.picture)
