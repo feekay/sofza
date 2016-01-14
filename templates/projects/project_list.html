@@ -21,18 +21,10 @@
   position: relative;
   min-height: 100%;
     }
-    body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    .main{
+        min-height: 400px;
     }
-    .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 130px;
-  background-color: #222;
-    }
+    
     .table-responsive{
         padding: 20px;
     }
@@ -62,6 +54,43 @@
         margin-right:20px;
     }
     
+      .navbar {
+      font-family: Montserrat, sans-serif;
+      margin-bottom: 0;
+      background-color: #2d2d30;
+      border: 0;
+      font-size: 11px !important;
+      letter-spacing: 4px;
+      opacity: 1;
+      background-color: #ffffff;
+  }
+  .navbar li a, .navbar .navbar-brand { 
+      color: #d5d5d5 !important;
+  }
+  .navbar-nav li a:hover {
+      color: #fff !important;
+  }
+  .navbar-nav li.active a {
+      color: #fff !important;
+      background-color: #29292c !important;
+  }
+    
+  .nav2{
+    padding-top: 50px;
+    background: #333;
+  }
+  
+  .nav2 li a{ 
+      color: #d5d5d5 !important;
+  }
+  .nav2 li a:hover {
+      color: #000 !important;
+  }
+  .nav2 li.active a {
+      color: #000 !important;
+      background-color: #29292c !important;
+  }
+    
       .btn {
       padding: 10px 20px;
       color: #333;
@@ -83,16 +112,23 @@
       padding: 40px 50px;
   }
   
-    footer li{
+  footer {
+      background-color: #2d2d30;
+      color: #f5f5f5;
+      padding: 32px;
+  }
+  footer a {
+      color: #f5f5f5;
+  }
+  footer a:hover {
+      color: #777;
+      text-decoration: none;
+  }
+  footer li
+  {
     list-style-type: none;
-    }
-    footer a{
-        color: #ffffff;
-    }
-    #errors{
-    color: #ff0000 !important
-    }
-    
+  }
+  
 </style>
   
 </head>
@@ -114,10 +150,22 @@
   </div>
 </nav>
 
-<div class = "container-fluid header">
+<div class="nav2">
+
+  <div class="container-fluid">
+    <div>
+      <ul class="nav navbar-nav">
+        <li><a href="/projects/">Projects</a></li>
+        <li><a href="/projects/staff/">Staff</a></li>
+        <li><a href="/projects/analytics/">Analytics</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class = "container-fluid">
     <div class=row>
         <div class=col-sm-9>
-        Projects
         </div>
 
         <div class=col-sm-1>
@@ -132,7 +180,7 @@
     </div>
 </div>
 
-<div class= "container">
+<div class= "container main">
 <div class= "container add-btn">
     <div class="add_project">
 	<a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img> New Project</a>
@@ -209,13 +257,16 @@
   </div>
   <div class= col-sm-2>
   <a class="up-arrow" href="#start" data-toggle="tooltip" title="TO TOP">
-    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="32px" height="32px"></img>
+    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="64px" height="64px"></img>
   </a>
   </div>
 </div>
 </footer>
 
+</body>
+
 <script>
+{% if user.is_superuser %}
 function validateData(){
 
     var x = document.forms["project"]["client_mail"].value;
@@ -241,11 +292,35 @@ function validateData(){
         return false;
     }
 }
+{% endif %}
 
 $(document).ready(function(){
+
+
   // Initialize Tooltip
   $('[data-toggle="tooltip"]').tooltip(); 
-  
+ 
+   // Add smooth scrolling to all links in navbar + footer link
+  $(".navbar a, footer a[href='#start']").on('click', function(event) {
+
+    // Prevent default anchor click behavior
+    event.preventDefault();
+
+    // Store hash
+    var hash = this.hash;
+
+    // Using jQuery's animate() method to add smooth page scroll
+    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+    $('html, body').animate({
+      scrollTop: $(hash).offset().top
+    }, 900, function(){
+   
+      // Add hash (#) to URL when done scrolling (default click behavior)
+      window.location.hash = hash;
+    });
+  });
+
+
   //Add Deadlines
   $('td.deadline a').bind('change keyup', function(){
         var tr=$(this).closest('tr');
@@ -267,27 +342,7 @@ $(document).ready(function(){
 
         }
     }).trigger('change');
-  
-  // Add smooth scrolling to all links in navbar + footer link
-  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
 
-    // Prevent default anchor click behavior
-    event.preventDefault();
-
-    // Store hash
-    var hash = this.hash;
-
-    // Using jQuery's animate() method to add smooth page scroll
-    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
-    $('html, body').animate({
-      scrollTop: $(hash).offset().top
-    }, 900, function(){
-   
-      // Add hash (#) to URL when done scrolling (default click behavior)
-      window.location.hash = hash;
-    });
-  });
-})
+});
 </script>
 
-</body>

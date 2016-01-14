@@ -75,16 +75,9 @@ input:focus {
 <div class= "container section">
 
 <img src="{% static "images/add_project.png"%}" width=60px heigth= 60px></img>
-<h2  class="section-head">Frequestly Asked Questions</h2>
+<h2  class="section-head">Our Policy</h2>
 
 <div id="questions">
-<!--Search Bar-->
-  <div class="row">
-  <div class="col-sm-6"></div>
-  <div class="col-sm-6">
-  <input class="search" placeholder="Search Question" />
-   </div>
-   </div>
    <!--Questions List-->
   <ul class="list">
     <li>
@@ -107,36 +100,7 @@ input:focus {
 
 </div>
 </div>
-<!--Feedback form-->
-<div class= "container section">
-<img src="#"></img>
-<h2 class="section-head">Ask something else?</h2>
-<div class="row">
-<div class="col-sm-6">
-<p class="question">Have something else to ask?</p>
-<p>Just ask below and you will get it with in a day.</p>
-
-<form method="post" action="">
-{% csrf_token %}
-<input type ="email" name="email" placeholder="Your E-mail"/>
-<input type = "text" name="message" placeholder= "Your message">
-<input type= "submit" >
-</form>
-
-
-</div>
-
-<div class="col-sm-6 text-center">
-    <img src=# alt="Envelope"></img>
 </div>
 </div>
-</div>
-<script src="{%static "js/list.min.js" %}"></script>
-<script>
-var options = {
-  valueNames: ['question', 'answer']
-};
 
-var userList = new List('questions', options);
-</script>
 {% endblock %}

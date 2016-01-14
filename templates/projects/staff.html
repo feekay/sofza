@@ -20,17 +20,9 @@
   position: relative;
   min-height: 100%;
     }
-    body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-    }
-    .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 130px;
-  background-color: #222;
+    
+    .main-body{
+        min-height: 400px;
     }
     .table-responsive{
         padding: 20px;
@@ -81,13 +73,23 @@
   .modal-header, .modal-body {
       padding: 20px 50px;
   }
-  
-    footer li{
+    footer {
+      background-color: #2d2d30;
+      color: #f5f5f5;
+      padding: 32px;
+  }
+  footer a {
+      color: #f5f5f5;
+  }
+  footer a:hover {
+      color: #777;
+      text-decoration: none;
+  }
+  footer li
+  {
     list-style-type: none;
-    }
-    footer a{
-        color: #ffffff;
-    }
+  }
+  
     #errors{
     color: #ff0000 !important
     }
@@ -197,7 +199,6 @@
       </ul>
     </div>
   </div>
-</nav>
 </div>
 
 <div class= "container">
@@ -232,7 +233,7 @@
     </div>
 </div>
 
-<div class = container>
+<div class = "container main-body">
     <div class ="row">
     {% for person in staff %}
         <a  href="#" class="modal-btn" data-src="/projects/persons/{{person.user}}" data-toggle="modal" data-target="#photoModal">
@@ -263,10 +264,59 @@
   </div>
 </div>
 
+<!--Footer-->
+</div>
+<footer class="footer text-right">
+<div class=row>
+
+  <div class= col-sm-10>
+    <ul class="text-left">
+       <li><a href="/site">Home</a></li>
+       <li><a href="/site/portfolio/">Portfolio</a></li>
+       <li><a href="#">About</a></li>
+       <li><a href="#">Policy</a></li>
+       <li><a href="/site/faq/">FAQ</a></li>
+    </ul>
+  </div>
+    <div class= "col-sm-2">
+      <a class="up-arrow" href="#start" data-toggle="tooltip" title="TO TOP">
+    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="64px" height="64px"></img>
+  </a>
+  </div>  
+</div>
+</footer>
+
 </body>
 
 <script>
 $(document).ready(function(){
+
+
+  // Initialize Tooltip
+  $('[data-toggle="tooltip"]').tooltip(); 
+ 
+   // Add smooth scrolling to all links in navbar + footer link
+  $(".navbar a, footer a[href='#start']").on('click', function(event) {
+
+    // Prevent default anchor click behavior
+    event.preventDefault();
+
+    // Store hash
+    var hash = this.hash;
+
+    // Using jQuery's animate() method to add smooth page scroll
+    // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+    $('html, body').animate({
+      scrollTop: $(hash).offset().top
+    }, 900, function(){
+   
+      // Add hash (#) to URL when done scrolling (default click behavior)
+      window.location.hash = hash;
+    });
+  });
+
+    //For Loading profiles in Modals
+
     $('.modal-btn').click(function(){
         profile_url = $(this).attr('data-src')
         

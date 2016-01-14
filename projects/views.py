@@ -383,7 +383,7 @@ def milestone_page(request, project_id, mile_id):
     attachments = Attachment.objects.all().filter(milestone= milestone)
     #context_dic['attachments'] = attachments
     #context_dic['allocations'] = allocations(request, milestone.url_id)
-    context_dic['days_left'] = milestone.deadline -date.today()
+    context_dic['days_left'] = (milestone.deadline -date.today()).days
     print(context_dic['days_left'])
     return render(request, 'projects/milestone_view.html', context_dic)
 
@@ -544,11 +544,11 @@ def generate(name, email, data, addr, total, discount=0):
     from reportlab.lib.pagesizes import letter
     c = canvas.Canvas(name+".pdf", pagesize = letter)
     c.drawString(1*inch, 9*inch, "Sofza")
-    c.drawString(1*inch, 8.7*inch, "From:")
+    c.drawString(1*inch, 8.7*inch, "Raised By")
     c.drawString(1*inch, 8.4*inch, "Haris Mehmood")
     c.drawString(1*inch, 8.1*inch, "Invoice Payment Notice")
 
-    c.drawString(4*inch, 9*inch, "Invoiced to:")
+    c.drawString(4*inch, 9*inch, "Towards")
     c.drawString(4*inch, 8.7*inch, name)
     c.drawString(4*inch, 8.4*inch, email)
     c.drawString(4*inch, 8.1*inch, addr)
@@ -572,11 +572,14 @@ def generate(name, email, data, addr, total, discount=0):
         c.line(0, point*inch, 8*inch, point*inch)
     point -= 0.3
 
+    c.drawString(1*inch, point*inch, "Total: "+x['type']+str(total))
+    point -= 0.3
+    
     if discount:
         c.drawString(1*inch, point*inch, "Discount: "+x['type']+ str(discount))
         point -= 0.3
         total-=discount
-    c.drawString(1*inch, point*inch, "Total: "+x['type']+str(total))
+    c.drawString(1*inch, point*inch, "Due amount: "+x['type']+str(total))
     point -= 0.3
     c.save()
     return name

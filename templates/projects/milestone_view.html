@@ -112,6 +112,11 @@
     padding-top: 20px;
     padding-bottom: 10px;
   }
+  #time-left{
+    padding-top: 20px;
+    padding-bottom: 10px;
+  
+  }
   .description-box{
     margin-left: 30px;
     margin-top: 20px;
@@ -198,16 +203,16 @@
     <div class="col-sm-2 lighter">
      <span>{{milestone.title}}</span>
     </div>
-    <div class="col-sm-6"> 
+    <div class="col-sm-8"> 
      {% if milestone.important %}
         <span>Important</span>
      {% endif %}
      </div>
-     <div class="col-sm-4">
+     <div class="col-sm-2" id="time-left">
      {% if days_left >= 0 %}
      <span>{{days_left}} Days Left</span>
      {% else %}
-     <span>{{days_left}} Deadline passed</span>
+     <span> Deadline passed</span>
      {% endif %}
      </div>
   </div>

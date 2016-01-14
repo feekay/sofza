@@ -84,6 +84,7 @@
         background-color: #fff;
         border: 1px solid black;
         min-height: 80px;
+        max-height: 140px;
         overflow: scroll;
         overflow-x: hidden;
         width: inherit;    
@@ -157,15 +158,20 @@ jQuery(document).ready(function() {
     </div>
 </div>
 
-{% if user.is_superuser and not project.completed %}
+{% if user.is_superuser %}
 
 <div class= "container">
 <div class= "container add-btn">
+    {% if not project.completed %}
     <div class="add_project">
 	    <a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img> New Milestone</a>
-
+    {% endif%}
+    
+        <a class="btn" href="invoice"><img src="{% static "images/completed.png" %}" width="32px" height="32px"></img> Generate Invoice</a>
+    
+    {% if not project.completed %}
         <a href="#completeModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/completed.png" %}" width="32px" height="32px"></img> Complete</a>
-
+    {% endif%}
     </div>
 
 </div>
@@ -305,6 +311,7 @@ jQuery(document).ready(function() {
 </footer>
 
 <script>
+{% if user.is_superuser %}
 function validateData(){
 
     var start_m = parseInt(document.forms["milestone"]["start_date_month"].value);
@@ -321,6 +328,7 @@ function validateData(){
         return false;
     }
 }
+{% endif %}
 
 $(document).ready(function(){
   // Initialize Tooltip
@@ -378,7 +386,7 @@ $(document).ready(function(){
       window.location.hash = hash;
     });
   });
-
+{% if user.is_superuser %}
   //Load Persons working on this project
   $('.person_list').bind('change', function(){
         $.ajax({
@@ -389,15 +397,26 @@ $(document).ready(function(){
 
         });
   }).trigger('change');
+  {% endif %}
+
+
   //Update the message box
   setInterval(message_box, 30000);
   function message_box() {
     console.log("Refreshed");
     $("#message-box").load('/projects/get/{{project.id}}');
-  }
+    updateScroll();
+    }
+    function updateScroll(){
+        var position =  $("#message-box")[0].scrollHeight;
+        console.log(position);
+         $("#message-box")[0].scrollTop= position;
+    }
   
+  //Load Once at start
+  message_box();
 });
-
+{% if user.is_superuser %}
 $('#success').click(function() {
     console.log("Executed Success");
     $.ajax({
@@ -431,7 +450,7 @@ $('#failure').click(function() {
     });
   });
   
-
+/*
 $('.complete').on('click', function(){
     console.log("This")
     console.log("{{project.id}}");
@@ -450,7 +469,8 @@ $('.complete').on('click', function(){
     });
   
   });
-  
+  */
+  {% endif %}
 $('.send-message').click(function(){
     console.log("Send");
     message= $('#message').val();
@@ -469,20 +489,25 @@ $('.send-message').click(function(){
     });
 });  
 
-$('#message').on('enter', function(){
-    console.log("Send");
-    console.log($(this).val());
+$('#message').keypress(function (e) {
+ var key = e.which;
+ if(key == 13)  // the enter key code
+  {
+    message= $('#message').val();
     $.ajax({
         url: "/projects/send/{{project.id}}",
         method:'GET',
         data:{
-         message: $(this).val()
+         message: message
         },
         success: function(){
-        
+        console.log("Clearing");
+        $('#message').val("");
+        text = "<li> You: " + message +"</li>"
+        $('#message-box').append(message);
         }
     });
-});  
-
+  }
+});
 </script>
 </body>
