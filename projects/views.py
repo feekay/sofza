@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import logout, login, authenticate
 from django.views.generic.edit import FormView
-from datetime import datetime
+from datetime import datetime,date
 from django.db.models import Q
 from projects.models import Attachment, Project, Milestone, Staff, Allocation, Message
 import os
@@ -381,8 +381,10 @@ def milestone_page(request, project_id, mile_id):
     context_dic['project_id'] = project_id
     context_dic['milestone'] = milestone
     attachments = Attachment.objects.all().filter(milestone= milestone)
-    context_dic['attachments'] = attachments
-    context_dic['allocations'] = allocations(request, milestone.url_id)
+    #context_dic['attachments'] = attachments
+    #context_dic['allocations'] = allocations(request, milestone.url_id)
+    context_dic['days_left'] = milestone.deadline -date.today()
+    print(context_dic['days_left'])
     return render(request, 'projects/milestone_view.html', context_dic)
 
 
@@ -504,10 +506,13 @@ def invoice(request, project_id):
     if request.method == "POST":
         data= []
         total = 0
-        print(request.POST)
+        #print(request.POST)
         address = request.POST['address']
-        discount = int(request.POST["discount"])
-        
+        try:
+            discount = int(request.POST["discount"])
+        except ValueError:
+            discount = 0
+
         for key in request.POST:
             try:
                 x = project.milestone_set.get(title = key)
@@ -516,8 +521,9 @@ def invoice(request, project_id):
             else:
                 x.paid = True
                 x.save()
-                total += x.cost
-                data.append({'title' : x.title, 'cost' : x.cost})
+                qty = int(request.POST[key+"_qty"])
+                total += (x.cost * qty)
+                data.append({'title' : x.title, 'cost' : x.cost, 'type':project.pay_type, 'qty': qty})
             
         name = generate(project.client, project.client_mail, data, address,total, discount)
         chunk_size = 8192
@@ -538,24 +544,39 @@ def generate(name, email, data, addr, total, discount=0):
     from reportlab.lib.pagesizes import letter
     c = canvas.Canvas(name+".pdf", pagesize = letter)
     c.drawString(1*inch, 9*inch, "Sofza")
-    c.drawString(1*inch, 8.7*inch, "Haris Mehmood")
-    c.drawString(1*inch, 8.4*inch, "Invoice Payment Notice")
-    c.line(0, 8.1*inch, 8*inch, 8.1*inch)
-    c.drawString(1*inch, 7.7*inch, "Invoiced to:")
-    c.drawString(1*inch, 7.4*inch, name)
-    c.drawString(1*inch, 7.1*inch, email)
-    c.drawString(1*inch, 6.8*inch, addr)
-    c.line(0, 6.5*inch, 8*inch, 6.5*inch)
+    c.drawString(1*inch, 8.7*inch, "From:")
+    c.drawString(1*inch, 8.4*inch, "Haris Mehmood")
+    c.drawString(1*inch, 8.1*inch, "Invoice Payment Notice")
+
+    c.drawString(4*inch, 9*inch, "Invoiced to:")
+    c.drawString(4*inch, 8.7*inch, name)
+    c.drawString(4*inch, 8.4*inch, email)
+    c.drawString(4*inch, 8.1*inch, addr)
+    c.line(0, 7.7*inch, 8*inch, 7.7*inch)
     
-    point = 6.2
+    point = 7.5
+    
+    c.drawString(1*inch, point*inch, 'Title')
+    c.drawString(5*inch, point*inch, 'Cost')
+    c.drawString(6*inch, point*inch, 'Qty')
+    c.drawString(7*inch, point*inch, 'Amount')
+    point -= 0.1
+    c.line(0, point*inch, 8*inch, point*inch)
     for x in data:
-        c.drawString(1*inch, point*inch, x['title'] + " " + str(x['cost']))
-        point -= 0.3
+        point -= 0.2
+        c.drawString(1*inch, point*inch, x['title'])
+        c.drawString(5*inch, point*inch, x['type']+str(x['cost']))
+        c.drawString(6*inch, point*inch, str(x['qty']))
+        c.drawString(7*inch, point*inch, x['type']+str(x['qty']*x['cost']))
+        point -= 0.1
+        c.line(0, point*inch, 8*inch, point*inch)
+    point -= 0.3
+
     if discount:
-        c.drawString(1*inch, point*inch, "Discount: "+ str(discount))
+        c.drawString(1*inch, point*inch, "Discount: "+x['type']+ str(discount))
         point -= 0.3
         total-=discount
-    c.drawString(1*inch, point*inch, "Total: "+str(total))
+    c.drawString(1*inch, point*inch, "Total: "+x['type']+str(total))
     point -= 0.3
     c.save()
     return name

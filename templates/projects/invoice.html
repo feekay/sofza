@@ -7,8 +7,9 @@
         {% for milestone in unpaid %}
         <br>
         <input type= "checkbox" name = "{{milestone.title}}" />
-        <label>{{milestone.title}}</label>
-        <span>{{milestone.descrption}}</span>
+        <label>{{milestone.title}}</label><span>   </span>
+        <label>Qty</label>
+        <input type= "number" name="{{milestone.title}}_qty" pattern=""/>
         {% endfor %}<br>
         <label>Discount</label>
         <input type = "number" name = "discount" pattern="" />

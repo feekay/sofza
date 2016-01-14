@@ -18,13 +18,14 @@
 .portfolio{
     padding: 80px 120px;
 }
+
 .message{
         width:100%;
-        background:#ddd;
+        background:#fff;
         padding-top:30px;
         padding-bottom: 20px;
         font-family: Calibre;
-        font-style: bold;
+        font-weight: bolder;
         font-size: 20px;
         color: #111;
     } 
@@ -36,9 +37,46 @@
 .bg-1 h3 {color: #fff;}
 .bg-1 p {font-style: italic;}
 
-.thumbnail{
-    border-radius: 8px;
+.img-holder{
+/*
+    width: 340px;
+    height: 300px;*/
+    width:340px;
+    height: 300px;
+    margin: 0px 20px;
 }
+
+.img-holder img{
+    position:absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    max-height: 100%;
+    -webkit-transition: opacity 1.1s ease;
+    transition: opacity 1.1s ease;
+}
+
+.img-holder:hover .image1 {
+    opacity:0;
+}
+
+#swap, #swap-quote {
+    vertical - align: top;
+    width: 0;
+    height: 3em;
+ /* needed. px, em or any other */;
+}
+
+#swap > span {
+    position: absolute;
+}
+
+#swap-quote > span {
+    position: absolute;
+    font-weight: bold;
+}
+
+
 </style>
 
 {% endblock %}
@@ -119,29 +157,74 @@
         </div>
     </div>
 </div>
-
+<!--
 <div class="bg-1">
-  <div class="container portfolio">
-    <h2 class="text-center">LOREM IPSUM</h2><!--
-    <p class="text-center">Lorem ipsum we'll play you some music.<br></p>
---><br>
+  <div class="container-fluid portfolio">
+    <h2 class="text-center">LOREM IPSUM</h2>
+<br>
+    <br>
+    <div class="row text-center">
+  <div class="col-sm-4 img-holder">
+      <img src="{% static "images/design1.jpg"  %}" class="img-thumbnail" />
+      <img src="{% static "images/design6.jpg" %}" class="img-thumbnail image1" />
+      <p><strong>Lorem ipsum</strong></p>
+  </div>
+  <div class="col-sm-4 img-holder">
+      <img src="{% static "images/design2.jpg"  %}" class="img-thumbnail"/>
+      <img src="{% static "images/design6.jpg"  %}" class="img-thumbnail image1" />
+      <p><strong>Lorem ipsum</strong></p>
+  </div>
+  <div class="col-sm-4 img-holder">
+      <img src="{% static "images/design3.jpg"  %}" class="img-thumbnail"/>
+      <img src="{% static "images/design6.jpg"  %}" class="img-thumbnail image1"/>
+      <p><strong>Lorem ipsum</strong></p>
+  </div>
+</div>
+
+
+<div class="row text-center">
+  <div class="col-sm-4 img-holder">
+      <img src="{% static "images/design5.jpg"  %}" class="img-thumbnail"/>
+      <img src="{% static "images/design6.jpg"  %}" class="img-thumbnail image1"/>
+      <p><strong>Lorem ipsum</strong></p>
+
+  </div>
+  <div class="col-sm-4 img-holder">
+      <img src="{% static "images/design5.jpg"  %}" class="img-thumbnail"/>
+      <img src="{% static "images/design6.jpg"  %}" class="img-thumbnail image1" />
+      <p><strong>Lorem ipsum</strong></p>
+  </div>
+  <div class="col-sm-4 img-holder">
+      <img src="{% static "images/design6.jpg" %}" class="img-thumbnail"/>
+      <img src="{% static "images/design5.jpg" %}" class="img-thumbnail image1" />
+      <p><strong>Lorem ipsum</strong></p>
+  </div>
+ </div>
+
+ </div>
+</div>
+-->
+<div class="bg-1">
+  <div class="container-fluid portfolio">
+    <h2 class="text-center">LOREM IPSUM</h2>
+<br>
     <br>
     <div class="row text-center">
   <div class="col-sm-4">
     <div class="thumbnail">
-      <img src="{% static "images/design1.jpg" class="img-rounded" %}" >
+      <img src="{% static "images/design1.jpg" %}"/>
+      <p><strong>Lorem ipsum</strong></p>
+    </div>
+  </div>
+  <div class="col-sm-4">
+     <div class="thumbnail">
+      <img src="{% static "images/design2.jpg" %}"/>
       <p><strong>Lorem ipsum</strong></p>
     </div>
   </div>
   <div class="col-sm-4">
     <div class="thumbnail">
-      <img src="{% static "images/design2.jpg" class="img-rounded" %}" >
-      <p><strong>Lorem ipsum</strong></p>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="thumbnail">
-      <img src="{% static "images/design3.jpg" class="img-rounded" %}">
+      <img src="{% static "images/design3.jpg" %}"/>
       <p><strong>Lorem ipsum</strong></p>
     </div>
   </div>
@@ -151,19 +234,19 @@
 <div class="row text-center">
   <div class="col-sm-4">
     <div class="thumbnail">
-      <img src="{% static "images/design5.jpg" class="img-thumbnail" %}" >
+      <img src="{% static "images/design5.jpg" %}"/>
       <p><strong>Lorem ipsum</strong></p>
     </div>
   </div>
   <div class="col-sm-4">
     <div class="thumbnail">
-      <img src="{% static "images/design5.jpg" class="img-thumbnail" %}" >
+      <img src="{% static "images/design5.jpg" %}"/>
       <p><strong>Lorem ipsum</strong></p>
     </div>
   </div>
   <div class="col-sm-4">
     <div class="thumbnail">
-      <img src="{% static "images/design6.jpg" class="img-thumbnail" %}">
+      <img src="{% static "images/design6.jpg" %}"/>
       <p><strong>Lorem ipsum</strong></p>
     </div>
   </div>
@@ -173,9 +256,45 @@
 </div>
 
 
-<div class = "container-fluid message text-center">
-    <p>SECTION</p>
-    <p>Message</p>
+<!--Reviews Section -->
+<div class = "container-fluid message">
+    <p id="customer-name" ><span id="swap"></span></p>
+    <p id="quote text" class="text-center"><span id="swap-quote"></span></p>
 </div>
+<script>
+/*Shamless copying from Stack Overflow ;)*/
+var txt = ['code', 'solutions', 'design', 'awesomeness'],
+    n = txt.length,
+    $swap = $('#swap'),
+    $span,
+    c = -1;
 
+// CREATE SPANS INSIDE SPAN
+for(var i=0; i<txt.length; i++) $swap.append($('<span />',{text:txt[i]}));
+// HIDE AND COLLECT THEM
+$span = $("span", $swap).hide(); 
+
+(function loop(){
+    c = ++c % n;
+    $swap.animate({width: $span.eq( c ).width() });
+    $span.stop().fadeOut().eq(c).fadeIn().delay(3000).show(0, loop);
+}());
+
+var txt2 = ['They are stupid', 'Pathetic Fucks', 'Don\'t know Shite', 'Mother Fuckers'],
+    len = txt2.length,
+    $swap_quote = $('#swap-quote'),
+    $span_quote,
+    d = -1;
+
+// CREATE SPANS INSIDE SPAN
+for(var i=0; i<txt.length; i++) $swap_quote.append($('<span />',{text:txt2[i]}));
+// HIDE AND COLLECT THEM
+$span_quote = $("span", $swap_quote).hide(); 
+
+(function loop(){
+    d = ++d % len;
+    $swap_quote.animate({width: $span_quote.eq( d ).width() });
+    $span_quote.stop().fadeOut().eq(d).fadeIn().delay(3000).show(0, loop);
+}()); 
+</script>
 {% endblock %}

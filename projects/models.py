@@ -95,7 +95,7 @@ class Milestone(models.Model):
 
     def save(self, *args, **kwargs):
         #print "Milestone saved!"
-        Project.objects.get(self.project_id).save()
+        Project.objects.get(id = self.project_id).save()
         super(Milestone, self).save(*args, **kwargs)
 
     def __unicode__(self):
