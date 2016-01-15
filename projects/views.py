@@ -505,8 +505,12 @@ def logout_view(request):
     return HttpResponseRedirect('/site/')
 
 @user_passes_test(lambda u: u.is_superuser)  
+def invoice_page(request):
+    pass
+@user_passes_test(lambda u: u.is_superuser)  
 def invoice_list(request):
-    return HttpResponse("Page Exists!")
+    invoices = Invoice.objects.all()
+    return render(request, 'projects/invoice_list.html', {'invoices': invoices})
 
 @user_passes_test(lambda u: u.is_superuser)  
 def invoice(request, project_id):
@@ -522,6 +526,12 @@ def invoice(request, project_id):
         except ValueError:
             discount = 0
 
+        invoice = project.invoice_set.create(
+        address = address,
+        discount=discount,
+        total = 0,
+        )
+        
         for key in request.POST:
             try:
                 x = project.milestone_set.get(title = key)
@@ -535,9 +545,16 @@ def invoice(request, project_id):
                 except ValueError:
                     qty = 1
                 total += (x.cost * qty)
-                data.append({'title' : x.title, 'cost' : x.cost, 'type':project.pay_type, 'qty': qty})
-            
-        name = generate(project.client, project.client_mail, data, address,total, discount)
+                
+                invoice.details_set.create(title = x.title,
+                 desc = x.description[0:20],
+                 cost = x.cost,
+                 type = project.pay_type,
+                 qty= qty)
+
+        invoice.total = total
+        invoice.save()
+        name = generate(invoice)
         chunk_size = 8192
         response = StreamingHttpResponse(FileWrapper(open(name+".pdf"), chunk_size),
                            content_type=mimetypes.guess_type(name+".pdf"))
@@ -549,11 +566,21 @@ def invoice(request, project_id):
         return render(request,'projects/invoice.html', {'unpaid':unpaid, 'project_id':project.id})
 
 
-def generate(name, email, data, addr, total, discount=0):
+def generate(invoice):
     print ("Generating PDF")
     from reportlab.pdfgen import canvas
     from reportlab.lib.units import inch
     from reportlab.lib.pagesizes import letter
+
+    print(invoice.project.id)
+    project = Project.objects.get(id=invoice.project.id)
+    name = project.client
+    email = project.client_mail
+    addr = invoice.address
+    total = invoice.total
+    discount = invoice.discount
+    data = invoice.details_set.all()
+
     c = canvas.Canvas(name+".pdf", pagesize = letter)
     c.drawString(1*inch, 9*inch, "Sofza")
     c.drawString(1*inch, 8.7*inch, "Raised By")
@@ -576,22 +603,22 @@ def generate(name, email, data, addr, total, discount=0):
     c.line(0, point*inch, 8*inch, point*inch)
     for x in data:
         point -= 0.2
-        c.drawString(1*inch, point*inch, x['title'])
-        c.drawString(5*inch, point*inch, x['type']+str(x['cost']))
-        c.drawString(6*inch, point*inch, str(x['qty']))
-        c.drawString(7*inch, point*inch, x['type']+str(x['qty']*x['cost']))
+        c.drawString(1*inch, point*inch, x.title)
+        c.drawString(5*inch, point*inch, x.type + str(x.cost))
+        c.drawString(6*inch, point*inch, str(x.qty))
+        c.drawString(7*inch, point*inch, x.type+str(x.qty *x.cost ))
         point -= 0.1
         c.line(0, point*inch, 8*inch, point*inch)
     point -= 0.3
 
-    c.drawString(1*inch, point*inch, "Total: "+x['type']+str(total))
+    c.drawString(1*inch, point*inch, "Total: "+x.type +str(total))
     point -= 0.3
     
     if discount:
-        c.drawString(1*inch, point*inch, "Discount: "+x['type']+ str(discount))
+        c.drawString(1*inch, point*inch, "Discount: "+x.type + str(discount))
         point -= 0.3
         total-=discount
-    c.drawString(1*inch, point*inch, "Due amount: "+x['type']+str(total))
+    c.drawString(1*inch, point*inch, "Due amount: "+x.type +str(total))
     point -= 0.3
     c.save()
     return name

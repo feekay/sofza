@@ -98,7 +98,7 @@ class Message(models.Model):
 class Milestone(models.Model):
     url_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length = 50)
-    description = models.CharField(max_length = 500)
+    description = models.CharField(max_length = 1000)
     cost = models.PositiveIntegerField(default=0)
     start_date = models.DateField()
     deadline = models.DateField()
@@ -141,6 +141,7 @@ class Invoice(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     project = models.ForeignKey(Project, null = False)
     date = models.DateField(default = datetime.now)
+    address = models.CharField(max_length =50)
     discount = models.PositiveIntegerField()
     total = models.PositiveIntegerField(null = False)
     
@@ -150,7 +151,8 @@ class Invoice(models.Model):
 class Details(models.Model):
     invoice = models.ForeignKey(Invoice, null = False)
     title = models.CharField(max_length = 50)
-    desc = models.CharField(max_length = 20)
+    desc = models.CharField(max_length = 25)
+    type = models.CharField(max_length=2)
     cost = models.PositiveIntegerField()
     qty = models.PositiveIntegerField()
     
