@@ -177,22 +177,23 @@
 
         {% if not user.is_authenticated %}
         <div class = col-sm-6>
-        <form action = "/projects/{{project_id}}/{{milestone.url_id}}/" method = "POST">
+        <form class="form-inline" action = "/projects/{{project_id}}/{{milestone.url_id}}/" method = "POST">
             {% csrf_token %}
-            <label>Username: </label>
-            <input type = text name="username" />
-            <label>Password: </label>
-            <input type = password name="password" />
-            <input  class="btn btn-primary" type = submit value ="Login" name ="login"/>
+            <div class="form-group">
+                <label>Username: </label>
+                <input type = text name="username" required />
+            </div>
+            <div class="form-group">
+                <label>Password: </label>
+                <input type = password name="password" required />
+            </div>
+            <input  class="btn btn-default" type = submit value ="Login" name ="login"/>
         </form>
-        {% else %}
-        <div class = col-sm-5>
         </div>
-        <div class = col-sm-1>
-        <button class="btn btn-primary logout-btn"><a href= '/projects/logout'> Logout</a></button>
-        {% endif %}
+        {% else %}
+            
+        {% endif %}        
         
-    </div>
     </div>
 </div>
 </nav>
@@ -217,6 +218,9 @@
      </div>
   </div>
 </div>
+{% if user.is_authenticated%}
+    <button class="btn btn-default"><a href="/projects/logout/">Logout</a></button>
+{% endif %}
 
 {% if user.is_superuser and not milestone.completed %}
 <div class= "container-fluid">
@@ -257,14 +261,14 @@
                     <p id="errors"></p>
                     <form action=""  name ="search" method="post" enctype="multipart/form-data" >
                     {% csrf_token %}
-                    <input name ="user_id" type="hidden" value="">
+                    <input name ="user_id" type="hidden" required value="">
                         <div class="row">
                             <div class="col-sm-2">
                             <label>Add Person</label>
                             </div>
 
                             <div class=col-sm-10>
-                            <input  class="search-query span10" type="text" name="name" autocomplete="off" value="" id="suggestion" />
+                            <input  class="search-query span10" type="text" name="name" required autocomplete="off" value="" id="suggestion" />
                             </div>
                         </div>
                         <div class="row">
@@ -281,7 +285,7 @@
                                 <label>Allocation</label>
                              </div>
                              <div class="col-sm-10">
-                                <input  type=number name="allocation" />
+                               <input  type=number name="allocation" required onkeypress= "return event.charCode >= 48 && event.charCode <= 57" />
                             </div>
                         </div>
                         <input type="submit" class="btn" value="Add" />
@@ -450,7 +454,7 @@ $('.important').on('click', function(){
         }
     });
   
-  });
+});
   
 
 </script>

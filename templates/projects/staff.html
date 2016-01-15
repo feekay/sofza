@@ -196,6 +196,7 @@
         <li><a href="/projects/">Projects</a></li>
         <li><a href="/projects/staff/">Staff</a></li>
         <li><a href="/projects/analytics/">Analytics</a></li>
+        <li><a href="/projects/invoices/">Invoices</a></li>
       </ul>
     </div>
   </div>
@@ -220,7 +221,7 @@
                     <p id="errors">
                     </p>
                     
-                    <form action="" method="post" enctype="multipart/form-data" name ="project" >
+                    <form action="" method="post" enctype="multipart/form-data" name ="person" onsubmit="return validateData()">
                     {% csrf_token %}
                     {{ user_form.as_p }}
                     {{ staff_form.as_p }}
@@ -239,7 +240,7 @@
         <a  href="#" class="modal-btn" data-src="/projects/persons/{{person.user}}" data-toggle="modal" data-target="#photoModal">
         <div class="thumbnail col-sm-2">
             <img src ="/media/{{person.picture}}" alt="profile picture" width = "100px" height = "100px" />    
-            <p>{{person.full_name}}</p>
+            <p><span>{{person.full_name}}<span>   <span id="rating">{{person.rating}}</span></p>
         </div>
         </a>
     {% endfor %}
@@ -289,6 +290,17 @@
 </body>
 
 <script>
+function validateData(){
+    var x = document.forms["person"]["email"].value;
+    var atpos = x.indexOf("@");
+    var dotpos = x.lastIndexOf(".");
+    if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+        $("#errors").html("Enter a valid e-mail address");
+        return false;
+    }
+
+}
+
 $(document).ready(function(){
 
 

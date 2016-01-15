@@ -9,10 +9,10 @@
         <input type= "checkbox" name = "{{milestone.title}}" />
         <label>{{milestone.title}}</label><span>   </span>
         <label>Qty</label>
-        <input type= "number" name="{{milestone.title}}_qty" pattern=""/>
+        <input type= "number" name="{{milestone.title}}_qty" pattern="[0-9]{0,6}"/>
         {% endfor %}<br>
         <label>Discount</label>
-        <input type = "number" name = "discount" pattern="" />
+        <input type = "number" name = "discount" pattern="[0-9]{0,6}" />
         <br>
         <input type = "submit" />
     </form>

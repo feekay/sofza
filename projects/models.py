@@ -15,6 +15,20 @@ class Staff(models.Model):
     phone = models.CharField(max_length=16)
     picture = models.ImageField(upload_to="profile_pictures", blank = False)
     full_name = models.CharField(max_length=50)
+    rating = models.DecimalField(max_digits=4, decimal_places=2, default= 5)
+    
+    def update_rating(self):
+        whole = self.allocation_set.objects.all()
+        total = len(whole);
+        completed = len(whole.filter(active=True))
+        failed = whole.filter(active=False)
+        lost=0
+        for fail in failed:
+            lost += fail.pay
+        #Not complete yet
+        self.rating =  (completed/total)*50
+        self.save()
+
     def save(self, *args, **kwargs):
         self.full_name = (self.user.first_name + " " + self.user.last_name)
         super(Staff, self).save(*args, **kwargs)
@@ -28,8 +42,8 @@ class Project(models.Model):
     title = models.CharField(max_length=50)
     client = models.CharField(max_length = 50)
     client_mail = models.EmailField()
-    cost = models.IntegerField(default=0)
-    revenue = models.IntegerField(default=0)
+    cost = models.PositiveIntegerField(default=0)
+    revenue = models.PositiveIntegerField(default=0)
     pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
     start_date = models.DateField()
     last_updated = models.DateTimeField()
@@ -85,7 +99,7 @@ class Milestone(models.Model):
     url_id = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length = 50)
     description = models.CharField(max_length = 500)
-    cost = models.IntegerField(default=0)
+    cost = models.PositiveIntegerField(default=0)
     start_date = models.DateField()
     deadline = models.DateField()
     project = models.ForeignKey(Project, null = True)
@@ -105,13 +119,16 @@ class Milestone(models.Model):
 class Allocation(models.Model):
     milestone = models.ForeignKey(Milestone, null = False)
     person = models.ForeignKey(Staff, null = False)
-    pay = models.IntegerField(null = False)
+    pay = models.PositiveIntegerField(null = False)
     pay_type = models.CharField(choices = CHOICES, default ='$', max_length =2)
     active = models.BooleanField(default= False)
 
-
     def __unicode__(self):
         return self.pay_type + str(self.pay)
+
+    def save(self, *args, **kwargs):
+        self.person.update_rating()
+        super(Allocation, self).save(*args, **kwargs)
 
 class Attachment(models.Model):
     file = models.FileField(upload_to='attachments')
@@ -120,4 +137,22 @@ class Attachment(models.Model):
     def __unicode__(self):
         return os.path.basename(self.file.name)
 
+class Invoice(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    project = models.ForeignKey(Project, null = False)
+    date = models.DateField(default = datetime.now)
+    discount = models.PositiveIntegerField()
+    total = models.PositiveIntegerField(null = False)
+    
+    def __unicode__(self):
+        return "ID: " + str(self.id)
 
+class Details(models.Model):
+    invoice = models.ForeignKey(Invoice, null = False)
+    title = models.CharField(max_length = 50)
+    desc = models.CharField(max_length = 20)
+    cost = models.PositiveIntegerField()
+    qty = models.PositiveIntegerField()
+    
+    def __unicode__(self):
+        return "Name: " + self.title + "Cost: " + str(self.cost)

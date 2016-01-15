@@ -6,17 +6,22 @@ from django.forms.extras.widgets import SelectDateWidget
 
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-    
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'required': ''}))
+    first_name = forms.CharField(max_length = 50, widget=forms.TextInput(attrs={'required': ''}))
+    last_name = forms.CharField(max_length = 50, widget=forms.TextInput(attrs={'required': ''}))
+    username = forms.CharField(max_length = 30, widget=forms.TextInput(attrs={'required': ''}))
+    email= forms.EmailField(widget=forms.EmailInput(attrs={'required': ''}))
     class Meta:
         model = User
         fields= ['first_name','last_name','username', 'email', 'password']
 
 class StaffForm(forms.ModelForm):
-    picture = forms.FileField(required=False)
+    picture = forms.FileField(widget=forms.FileInput(attrs={'required': '',}))
+    phone = forms.CharField(widget=forms.TextInput(attrs={'required': '', 'pattern':'[0-9\-]{8,}'}))
+    type = forms.CharField(widget=forms.TextInput(attrs={'required': '',}))
     class Meta:
         model= Staff
-        exclude = ['user', 'full_name']
+        exclude = ['rating','user', 'full_name']
 
 class MyForm(forms.Form):
     file = MultiFileField(min_num=0, max_num=5, max_file_size=1024*1024*5, required = False)

@@ -160,7 +160,7 @@ jQuery(document).ready(function() {
 
 {% if user.is_superuser %}
 
-<div class= "container">
+<div class= "container-fluid">
 <div class= "container add-btn">
     {% if not project.completed %}
     <div class="add_project">
@@ -247,6 +247,7 @@ jQuery(document).ready(function() {
     </tr>
     
     {% endfor %}
+    {% if user.is_superuser %}
     <tr>
         <td></td>
         <td>Total</td>
@@ -254,27 +255,33 @@ jQuery(document).ready(function() {
         <td>Revenue</td>
         <td>{{project.revenue}}</td>
     </tr>
+    {% endif %}
     </table>
 </div>
 
 </div>
 
 <!-- Person Table Section-->
-<div class ="container-fluid table-responsive">
-    <table class= "table table-hover person_list">
-    <tr>
-        <th>Name</th>
-        <th>Status</th>
-        {% if user.is_superuser %}
-        <th>Cost</th>
-        {% endif %}
-    </tr>
+<div class ="container-fluid ">
+    <div class= "row">
+        <div class="col-sm-8 table-responsive">
+        <table class= "table table-hover person_list">
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            {% if user.is_superuser %}
+            <th>Allocation</th>
+            {% endif %}
+        </tr>
 
-    </table>
-</div>   
+        </table>
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div>
+</div>  
 </div>
-
-
+{% if user.is_authenticated %}
 <!--Message box-->
 <div class="container-fluid message-dialog">
     <div id= "message-box">
@@ -288,8 +295,7 @@ jQuery(document).ready(function() {
         </div>
     </div>
 </div>
-
-
+{% endif %}
 <footer class="footer text-right">
 <div class=row>
 

@@ -410,6 +410,8 @@ def project_page(request, project_id, month=0):
 
 
     project.update_cost()
+    
+    #Delete this after checking if its still in use
     if request.GET.get('click', False) and not project.completed:
         project.completed= True
         print(project.completed)
@@ -459,7 +461,7 @@ def milestone_form(request, project_id, context_dic={}):
     context_dic['form'] = form
     context_dic['form2'] = form2
     return render(request,'projects/project_view.html', context_dic)
-#@user_passes_test(lambda u: u.is_superuser)      
+@user_passes_test(lambda u: u.is_superuser)      
 def staff(request):
    
     staff = Staff.objects.all()
@@ -496,10 +498,15 @@ def analytics(request):
 
 
 def logout_view(request):
+    print("Recieved")
     logout(request)
     return HttpResponseRedirect('/site/')
 
-#@user_passes_test(lambda u: u.is_superuser)  
+@user_passes_test(lambda u: u.is_superuser)  
+def invoice_list(request):
+    return HttpResponse("Page Exists!")
+
+@user_passes_test(lambda u: u.is_superuser)  
 def invoice(request, project_id):
     project = Project.objects.get(id=project_id)
 
@@ -521,7 +528,10 @@ def invoice(request, project_id):
             else:
                 x.paid = True
                 x.save()
-                qty = int(request.POST[key+"_qty"])
+                try:
+                    qty = int(request.POST[key+"_qty"])
+                except ValueError:
+                    qty = 1
                 total += (x.cost * qty)
                 data.append({'title' : x.title, 'cost' : x.cost, 'type':project.pay_type, 'qty': qty})
             
