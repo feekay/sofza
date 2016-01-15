@@ -277,7 +277,9 @@ def projects(request, year=0,month=None):
     if request.method == "POST":
         form = projectForm(request.POST)
         if form.is_valid():
-            form.save()
+            project = form.save(commit=False)
+            project.last_updated = datetime.now()
+            project.save()
         else:
             pass
     else:
@@ -381,8 +383,8 @@ def milestone_page(request, project_id, mile_id):
     context_dic['project_id'] = project_id
     context_dic['milestone'] = milestone
     attachments = Attachment.objects.all().filter(milestone= milestone)
-    #context_dic['attachments'] = attachments
-    #context_dic['allocations'] = allocations(request, milestone.url_id)
+    context_dic['attachments'] = attachments
+    context_dic['allocations'] = allocations(request, milestone.url_id)
     context_dic['days_left'] = (milestone.deadline -date.today()).days
     print(context_dic['days_left'])
     return render(request, 'projects/milestone_view.html', context_dic)

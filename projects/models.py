@@ -46,7 +46,7 @@ class Project(models.Model):
     revenue = models.PositiveIntegerField(default=0)
     pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
     start_date = models.DateField()
-    last_updated = models.DateTimeField()
+    last_updated = models.DateTimeField(default=datetime.now)
     estimated_end_date = models.DateField()
     completed = models.BooleanField(default= False)
     completed_date = models.DateField(null = True)
