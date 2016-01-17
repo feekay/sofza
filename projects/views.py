@@ -8,7 +8,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.views.generic.edit import FormView
 from datetime import datetime,date
 from django.db.models import Q
-from projects.models import Attachment, Project, Milestone, Staff, Allocation, Message
+from projects.models import Attachment, Project, Milestone, Staff, Allocation, Message, Invoice
 import os
 import json
 import mimetypes
@@ -595,15 +595,20 @@ def generate(invoice):
     
     point = 7.5
     
+    c.setfont("Courier-Bold", 10)
     c.drawString(1*inch, point*inch, 'Title')
+    c.drawString(3*inch, point*inch, 'Title')
     c.drawString(5*inch, point*inch, 'Cost')
     c.drawString(6*inch, point*inch, 'Qty')
     c.drawString(7*inch, point*inch, 'Amount')
     point -= 0.1
     c.line(0, point*inch, 8*inch, point*inch)
+    
+    c.setfont("Courier", 10)
     for x in data:
         point -= 0.2
         c.drawString(1*inch, point*inch, x.title)
+        c.drawString(3*inch, point*inch, x.desc)
         c.drawString(5*inch, point*inch, x.type + str(x.cost))
         c.drawString(6*inch, point*inch, str(x.qty))
         c.drawString(7*inch, point*inch, x.type+str(x.qty *x.cost ))
@@ -611,6 +616,7 @@ def generate(invoice):
         c.line(0, point*inch, 8*inch, point*inch)
     point -= 0.3
 
+    c.setfont("Courier-Bold", 10)
     c.drawString(1*inch, point*inch, "Total: "+x.type +str(total))
     point -= 0.3
     

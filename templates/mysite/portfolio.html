@@ -1,171 +1,816 @@
-{% extends 'mysite/base.html' %}
-{% load staticfiles %}
+<!DOCTYPE html>
+{% load static %}
+<html lang="en-US" class=" js cssanimations csstransforms csstransforms3d csstransitions js_active  vc_desktop  vc_transform  vc_transform "><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Sofza</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<!--[if lte IE 8]><style>.ss-container, .header-white,.hidden, #nav, .right-bottom-nav, .ss-row-clear{display:none;} .support-note .note-ie{display:block;}</style><![endif]-->
+ 
+<link rel="stylesheet" id="ab_tf_fontawesome-css" href="{% static "css/font-awesome.css" %}" type="text/css" media="all">
+<link rel="stylesheet" id="ab_tf_mainstyle-css" href="{% static "css/style.css" %}" type="text/css" media="all">
 
+<script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery-migrate.min.js" %}"></script>
+</head>
 
-{% block title%}Portfolio{% endblock %}
-{% block import%}
- <!-- Required CSS -->
-  <link type="text/css" href="{% static "css/fancymoves.css"%}" media="screen" charset="utf-8" rel="stylesheet"  />
+<body class="home page page-id-2734 page-template-default wpb-js-composer js-comp-ver-4.3.3 vc_responsive">
+<style>
 
-
-  <!-- Required script -->
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" charset="utf-8"></script>
-  <script type="text/javascript" src="{% static "js/slider.js" %}" charset="utf-8"></script>
-
-  <!-- Demo only -->
-  <link type="text/css" href="{% static "demo/demo.css"%}" media="screen" charset="utf-8" rel="stylesheet"  />
-  <script type="text/javascript" src="{% static "demo/demo.js"%}"></script>
-  
-  <!-- FancyBox scripts -->
-  <script type="text/javascript" src="{% static "fancybox-1.3.4/fancybox/jquery.mousewheel-3.0.4.pack.js"%}"></script>
-  <script type="text/javascript" src="{% static "fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.pack.js"%}"></script>
-  <link rel="stylesheet" type="text/css" href="{% static "fancybox-1.3.4/fancybox/jquery.fancybox-1.3.4.css"%}" media="screen" />
- 	
-    
-    	<script type="text/javascript">
-		$(document).ready(function() {
-			/*
-			*   Examples - images
-			*/
-
-			$("a.pop1").fancybox();
-
-			$("a.pop2").fancybox({
-				'overlayShow'	: false,
-				'transitionIn'	: 'elastic',
-				'transitionOut'	: 'elastic'
-			});
-
-			$("a.pop3").fancybox({
-				'transitionIn'	: 'none',
-				'transitionOut'	: 'none',
-				'overlayColor'		: '#000',
-				'overlayOpacity'	: 0.7	
-			});
-
-			$("a.pop4").fancybox({
-				'opacity'		: true,
-				'overlayShow'	: false,
-				'transitionIn'	: 'elastic',
-				'transitionOut'	: 'none'
-			});
-
-			$("a.pop5").fancybox();
-
-			$("a#example6").fancybox({
-				'titlePosition'		: 'outside',
-				'overlayColor'		: '#000',
-				'overlayOpacity'	: 0.9
-			});
-
-			$("a.pop6").fancybox({
-				'titlePosition'	: 'inside'
-			});
-
-			$("a.pop7").fancybox({
-				'titlePosition'	: 'over'
-			});
-
+</style>
+<script>
+jQuery(document).ready(function($){
+		'use strict';
+	var themes,
+		selectedThemeIndex,
+		instructionsTimeout,
+		deck;
+	window.scrollinit = function(){
+		deck = bespoke.from('#articlehold2');
+		initThemeSwitching();
+	};
+	setTimeout(scrollinit,1000);
+	function initThemeSwitching() {
+		themes = [
+			'classic',
+			'carousel',
+			'coverflow',
+			'classictilt'
+		];
+		selectedThemeIndex = 0;
+		if(window.lastslide !==''){
+			deck.slide(window.lastslide-1);
+		}else{
+			deck.slide(0);
+		}
+		deck.slide(0);
+		initKeys();
+		initButtons();
+		initSlideGestures();
+		initClickInactive();
+		
+	}
+	//Navigation
+	//==================================================
+	function initButtons() {
+		$('#arrownav2 .next-arrow').click(function(){ gonext();});
+		$('#arrownav2 .prev-arrow').click(function(){ deck.prev();});
+	}
+	var stopnextslide = 0;
+	function gonext() {
+		var stopnextslide = 0;
+		var n = $('#articlehold2 section').length;
+		
+		$('#articlehold2 section').each(function () {
+			if ($(this).hasClass('bespoke-active') && Number($(this).attr('rel'))+1 == n) {
+				deck.slide(0);
+				stopnextslide = 1;
+			}
 		});
-	</script>
-    
-    
-{% endblock %}
+		if(stopnextslide != 1){
+			deck.next();
+		}
+	};
+	//Keyboard navigation
+	//==================================================
+	function initKeys(e) {
+		if (/Firefox/.test(navigator.userAgent)) {
+			document.addEventListener('keydown', function(e) {
+				if (e.which >= 37 && e.which <= 40) {
+					e.preventDefault();
+				}
+			});
+		}
+		window.gokb = function(e) {
+			var key = e.which;
+		
+			if(key === 37){
+				if ($('#articlehold2').is(':hover')) {
+					deck.prev();
+				}
+			}
+			if(key === 39 ){
+				if ($('#articlehold2').is(':hover')) {
+					deck.next();
+				}
+			}
+			//theme swiching
+			if(key === 38){
+				if ($('#articlehold2').is(':hover')) {
+				if(Modernizr.csstransforms3d !== false){
+				prevTheme();
+				}
+				}
+			}
+			if(key === 40){
+				if ($('#articlehold2').is(':hover')) {
+				if(Modernizr.csstransforms3d !== false){
+				nextTheme();
+				}
+				}
+			}
+			
+			};
+		document.addEventListener('keydown', gokb);
+	}
+	
+	function extractDelta(e) {
+		if (e.wheelDelta) {
+			return e.wheelDelta;
+		}
+		if (e.originalEvent.detail) {
+			return e.originalEvent.detail* -40;
+		}
+		if (e.originalEvent && e.originalEvent.wheelDelta) {
+			return e.originalEvent.wheelDelta;
+		}
+	}
+	
+	//Navigation for touch devices
+	//==================================================
+	function initSlideGestures() {
+		var start = 0;
+		var main = document.getElementById('main2'),
+			startPosition,
+			delta,
+			
+			singleTouch = function(fn, preventDefault) {
+				return function(e) {
+					if(e.touches.length === 1){
+						fn(e.touches[0].pageY);
+					}
+				};
+			},
+			touchstart = singleTouch(function(position) {
+				startPosition = position;
+				delta = 0;
+					start = 0;
+					main.addEventListener('touchend', touchend); 
+			}),
 
-{% block body %}
-<div id="wrapper">
+			touchmove = singleTouch(function(position) {
+				delta = position - startPosition;
+			}, true),
+			
+			touchend = function() {	
+				if (Math.abs(delta) < 50) {
+					return;
+				}
+				if(delta > 0){
+					//window.clearInterval(autorotateposts);
+					deck.prev();
+				}else{
+					//window.clearInterval(autorotateposts);
+					deck.next();
+				}
+				
+				
+			};
+		window.remvoetuch = function(){
+			main.removeEventListener('touchstart', touchstart);
+			main.removeEventListener('touchmove', touchmove);
+			main.removeEventListener('touchend', touchend);
+		};
+		window.addtuch = function(){
+			main.addEventListener('touchstart', touchstart);
+			main.addEventListener('touchmove', touchmove);
+			main.addEventListener('touchend', touchend);
+		};
+		window.addtuch();
+	}
+	
+	function isTouch() {
+		return !!('ontouchstart' in window) || navigator.msMaxTouchPoints;
+	}
 
+	function modulo(num, n) {
+		return ((num % n) + n) % n;
+	}
+	//Mouse click navigation
+	//==================================================
+	function initClickInactive(){
+		var n = $("#articlehold2 section").length;
+		$('#articlehold2 .tt-cn-style').click(function() {
+			//window.clearInterval(autorotateposts);
+			var page = $(this).parent().attr('rel');
+			if( $(this).parent().hasClass('bespoke-inactive') ){
+			deck.slide(page);
+			}
+		});
+	}
+	function selectTheme(index) {
+		var theme = themes[index];
+		var thestyle = theme + '   woocommerce amysliderheight ';
+	//	$('#main2').className = theme;
+		$('#main2').removeClass();
+		
+		$('#main2').addClass(thestyle);
+	//	alert(theme)
+		selectedThemeIndex = index;
+	}
+	function nextTheme() {
+		offsetSelectedTheme(1);
+	
+	}
+	function prevTheme() {
+		offsetSelectedTheme(-1);
+		
+	}
+	function offsetSelectedTheme(n) {
+		selectTheme(modulo(selectedThemeIndex + n, themes.length));
+	}
+		//	var changetheme = setInterval(nextTheme , 3000);
+		
+		
+});
+</script>
 
-	<!-- Slider -->
-	<div id="slider-five">
+<script>
 
-  					<div>
-						<img src="{% static "images/demo-images/img1.jpg"%}" alt="" />
-                   	  	
-   		  						<p>one hundred<br />
-                                	<a class="pop1" href="{% static "images/demo-images/1-2.jpg" rel="group1" title="example title text">More Views</a>
-                                	<a class="pop1" href="{% static "images/demo-images/1-3.jpg" rel="group1" title="more text right here"></a>
-                            	</p>
-  					</div>
-        
-<div>
-						<img src="{% static "images/demo-images/img2.jpg"%}" alt="" />
-                   	  	
-                           		<p>math problem<br />
-                                	<a class="pop2" href="{% static "images/demo-images/2-2.jpg"%}" rel="group2" title="example title text">More Views</a>
-                                	<a class="pop2" href="{% static "images/demo-images/2-3.jpg"%}" rel="group2" title="more text right here"></a>
-                            	</p>
-  					</div>
-        
-  					<div>
-						<img src="{% static "images/demo-images/img3.jpg"%}" alt="" />
-                   	  	
-                           		<p>better than i deserve<br />
-                                	<a class="pop3" href="{% static "images/demo-images/3-2.jpg"%}" rel="group3" title="example title text">More Views</a>
-                                	<a class="pop3" href="{% static "images/demo-images/3-3.jpg"%}" rel="group3" title="more text right here"></a>
-                            	</p>
-  					</div>
-        
-  					<div>
-						<img src="{% static "images/demo-images/img4.jpg"%}" alt="" />
-                   	  	
-                           		<p>seven days a week<br />
-                                	<a class="pop4" href="{% static "images/demo-images/4-2.jpg"%}" rel="group4" title="example title text">More Views</a>
-                                	<a class="pop4" href="{% static "images/demo-images/4-3.jpg"%}" rel="group4" title="more text right here"></a>
-                            	</p>
-  					</div>
-        
-  					<div>
-						<img src="{% static "images/demo-images/img5.jpg"%}" alt="" />
-                   	  	
-                           		<p>path to nowhere<br />
-                                	<a class="pop5" href="{% static "images/demo-images/5-2.jpg"%}" rel="group5" title="example title text">More Views</a>
-                                	<a class="pop5" href="{% static "images/demo-images/5-3.jpg"%}" rel="group5" title="more text right here"></a>
-                            	</p>
-  					</div>
-        
-  					<div>
-						<img src="{% static "images/demo-images/img6.jpg"%}" alt="" />
-                   	  	
-                           		<p>and then i woke up<br />
-                                	<a class="pop6" href="{% static "images/demo-images/6-2.jpg"%}" rel="group6" title="example title text">More Views</a>
-                                	<a class="pop6" href="{% static "images/demo-images/6-3.jpg"%}" rel="group6" title="more text right here"></a>
-                            	</p>
-  					</div>
-        
-  					<div>
-						<img src="{% static "images/demo-images/img7.jpg"%}" alt="" />
-                   	  	
-                           		<p>it's about time<br />
-                                	<a class="pop7" href="{% static "images/demo-images/7-2.jpg"%}" rel="group7" title="example title text">More Views</a>
-                                	<a class="pop7" href="{% static "images/demo-images/7-3.jpg"%}" rel="group7" title="more text right here"></a>
-                            	</p>
-  					</div>
-        
-  					<div>
-						<img src="{% static "images/demo-images/img8.jpg"%}" alt="" />
-                   	  	
-                           		<p>two are better than one<br />
-                                	<a class="pop2" href="{% static "images/demo-images/8-2.jpg"%}" rel="group8" title="example title text">More Views</a>
-                                	<a class="pop2" href="{% static "images/demo-images/8-3.jpg"%}" rel="group8" title="more text right here"></a>
-                            	</p>
-  					</div>
-        
-  					<div>
-						<img src="{% static "images/demo-images/img9.jpg"%}" alt="" />
-                   	  	
-                           		<p>lowercase<br />
-                                	<a class="pop2" href="{% static "images/demo-images/9-2.jpg"%}" rel="group9" title="example title text">More Views</a>
-                                	<a class="pop2" href="{% static "images/demo-images/9-3.jpg"%}" rel="group9" title="more text right here"></a>
-                            	</p>
-  					</div>
+(function(moduleName, window, document) {
+	if(window.isrunedonce !=1){
+	var from = function(selector, selectedPlugins) {
+		
+			var parent = document.querySelector(selector),
+				slides = [].slice.call(parent.children, 0),
+				activeSlide = slides[0],
+				deckListeners = {},
+				relnum = 0,
+				isfirst = '0',
+
+				activate = function(index, customData) {
+					if (!slides[index]) {
+						return;
+					}
+					//var isfirst = '0';
+					fire(deckListeners, 'deactivate', createEventData(activeSlide, customData));
+
+					activeSlide = slides[index];
+
+					slides.map(deactivate);
+
+					fire(deckListeners, 'activate', createEventData(activeSlide, customData));				
+					addClass(activeSlide, 'active');
+					removeClass(activeSlide, 'inactive');
+					if ( jQuery.browser.msie && jQuery.browser.version == '9.0' ) { 
+					jQuery( " section.bespoke-before-3" ).animate({ "margin-left": "-1400px" },300, "linear" );
+					jQuery( " section.bespoke-before-2" ).animate({ "margin-left": "-966px" },300, "linear" );
+					jQuery( " section.bespoke-before-1" ).animate({ "margin-left": "-570px" }, 300, "linear" );
+					jQuery( " section.bespoke-active" ).animate({ "margin-left": "-175px" }, 300, "linear" );
+					jQuery( " section" ).css("opacity","1");
+					if(isfirst !=1){
+					jQuery( " section.bespoke-after" ).css("margin-left","2000px");
+					 isfirst = 1
+					}
+					jQuery( " section.bespoke-after-1" ).animate({ "margin-left": "220px" },300, "linear");
+					jQuery( " section.bespoke-after-2" ).animate({ "margin-left": "616px" },300, "linear" );
+					jQuery( " section.bespoke-after-3" ).animate({ "margin-left": "1200px" }, 300, "linear" );
+					}
+				},
+
+				deactivate = function(slide, index) {
+					
+					var offset = index - slides.indexOf(activeSlide),
+						offsetClass = offset > 0 ? 'after' : 'before';
+
+					['before(-\\d+)?', 'after(-\\d+)?', 'active', 'inactive'].map(removeClass.bind(null, slide));
+					slide !== activeSlide &&
+						['inactive', offsetClass, offsetClass + '-' + Math.abs(offset)].map(addClass.bind(null, slide));
+			
+				
+						
+				},
+
+				slide = function(index, customData) {
+					fire(deckListeners, 'slide', createEventData(slides[index], customData)) && activate(index, customData);
+					
+				},
+
+				next = function(customData) {
+					var nextSlideIndex = slides.indexOf(activeSlide) + 1;
+					
+			
+					fire(deckListeners, 'next', createEventData(activeSlide, customData)) && activate(nextSlideIndex, customData);
+					if ( jQuery.browser.msie && jQuery.browser.version == '9.0' ) {
+				//	jQuery( " section.bespoke-before-3" ).animate({ "margin-left": "-1900px" },300, "linear" );
+					jQuery( " section.bespoke-before-3" ).animate({ "margin-left": "-1400px" },300, "linear" );
+					jQuery( " section.bespoke-before-2" ).animate({ "margin-left": "-966px" },300, "linear" );
+					jQuery( " section.bespoke-before-1" ).animate({ "margin-left": "-570px" }, 300, "linear" );
+					
+					jQuery( " section.bespoke-after-1" ).animate({ "margin-left": "220px" },300, "linear");
+					jQuery( " section.bespoke-after-2" ).animate({ "margin-left": "616px" },300, "linear" );
+					jQuery( " section.bespoke-after-3" ).animate({ "margin-left": "1200px" }, 300, "linear" );
+					jQuery( " section.bespoke-after-4" ).animate({ "margin-left": "1700px" }, 300, "linear" );
+					}
+					
+					// window.location.hash = '!slide-'+jQuery( "section.bespoke-active" ).attr("rel");
+				},
+
+				prev = function(customData) {
+					var prevSlideIndex = slides.indexOf(activeSlide) - 1;
+
+					fire(deckListeners, 'prev', createEventData(activeSlide, customData)) && activate(prevSlideIndex, customData);
+					if ( jQuery.browser.msie && jQuery.browser.version == '9.0' ) { 
+					jQuery( " section.bespoke-before-3" ).animate({ "margin-left": "-1400px" },300, "linear" );
+					jQuery( " section.bespoke-before-2" ).animate({ "margin-left": "-966px" },300, "linear" );
+					jQuery( " section.bespoke-before-1" ).animate({ "margin-left": "-570px" }, 300, "linear" );
+					
+					jQuery( " section.bespoke-after-1" ).animate({ "margin-left": "220px" },300, "linear");
+					jQuery( " section.bespoke-after-2" ).animate({ "margin-left": "616px" },300, "linear" );
+					jQuery( " section.bespoke-after-3" ).animate({ "margin-left": "1200px" }, 300, "linear" );
+					jQuery( " section.bespoke-after-4" ).animate({ "margin-left": "1700px" }, 300, "linear" );
+					}
+					
+					// window.location.hash = '!slide-'+jQuery( "section.bespoke-active" ).attr("rel");
+
+				},
+
+				createEventData = function(slide, eventData) {
+					eventData = eventData || {};
+					eventData.index = slides.indexOf(slide);
+					eventData.slide = slide;
+					return eventData;
+				},
+
+				deck = {
+					on: on.bind(null, deckListeners),
+					off: off.bind(null, deckListeners),
+					fire: fire.bind(null, deckListeners),
+					slide: slide,
+					next: next,
+					prev: prev,
+					parent: parent,
+					slides: slides
+				};
+			
+			addClass(parent, 'parent');
+			
+			slides.map(function(slide) {
+				
+				addClass(slide, 'slide');
+				jQuery(slide).attr('rel', relnum);
+				relnum++;
+			});
+
+			Object.keys(selectedPlugins || {}).map(function(pluginName) {
+				var config = selectedPlugins[pluginName];
+				config && plugins[pluginName](deck, config === true ? {} : config);
+				
+			});
+
+			activate(0);
+
+			decks.push(deck);
+
+			return deck;
+		},
+
+		decks = [],
+
+		bespokeListeners = {},
+
+		on = function(listeners, eventName, callback) {
+			(listeners[eventName] || (listeners[eventName] = [])).push(callback);
+		},
+
+		off = function(listeners, eventName, callback) {
+			listeners[eventName] = (listeners[eventName] || []).filter(function(listener) {
+				return listener !== callback;
+			});
+		},
+
+		fire = function(listeners, eventName, eventData) {
+			return (listeners[eventName] || [])
+				.concat((listeners !== bespokeListeners && bespokeListeners[eventName]) || [])
+				.reduce(function(notCancelled, callback) {
+					return notCancelled && callback(eventData) !== false;
+				}, true);
+		},
+
+		addClass = function(el, cls) {
+			el.classList.add(moduleName + '-' + cls);
+		},
+
+		removeClass = function(el, cls) {
+			el.className = el.className
+				.replace(new RegExp(moduleName + '-' + cls +'(\\s|$)', 'g'), ' ')
+				.replace(/^\s+|\s+$/g, '');
+		},
+
+		callOnAllInstances = function(method) {
+			return function(arg) {
+				decks.map(function(deck) {
+					deck[method].call(null, arg);
+				});
+			};
+		},
+
+		bindPlugin = function(pluginName) {
+			return {
+				from: function(selector, selectedPlugins) {
+					(selectedPlugins = selectedPlugins || {})[pluginName] = true;
+					return from(selector, selectedPlugins);
+				}
+			};
+		},
+
+		makePluginForAxis = function(axis) {
+			return function(deck) {
+				var startPosition,
+					delta;
+
+				document.addEventListener('keydown', function(e) {
+					var key = e.which;
+
+					if (axis === 'X') {
+						key === 37 && deck.prev();
+						(key === 32 || key === 39) && deck.next();
+					} else {
+						key === 38 && deck.prev();
+						(key === 32 || key === 40) && deck.next();
+					}
+				});
+
+				deck.parent.addEventListener('touchstart', function(e) {
+					if (e.touches.length) {
+						startPosition = e.touches[0]['page' + axis];
+						delta = 0;
+					}
+				});
+
+				deck.parent.addEventListener('touchmove', function(e) {
+					if (e.touches.length) {
+						e.preventDefault();
+						delta = e.touches[0]['page' + axis] - startPosition;
+					}
+				});
+
+				deck.parent.addEventListener('touchend', function() {
+					Math.abs(delta) > 50 && (delta > 0 ? deck.prev() : deck.next());
+				});
+			};
+		},
+
+		plugins = {
+			horizontal: makePluginForAxis('X'),
+			vertical: makePluginForAxis('Y')
+		};
+
+	window[moduleName] = {
+		from: from,
+		slide: callOnAllInstances('slide'),
+		next: callOnAllInstances('next'),
+		prev: callOnAllInstances('prev'),
+		horizontal: bindPlugin('horizontal'),
+		vertical: bindPlugin('vertical'),
+		on: on.bind(null, bespokeListeners),
+		off: off.bind(null, bespokeListeners),
+		plugins: plugins
+	};
+	window.isrunedonce =1
+	}
+}('bespoke', this, document));
+</script>
+
+<div id="main2" style="height: 700px; " class="carousel  woocommerce amysliderheight ">
+	<article id="articlehold2" class="scene bespoke-parent">
+	 
+                  
+                         
+
+			<section class="grid clearfix  sunflower bespoke-slide bespoke-inactive bespoke-before bespoke-before-2" rel="0">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+
+			</figcaption>
+		</figure>
 	</div>
-	<!-- /Slider -->
-    
-    
-    
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  emerald bespoke-slide bespoke-inactive bespoke-before bespoke-before-1" rel="1">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" alt="3D Project 1 (23)">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  pomegranate bespoke-slide bespoke-active" rel="2">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" alt="3D Project 1 (15)">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  alizarin bespoke-slide bespoke-inactive bespoke-after bespoke-after-1" rel="3">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" alt="3D Project 1 (14)">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  pumpkin bespoke-slide bespoke-inactive bespoke-after bespoke-after-2" rel="4">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="3D Project 1 (9)">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
 
 
+			<section class="grid clearfix  carrot bespoke-slide bespoke-inactive bespoke-after bespoke-after-3" rel="5">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="Office 3">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  orange bespoke-slide bespoke-inactive bespoke-after bespoke-after-4" rel="6">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  sunflower bespoke-slide bespoke-inactive bespoke-after bespoke-after-5" rel="7">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer" > 
+					<h2 class="content-title">IMAGE</h2>
+				
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  midnightblue bespoke-slide bespoke-inactive bespoke-after bespoke-after-6" rel="8">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" >			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer" > 
+					<h2 class="content-title">IMAGE</h2>
+				
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  wisteria bespoke-slide bespoke-inactive bespoke-after bespoke-after-7" rel="9">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="7- Baan Thai">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+				
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  peterriver bespoke-slide bespoke-inactive bespoke-after bespoke-after-8" rel="10">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" alt="6- The Decorator">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  nephritis bespoke-slide bespoke-inactive bespoke-after bespoke-after-9" rel="11">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="4- Alrahla">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  sunflower bespoke-slide bespoke-inactive bespoke-after bespoke-after-10" rel="12">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="2- Fresh Eggloo">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE</h2>
+
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  asbestos bespoke-slide bespoke-inactive bespoke-after bespoke-after-11" rel="13">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE7</h2>
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  greensea bespoke-slide bespoke-inactive bespoke-after bespoke-after-12" rel="14">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400">
+			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 205.6 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE6</h2>
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  belizehole bespoke-slide bespoke-inactive bespoke-after bespoke-after-13" rel="15">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 3 c">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE5</h2>
+			 </figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                   
+
+			<section class="grid clearfix  pomegranate bespoke-slide bespoke-inactive bespoke-after bespoke-after-14" rel="16">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 5 a">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE4</h2>
+
+			</figcaption>            
+		</figure>
+	</div>
+                            </div>
+	</section>
+                   
+
+<section class="grid clearfix  pumpkin bespoke-slide bespoke-inactive bespoke-after bespoke-after-15" rel="17">
+	<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 1">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE3</h2>
+			</figcaption>            
+		</figure>
+	</div>
+  </div>
+</section>
+                   
+
+<section class="grid clearfix  orange bespoke-slide bespoke-inactive bespoke-after bespoke-after-16" rel="18">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 3 a">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer"> 
+					<h2 class="content-title">IMAGE2</h2>
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+</section>
+                   
+
+<section class="grid clearfix  turquoise bespoke-slide bespoke-inactive bespoke-after bespoke-after-17" rel="19">
+				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+		<figure>
+			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 5 a">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<figcaption class="layer" > 
+					<h2 class="content-title">IMAGE1</h2>
+			</figcaption>            
+		</figure>
+	</div>
+                                    </div>
+			</section>
+                        
+    </article>
+    
+       <!-- START NAVIGATION ARROWS -->
+       <div id="arrownav2">
+			<div class="ss-nav-arrows-next">
+				<i class="icon-angle-right next-arrow"></i>
+			</div>
+			<div class="ss-nav-arrows-prev">
+				<i class="icon-angle-left prev-arrow"></i>
+			</div>
+         </div>
+			<!-- END NAVIGATION ARROWS -->
+</div> 
+		</div> 
+	</div> 
+</div></div>
+
+
+</li>
+                </div></div></div></div>		</div> 
+	</div>   
 </div>
-<!-- /Wrapper -->
-{% endblock %}
+</div>
+</div>
+<script type="text/javascript" src="{% static "js/modernizr.custom.79639.js"%}"></script>
+</body>
+</html>

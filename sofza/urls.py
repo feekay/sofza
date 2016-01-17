@@ -17,10 +17,16 @@ from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from django.conf import settings
 from projects import views
+from mysite import views as site_views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^site/', include('mysite.urls')),
     url(r'^projects/', include('projects.urls')),
+    url(r'^$', site_views.index, name="home"),
+    url(r'^faq$', site_views.faq, name="faq"),
+    url(r'^portfolio$', site_views.portfolio, name="portfolio"),
+    url(r'^about$', site_views.about, name="about"),
+    url(r'^policy$', site_views.policy, name="policy"),
 ]
 
 if settings.DEBUG:

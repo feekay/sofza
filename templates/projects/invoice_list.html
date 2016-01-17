@@ -168,10 +168,14 @@
 
 <div class ="container-fluid table-responsive">
     <table class= "table table-hover">
+    <tr>
+        <td>Invoice Id</td>
+        <td>Project Id</td>
+    </tr>
     {% for invoice  in invoices %}
         <tr>
         <td><a href =/projects/{{invoice.id}}>{{invoice.id}}</a></td>
-        <td><a href =/projects/{{invoice.id}}>{{invoice.project}}</a></td>
+        <td><a href =/projects/{{invoice.id}}>{{invoice.project.id}}</a></td>
         </tr> 
     {% endfor %}
     </table>

@@ -1,6 +1,117 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Theme Made By www.w3schools.com - No Copyright -->
+  <title>{{milestone.title}}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  {% load staticfiles %}
+  <style>
+      .header{
+        margin-top: 40px;
+        width:100%;
+        background:#000000;
+        font-family: Calibre;
+        font-style: bold;
+        font-size: 20px;
+        color: #eee;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      color: #333;
+      border-radius: 8px;
+      transition: .2s;
+  }
+  .btn:hover, .btn:focus {
+      border: 1px solid #333;
+      background-color: #fff;
+      color: #000;
+  }
+  
+   .navbar li a, .navbar .navbar-brand { 
+      color: #d5d5d5 !important;
+  }
+  .navbar-nav li a:hover {
+      color: #fff !important;
+  }
+  .navbar-nav li.active a {
+      color: #fff !important;
+      background-color: #29292c !important;
+  }
+    
+  .nav2{
+    padding-top: 50px;
+    background: #333;
+  }
+  
+  .nav2 li a{ 
+      color: #d5d5d5 !important;
+  }
+  .nav2 li a:hover {
+      color: #000 !important;
+  }
+  .nav2 li.active a {
+      color: #000 !important;
+      background-color: #29292c !important;
+  }
+
+  footer {
+      background-color: #2d2d30;
+      color: #f5f5f5;
+      padding: 32px;
+  }
+  footer a {
+      color: #f5f5f5;
+  }
+  footer a:hover {
+      color: #777;
+      text-decoration: none;
+  }
+  footer li
+  {
+    list-style-type: none;
+  }
+  
+  
+  </style>
+</head>
 <body>
-    <form method = "post" action ="/projects/{{project_id}}/invoice/">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+  <div class =row>
+    <div class= col-sm-6>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand">Sofza</a>
+    </div>
+    </div>
+<div class="nav2">
+
+  <div class="container-fluid">
+    <div>
+      <ul class="nav navbar-nav">
+        <li><a href="/projects/">Projects</a></li>
+        <li><a href="/projects/staff/">Staff</a></li>
+        <li><a href="/projects/analytics/">Analytics</a></li>
+        <li><a href="/projects/invoices/">Invoices</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+    <form class ="" method = "post" action ="/projects/{{project_id}}/invoice/">
         {% csrf_token %}
         <label>Address</label>
         <input type = "text" name = "address" />
@@ -9,13 +120,35 @@
         <input type= "checkbox" name = "{{milestone.title}}" />
         <label>{{milestone.title}}</label><span>   </span>
         <label>Qty</label>
-        <input type= "number" name="{{milestone.title}}_qty" pattern="[0-9]{0,6}"/>
+        <input type= "number" name="{{milestone.title}}_qty" min=1 pattern="[0-9]{0,6}"/>
         {% endfor %}<br>
         <label>Discount</label>
         <input type = "number" name = "discount" pattern="[0-9]{0,6}" />
         <br>
         <input type = "submit" />
     </form>
+
+
+<!--Footer-->
+<footer class="footer text-right">
+<div class=row>
+
+  <div class= col-sm-10>
+    <ul class="text-left">
+       <li><a href="/site">Home</a></li>
+       <li><a href="/site/portfolio/">Portfolio</a></li>
+       <li><a href="#">About</a></li>
+       <li><a href="#">Policy</a></li>
+       <li><a href="/site/faq/">FAQ</a></li>
+    </ul>
+  </div>
+    <div class= "col-sm-2">
+      <a class="up-arrow" href="#start" data-toggle="tooltip" title="TO TOP">
+    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="64px" height="64px"></img>
+  </a>
+  </div>  
+</div>
+</footer>
 
 </body>
 </html>

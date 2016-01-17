@@ -38,7 +38,7 @@
     }
     
     .header{
-        margin-top: 40px;
+        margin-top: 100px;
         width:100%;
         background:#000000;
         padding-top:10px;
@@ -48,7 +48,22 @@
         font-size: 20px;
         color: #eee;
     }
+    .navbar li a, .navbar .navbar-brand { 
+      color: #000 !important;
+  }
+  .navbar-nav li a:hover {
+      color: #fff !important;
+  }
+  .navbar-nav li.active a {
+      color: #fff !important;
+      background-color: #29292c !important;
+  }
     
+  .nav2{
+
+    background: #d5d5d5;
+  }
+  
      .btn {
       padding: 10px 20px;
       color: #333;
@@ -147,6 +162,20 @@ jQuery(document).ready(function() {
       <a class="navbar-brand">Sofza</a>
     </div>
 </div>
+<div class="nav2">
+
+  <div class="container-fluid">
+    <div>
+      <ul class="nav navbar-nav">
+        <li><a id="projects" href="/projects/">Projects</a></li>
+        <li><a id="staff" href="/projects/staff/">Staff</a></li>
+        <li><a id="analytics" href="/projects/analytics/">Analytics</a></li>
+        <li><a id="invoices" href="/projects/invoices/">Invoices</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 </nav>
 
 <div class = "container-fluid header">
@@ -515,5 +544,22 @@ $('#message').keypress(function (e) {
     });
   }
 });
+
+document.getElementById("projects").onclick = function () {
+    location.href = "/projects/";
+};
+
+document.getElementById("analytics").onclick = function () {
+    location.href = "/projects/analytics";
+};
+
+document.getElementById("invoices").onclick = function () {
+    location.href = "/projects/invoices";
+};
+
+document.getElementById("staff").onclick = function () {
+    location.href = "/projects/staff";
+};
+
 </script>
 </body>

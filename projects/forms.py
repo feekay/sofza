@@ -6,10 +6,10 @@ from django.forms.extras.widgets import SelectDateWidget
 
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'required': ''}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'required': '', 'autocomplete':'off'}))
     first_name = forms.CharField(max_length = 50, widget=forms.TextInput(attrs={'required': ''}))
     last_name = forms.CharField(max_length = 50, widget=forms.TextInput(attrs={'required': ''}))
-    username = forms.CharField(max_length = 30, widget=forms.TextInput(attrs={'required': ''}))
+    username = forms.CharField(max_length = 30, widget=forms.TextInput(attrs={'required': '' , 'autocomplete':'off'}))
     email= forms.EmailField(widget=forms.EmailInput(attrs={'required': ''}))
     class Meta:
         model = User
@@ -17,7 +17,7 @@ class UserForm(forms.ModelForm):
 
 class StaffForm(forms.ModelForm):
     picture = forms.FileField(widget=forms.FileInput(attrs={'required': '',}))
-    phone = forms.CharField(widget=forms.TextInput(attrs={'required': '', 'pattern':'[0-9\-]{8,}'}))
+    phone = forms.CharField(widget=forms.TextInput(attrs={'required': '', 'onkeypress':'return event.charCode >= 48 && event.charCode <= 57'}))
     type = forms.CharField(widget=forms.TextInput(attrs={'required': '',}))
     class Meta:
         model= Staff
@@ -31,7 +31,7 @@ class projectForm(forms.ModelForm):
     CHOICES = (('$', "Dollar"),(u'\u00A3',"Pound"),(u'\u20AC', "Euro"))
     client = forms.CharField(max_length = 50, label= "Client Name", widget=forms.TextInput(attrs={'required': ''}))
     client_mail = forms.EmailField(widget=forms.EmailInput(attrs={'required': ''}))
-    title = forms.CharField(max_length=50, label = "Project Title", widget=forms.TextInput(attrs={'required': ''}))
+    title = forms.CharField(max_length=50, label = "Project Title", widget=forms.TextInput(attrs={'required': '', 'autocomplete':'off'}))
     pay_type = forms.ChoiceField(choices = CHOICES, label="Payment Currency", initial='', widget=forms.Select(), required=True)
     estimated_end_date= forms.DateField(widget=SelectDateWidget())
     start_date = forms.DateField(widget=SelectDateWidget())
@@ -41,9 +41,9 @@ class projectForm(forms.ModelForm):
         exclude = ['id', 'cost', 'last_updated', 'completed','completed_date', 'revenue', 'success']
 
 class milestoneForm(forms.ModelForm):
-    title = forms.CharField(max_length = 50, label ="Task", widget=forms.TextInput(attrs={'required': ''}))
+    title = forms.CharField(max_length = 50, label ="Task", widget=forms.TextInput(attrs={'required': '', 'autocomplete':'off'}))
     description = forms.CharField(max_length = 500, widget=forms.Textarea(attrs={'required': ''}))
-    cost = forms.IntegerField(widget=forms.NumberInput(attrs={'required': '', 'min':'0', 'onkeypress':'return event.charCode >= 48 && event.charCode <= 57'}))
+    cost = forms.IntegerField(widget=forms.NumberInput(attrs={'required': '', 'min':'1', 'onkeypress':'return event.charCode >= 48 && event.charCode <= 57'}))
     start_date = forms.DateField(widget=SelectDateWidget())
     deadline = forms.DateField(widget=SelectDateWidget())
 
@@ -53,5 +53,5 @@ class milestoneForm(forms.ModelForm):
         widgets = {
             'project': forms.HiddenInput()
         }
-        exclude=['url_id', 'completed', 'success', 'paid']
+        exclude=['url_id', 'important' ,'completed', 'success', 'paid']
 

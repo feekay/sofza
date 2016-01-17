@@ -13,13 +13,14 @@
   {% load staticfiles %}
   <style>
       .header{
-        margin-top: 40px;
+        margin-top: 90px;
         width:100%;
         background:#000000;
         font-family: Calibre;
         font-style: bold;
         font-size: 20px;
         color: #eee;
+        position: relative;
     }
     
     .options{
@@ -31,8 +32,22 @@
         padding-right: 30px;
     }
 
+   .navbar li a, .navbar .navbar-brand { 
+      color: #000 !important;
+  }
+  .navbar-nav li a:hover {
+      color: #fff !important;
+  }
+  .navbar-nav li.active a {
+      color: #fff !important;
+      background-color: #29292c !important;
+  }
     
-    .btn {
+  .nav2{
+
+    background: #d5d5d5;
+  }
+      .btn {
       padding: 10px 20px;
       color: #333;
       border-radius: 8px;
@@ -159,7 +174,7 @@
   </style>
 </head>
 
-<body id="start" data-spy="scroll" data-target=".navbar" data-offset="50">
+<body  data-spy="scroll" data-target=".navbar" data-offset="50">
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
@@ -191,15 +206,34 @@
         </form>
         </div>
         {% else %}
-            
-        {% endif %}        
+        <div class = col-sm-5>
+        </div>
+        <div class = col-sm-1>
+            <button class="btn btn-default"><a id="logout" href="/projects/logout/">Logout</a></button>
+        </div>
+       {% endif %}  
         
+
     </div>
 </div>
+<div class="nav2">
+
+  <div class="container-fluid">
+    <div>
+      <ul class="nav navbar-nav">
+        <li><a href="/projects/">Projects</a></li>
+        <li><a href="/projects/staff/">Staff</a></li>
+        <li><a href="/projects/analytics/">Analytics</a></li>
+        <li><a href="/projects/invoices/">Invoices</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 </nav>
 
 
-<div class = "container-fluid header">
+<div id="start"  class = "container-fluid header">
   <div class = "row">
     <div class="col-sm-2 lighter">
      <span>{{milestone.title}}</span>
@@ -218,9 +252,7 @@
      </div>
   </div>
 </div>
-{% if user.is_authenticated%}
-    <button class="btn btn-default"><a href="/projects/logout/">Logout</a></button>
-{% endif %}
+
 
 {% if user.is_superuser and not milestone.completed %}
 <div class= "container-fluid">
@@ -285,7 +317,7 @@
                                 <label>Allocation</label>
                              </div>
                              <div class="col-sm-10">
-                               <input  type=number name="allocation" required onkeypress= "return event.charCode >= 48 && event.charCode <= 57" />
+                               <input  type=number name="allocation" min=1 required onkeypress= "return event.charCode >= 48 && event.charCode <= 57" />
                             </div>
                         </div>
                         <input type="submit" class="btn" value="Add" />
@@ -455,7 +487,26 @@ $('.important').on('click', function(){
     });
   
 });
-  
+
+document.getElementById("projects").onclick = function () {
+    location.href = "/projects/";
+};
+
+document.getElementById("analytics").onclick = function () {
+    location.href = "/projects/analytics";
+};
+
+document.getElementById("invoices").onclick = function () {
+    location.href = "/projects/invoices";
+};
+
+document.getElementById("staff").onclick = function () {
+    location.href = "/projects/staff";
+};
+
+document.getElementById("logout"").onclick = function () {
+    location.href = "/projects/logout/";
+};
 
 </script>
 </body>
