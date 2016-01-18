@@ -221,10 +221,10 @@
   <div class="container-fluid">
     <div>
       <ul class="nav navbar-nav">
-        <li><a href="/projects/">Projects</a></li>
-        <li><a href="/projects/staff/">Staff</a></li>
-        <li><a href="/projects/analytics/">Analytics</a></li>
-        <li><a href="/projects/invoices/">Invoices</a></li>
+        <li><a id="projects" href="/projects/">Projects</a></li>
+        <li><a id="staff" href="/projects/staff/">Staff</a></li>
+        <li><a id="analytics" href="/projects/analytics/">Analytics</a></li>
+        <li><a id="invoices" href="/projects/invoices/">Invoices</a></li>
       </ul>
     </div>
   </div>
@@ -504,7 +504,7 @@ document.getElementById("staff").onclick = function () {
     location.href = "/projects/staff";
 };
 
-document.getElementById("logout"").onclick = function () {
+document.getElementById("logout").onclick = function () {
     location.href = "/projects/logout/";
 };
 

@@ -19,7 +19,7 @@ from django.conf import settings
 from projects import views
 from mysite import views as site_views
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^11111111/', include(admin.site.urls)),
     url(r'^site/', include('mysite.urls')),
     url(r'^projects/', include('projects.urls')),
     url(r'^$', site_views.index, name="home"),

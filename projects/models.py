@@ -18,7 +18,7 @@ class Staff(models.Model):
     rating = models.DecimalField(max_digits=4, decimal_places=2, default= 5)
     
     def update_rating(self):
-        whole = self.allocation_set.objects.all()
+        whole = self.allocation_set.all()
         total = len(whole);
         completed = len(whole.filter(active=True))
         failed = whole.filter(active=False)
@@ -27,6 +27,8 @@ class Staff(models.Model):
             lost += fail.pay
         #Not complete yet
         self.rating =  (completed/total)*50
+        print(self.rating)
+        print("Rating")
         self.save()
 
     def save(self, *args, **kwargs):
@@ -81,7 +83,9 @@ class Project(models.Model):
             if temp:
                 revenue += temp
 
-        self.revenue = revenue
+        self.revenue = self.cost - revenue
+        print("Revenue")
+        print(self.revenue)
         self.save()
                 
 class Message(models.Model):

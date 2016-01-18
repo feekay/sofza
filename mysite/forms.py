@@ -7,4 +7,4 @@ class mailForm(forms.ModelForm):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'required': ''}))
     class Meta:
         model = eMail
-        exclude = []
+        exclude = ['time', 'details']

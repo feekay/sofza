@@ -32,10 +32,10 @@ jQuery(document).ready(function($){
 	setTimeout(scrollinit,1000);
 	function initThemeSwitching() {
 		themes = [
-			'classic',
-			'carousel',
+//			'classic',
+//			'carousel',
 			'coverflow',
-			'classictilt'
+//			'classictilt'
 		];
 		selectedThemeIndex = 0;
 		if(window.lastslide !==''){
@@ -43,6 +43,11 @@ jQuery(document).ready(function($){
 		}else{
 			deck.slide(0);
 		}
+		
+		if(Modernizr.csstransforms3d !== false){
+				nextTheme();
+	    }
+				
 		deck.slide(0);
 		initKeys();
 		initButtons();

@@ -43,6 +43,12 @@ def get_messages(request, project_id):
     except Exception as isnt:
         print(inst)
         return HttpResponse(status=404)
+    limit =None
+    if request.GET.get('limit', False):
+        try:
+            limit = request.GET.get('limit')
+        except:
+            limit= 20
 
     username = request.user
     user = User.objects.get(username = username)
@@ -52,6 +58,9 @@ def get_messages(request, project_id):
         #return HttpResponse(data, content_type='application/json')        
     else:
         messages = project.message_set.all().filter(Q(to = user)|Q(to=None)|Q(frm=user)).order_by('time')
+
+    if limit:
+        messages = messages[:limit]
 
     try:
         return render(request,'projects/messages.html',{'messages': messages})
@@ -79,9 +88,12 @@ def person_list(request, project_id):
     sorted_result = sorted(
     result,
     key=lambda instance: not instance.active)
-    print("Here")
+
+    raw_list =[]
+    for alloc in sorted_result:
+        raw_list.append({'person': alloc.person.full_name, 'milestone':alloc.milestone.title , 'active':alloc.active, 'cost':(alloc.pay_type+str(alloc.pay)) })
     try:
-        data = serializers.serialize('json',sorted_result)
+        data = json.dumps(raw_list)
     except Exception as inst:
         print(inst)
     return HttpResponse(data, content_type='application/json')
@@ -349,13 +361,14 @@ def milestone_page(request, project_id, mile_id):
                     else:
                         prev.active = False
                         prev.save()
-                    
                     alloc = milestone.allocation_set.create(person=person,
                     pay= pay,
                     pay_type= pay_type,
                     active=True,
                     )
+                    project.calculate_revenue()
                     return HttpResponseRedirect('/projects/'+project_id+"/"+mile_id)
+
 
 #    if request.GET.get('success', False) and not milestone.success:
 #        print ("In Milestone")
@@ -380,6 +393,7 @@ def milestone_page(request, project_id, mile_id):
 #            return HttpResponse(status=200)
 #        except:
 #            print "Couldn't respond"
+
     context_dic['project_id'] = project_id
     context_dic['milestone'] = milestone
     attachments = Attachment.objects.all().filter(milestone= milestone)
@@ -396,7 +410,7 @@ def project_page(request, project_id, month=0):
     try:
         project = Project.objects.get(id= project_id)
     except:
-        return HttpResponseRedirect('/site/')
+        return HttpResponseRedirect('/')
     context_dic['project'] = project;
 #        print project.id
 
@@ -412,7 +426,7 @@ def project_page(request, project_id, month=0):
 
 
     project.update_cost()
-    
+    project.calculate_revenue();
     #Delete this after checking if its still in use
     if request.GET.get('click', False) and not project.completed:
         project.completed= True
@@ -426,7 +440,6 @@ def project_page(request, project_id, month=0):
 
     milestones = Milestone.objects.filter(project=project_id).order_by("completed", "start_date")
     context_dic['milestones'] = milestones
-    print "Milestones fetched"
     return milestone_form(request, project_id, context_dic)
 
 
@@ -502,7 +515,7 @@ def analytics(request):
 def logout_view(request):
     print("Recieved")
     logout(request)
-    return HttpResponseRedirect('/site/')
+    return HttpResponseRedirect('/')
 
 @user_passes_test(lambda u: u.is_superuser)  
 def invoice_page(request):
@@ -607,6 +620,8 @@ def generate(invoice):
     c.setfont("Courier", 10)
     for x in data:
         point -= 0.2
+        if point < 1:
+            pass #Handle page overflow
         c.drawString(1*inch, point*inch, x.title)
         c.drawString(3*inch, point*inch, x.desc)
         c.drawString(5*inch, point*inch, x.type + str(x.cost))

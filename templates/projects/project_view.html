@@ -294,9 +294,10 @@ jQuery(document).ready(function() {
 <div class ="container-fluid ">
     <div class= "row">
         <div class="col-sm-8 table-responsive">
-        <table class= "table table-hover person_list">
+        <table id="person_list" class= "table table-hover" >
         <tr>
             <th>Name</th>
+            <th>Milestone</th>
             <th>Status</th>
             {% if user.is_superuser %}
             <th>Allocation</th>
@@ -423,16 +424,37 @@ $(document).ready(function(){
   });
 {% if user.is_superuser %}
   //Load Persons working on this project
-  $('.person_list').bind('change', function(){
+  $('#person_list').bind('change', function(){
         $.ajax({
             url: "/projects/list/{{project.id}}/",
             success: function(data){
-                console.log(data);
-             }
+            rows=""
+            for(var i =0; i<data.length; ++i)
+            {
+                var td_s = "<td>";
+                var td_e = "</td>";
+                var tr_s = "<tr>";
+                var tr_e = "</tr>";
+                
+                if(data[i]){
+                    col = td_s + data[i]['person'] + td_e
+                    col1= td_s + data[i]['milestone'] + td_e
+                    col2= td_s + data[i]['active'] + td_e
+                    row = col+ col1+ col2
+                    {% if user.is_superuser %}
+                        col3= td_s + data[i]['cost'] + td_e
+                        row += col3
+                    {% endif %}
+                    rows += tr_s + row + tr_e
+                    
+                }
+            }
+            $('#person_list').append(rows)
+          }
 
         });
   }).trigger('change');
-  {% endif %}
+{% endif %}
 
 
   //Update the message box

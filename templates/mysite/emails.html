@@ -169,19 +169,22 @@
 <div class ="container-fluid table-responsive">
     <table class= "table table-hover">
     <tr>
-        <td>Invoice Id</td>
-        <td>Project Id</td>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Details</td>
+        <td>Time</td>
     </tr>
-    {% for invoice  in invoices %}
+    {% for email  in emails %}
         <tr>
-        <td><a href =/projects/{{invoice.id}}>{{invoice.id}}</a></td>
-        <td><a href =/projects/{{invoice.id}}>{{invoice.project.id}}</a></td>
+        <td>{{email.name}}</td>
+        <td>{{email.email}}</td>
+        <td>{{email.details}}</td>
+        <td>{{email.time}}</td>
         </tr> 
     {% endfor %}
     </table>
 </div>
 </div>
-
 </body>
 
 <script>
