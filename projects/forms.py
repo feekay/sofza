@@ -16,9 +16,11 @@ class UserForm(forms.ModelForm):
         fields= ['first_name','last_name','username', 'email', 'password']
 
 class StaffForm(forms.ModelForm):
-    picture = forms.FileField(widget=forms.FileInput(attrs={'required': '',}))
     phone = forms.CharField(widget=forms.TextInput(attrs={'required': '', 'onkeypress':'return event.charCode >= 48 && event.charCode <= 57'}))
     type = forms.CharField(widget=forms.TextInput(attrs={'required': '',}))
+    gender = forms.ChoiceField(choices =(('m','Male'),('f','Female')), widget= forms.RadioSelect(attrs={'required':''})) 
+    picture = forms.FileField(widget=forms.FileInput(attrs={'required': '',}))
+
     class Meta:
         model= Staff
         exclude = ['rating','user', 'full_name']
@@ -53,5 +55,5 @@ class milestoneForm(forms.ModelForm):
         widgets = {
             'project': forms.HiddenInput()
         }
-        exclude=['url_id', 'important' ,'completed', 'success', 'paid']
+        exclude=['url_id', 'important' ,'completed', 'success', 'paid', 'last_updated']
 

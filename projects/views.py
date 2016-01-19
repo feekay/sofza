@@ -24,6 +24,12 @@ def send_message(request, project_id):
         text = message
         link_id = project_id
         frm = request.user
+        
+        if request.GET.get('mentions'):
+            data = json.loads(request.GET.get('mentions'))
+            print data
+        else:
+            print(request.GET)
         try:       
             project = Project.objects.get(id=link_id)
             project.message_set.create(
@@ -177,7 +183,7 @@ def get_person(request, person_id):
 def get_staff_list(max_results =0, starts_with=""):
     user_list = []
     staff_list = []
-    print("Searching for staff", starts_with)
+#    print("Searching for staff", starts_with)
     if starts_with:
         user_list = User.objects.filter(first_name__istartswith=starts_with)
         for user in user_list:
@@ -417,11 +423,13 @@ def project_page(request, project_id, month=0):
     if request.GET.get("success", False):
         project.success = True
         project.completed = True
+        project.completed_date= datetime.now()
         project.save()
         
     if request.GET.get("fail", False):
         project.success = False
         project.completed = True
+        project.completed_date= datetime.now()
         project.save()
 
 
@@ -476,6 +484,7 @@ def milestone_form(request, project_id, context_dic={}):
     context_dic['form'] = form
     context_dic['form2'] = form2
     return render(request,'projects/project_view.html', context_dic)
+
 @user_passes_test(lambda u: u.is_superuser)      
 def staff(request):
    
@@ -509,6 +518,55 @@ def staff(request):
 
 @user_passes_test(lambda u: u.is_superuser)  
 def analytics(request):
+    MONTHS = {
+    'jan' : 0,
+    'feb':1,
+    'mar':2,
+    'apr':3,
+    'may':4,
+    'jun':5,
+    'jul':6,
+    'aug':7,
+    'sep':8,
+    'oct':9,
+    'nov':10,
+    'dec':11,
+    }
+    
+    MONTH_NAMES = [
+    'jan',
+    'feb',
+    'mar',
+    'apr',
+    'may',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'oct',
+    'nov',
+    'dec',
+    ]
+    if not year:
+        year = datetime.now().year
+    else:
+        year = int(year)
+    if month is None or month not in MONTHS:
+        current_month = datetime.now().month
+    else:
+        current_month = MONTHS[month]+1
+
+    prev_month = (current_month-1)%12
+
+    if prev_month > current_year:
+        prev_year = current_year-1
+    else:
+        prev_year = current_year
+
+
+    projects_current = Project.objects.filter(start_date__month = current_month, start_date__year = year).order_by('completed','start_date')
+    projects_prev = Project.objects.filter(start_date__month = prev_month, start_date__year = prev_year).order_by('completed','start_date')
+
     return HttpResponse("WOW")
 
 

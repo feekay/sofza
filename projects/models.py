@@ -16,6 +16,7 @@ class Staff(models.Model):
     picture = models.ImageField(upload_to="profile_pictures", blank = False)
     full_name = models.CharField(max_length=50)
     rating = models.DecimalField(max_digits=4, decimal_places=2, default= 5)
+    gender = models.CharField(max_length=2, choices=(('m', "Male"), ('f', "Female")))
     
     def update_rating(self):
         whole = self.allocation_set.all()
@@ -63,8 +64,10 @@ class Project(models.Model):
     def update_time(self):
         self.last_updated =datetime.now()
         self.save()
+
     def __unicode__(self):
         return self.title + " ID: " + str(id)
+
     def update_cost(self):
         milestones = self.milestone_set.all()
         self.cost = 0
@@ -110,12 +113,17 @@ class Milestone(models.Model):
     important = models.BooleanField(default = False)
     completed = models.BooleanField(default= False)
     paid = models.BooleanField(default=False)
+    last_updated = models.DateTimeField(default=datetime.now)
 
     def save(self, *args, **kwargs):
         #print "Milestone saved!"
         Project.objects.get(id = self.project_id).save()
         super(Milestone, self).save(*args, **kwargs)
 
+    def update_time(self):
+        self.last_updated =datetime.now()
+        self.save()
+    
     def __unicode__(self):
         return str(self.title)
 

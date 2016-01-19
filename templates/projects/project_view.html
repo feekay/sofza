@@ -123,6 +123,39 @@
     margin-top: 10px;
     
     }
+    ul#suggestion-box {
+    position: absolute;
+    padding-left: 0px;
+  }
+  
+  #suggestion-box li{
+    background: white;
+    display: block;
+    position: relative;
+    border: 1px solid black;
+    border-top: 0px;
+    z-index: 2;
+  }
+  
+    #suggestion-box li:hover{
+    background: #3366BF;
+    display: block;
+    position: relative;
+    border: 1px solid black;
+    border-top: 0px;
+    z-index: 2;
+  }
+    #suggestion-box li img{
+    padding: 4px;
+    display: inline;
+  }
+  
+    #suggestion-box li p{
+    padding: 4px;
+    margin: 3px;
+    display: inline;
+  }
+    
   footer {
       background-color: #2d2d30;
       color: #f5f5f5;
@@ -263,6 +296,7 @@ jQuery(document).ready(function() {
         {% if user.is_superuser %}
         <th>Cost</th>
         {% endif %}
+        <th>Last Updated</th>
     </tr>
     {% for milestone in milestones %}
         <tr>
@@ -273,6 +307,7 @@ jQuery(document).ready(function() {
         {% if user.is_superuser %}
         <td><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{project.pay_type}}{{milestone.cost}}</a></td>
         {% endif %}
+        <td><a href=/projects/{{project.id}}/{{milestone.url_id}}>{{milestone.last_updated}}</a></td>
     </tr>
     
     {% endfor %}
@@ -324,6 +359,7 @@ jQuery(document).ready(function() {
         <button class="btn btn-primary send-message">Send</button>
         </div>
     </div>
+    <div><ul id='suggestion-box'></ul></div>
 </div>
 {% endif %}
 <footer class="footer text-right">
@@ -365,8 +401,11 @@ function validateData(){
     }
 }
 {% endif %}
+ var mentions =[];
 
 $(document).ready(function(){
+
+$(this).attr("data-name")
   // Initialize Tooltip
   $('[data-toggle="tooltip"]').tooltip(); 
 
@@ -400,6 +439,20 @@ $(document).ready(function(){
         $(this).text(counter);
         counter++;
     }).trigger('update');
+
+    //Adding Suggestion list clicks
+    //Attach event to suggestion list
+    $('ul#suggestion-box').on('click','li' ,function(){
+    console.log(mentions);
+   mentions.push({ 'id': $(this).attr("data"), "name": $(this).attr("data-name") });
+   var value = $('#message').val();
+   var list = value.split(" ");
+   list[list.length-1] = $(this).attr("data-name");
+   var text = list.join(" ");
+   $('#message').val(text);
+   
+   $('#suggestion-box').html("\n");
+    });
 
 
 
@@ -534,8 +587,10 @@ $('.send-message').click(function(){
     $.ajax({
         url: "/projects/send/{{project.id}}",
         method:'GET',
+        type: 'json',
         data:{
-         message: message
+         message: message,
+         mentions: mentions
         },
         success: function(){
         console.log("Clearing");
@@ -548,7 +603,7 @@ $('.send-message').click(function(){
 
 $('#message').keypress(function (e) {
  var key = e.which;
- if(key == 13)  // the enter key code
+ if(key == 13)  // Send on Enter
   {
     message= $('#message').val();
     $.ajax({
@@ -565,6 +620,39 @@ $('#message').keypress(function (e) {
         }
     });
   }
+  
+  else    //Suggest on '@'
+  {
+    var value = $(this).val();
+    var list = value.split(" ");
+    var query = list[list.length-1];
+    console.log(query);
+    if(query[0]==='@'){
+    query = query.slice(1)
+    $.get('/projects/suggest_staff/', {'suggestion': query}, function(data){
+         console.log(data)
+         if (data[0]){
+            div=""
+            for(i=0; i<data.length; ++i){
+            console.log(i)
+            view ="<p>"+ data[i]["fields"]["full_name"]+"</p>";
+            view +="<p>"+data[i]["fields"]["type"]+"</p>"
+            img = "<img src=/media/" +data[i]["fields"]["picture"]+ " width=40px height=40px></img>"; 
+            list= "<li data=\"" +data[i]["fields"]["user"]+"\" data-name= \""+data[i]["fields"]["full_name"]+"\">"+img + view +"</li>"
+            div += "<div>"+list+"</div>"
+            $('#suggestion-box').html(div);}
+            }
+         else{
+            $('#suggestion-box').html("\n");
+         }
+        }, "json");
+    }
+    else{
+    $('#suggestion-box').html("\n");
+    
+    }
+  }
+  
 });
 
 document.getElementById("projects").onclick = function () {
