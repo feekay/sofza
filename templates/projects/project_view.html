@@ -383,6 +383,35 @@ jQuery(document).ready(function() {
 </footer>
 
 <script>
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
 {% if user.is_superuser %}
 function validateData(){
 
@@ -443,8 +472,8 @@ $(this).attr("data-name")
     //Adding Suggestion list clicks
     //Attach event to suggestion list
     $('ul#suggestion-box').on('click','li' ,function(){
-    console.log(mentions);
-   mentions.push({ 'id': $(this).attr("data"), "name": $(this).attr("data-name") });
+   console.log(mentions);
+   mentions.push($(this).attr("data"));
    var value = $('#message').val();
    var list = value.split(" ");
    list[list.length-1] = $(this).attr("data-name");
@@ -514,7 +543,7 @@ $(this).attr("data-name")
   setInterval(message_box, 30000);
   function message_box() {
     console.log("Refreshed");
-    $("#message-box").load('/projects/get/{{project.id}}');
+    $("#message-box").load('/projects/get/{{project.id}}/30');
     updateScroll();
     }
     function updateScroll(){
@@ -585,18 +614,19 @@ $('.send-message').click(function(){
     console.log("Send");
     message= $('#message').val();
     $.ajax({
-        url: "/projects/send/{{project.id}}",
-        method:'GET',
-        type: 'json',
-        data:{
+        url: "/projects/send/{{project.id}}/",
+        method:'POST',
+        data: JSON.stringify({
          message: message,
          mentions: mentions
-        },
+        }),
+        contentType: "application/json",
         success: function(){
         console.log("Clearing");
         $('#message').val("");
-        text = "<li> You: " + message +"</li>"
-        $('#message-box').append(message);
+        text = "<li class=\"text-right\">" + message +"</li>";
+        $('#message-box').append(text);
+        mentions = [];
         }
     });
 });  

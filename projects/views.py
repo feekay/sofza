@@ -19,42 +19,56 @@ from itertools import chain
 
 
 def send_message(request, project_id):
-    if request.GET.get('message'):
-        message = request.GET.get('message')
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+        except Exception as inst:
+            print(inst)
+
+        message = data['message']
         text = message
         link_id = project_id
         frm = request.user
-        
-        if request.GET.get('mentions'):
-            data = json.loads(request.GET.get('mentions'))
-            print data
-        else:
-            print(request.GET)
-        try:       
+
+        try:
             project = Project.objects.get(id=link_id)
-            project.message_set.create(
+            
+            message = project.message_set.create(
             time = datetime.now(),
             text = text,
             frm = frm,
             )
+
+            mentions = data['mentions']
+
+            for user_id in mentions:
+                try:
+                    user=User.objects.get(id = user_id)
+                except:
+                    print("No such User")
+                else:
+                    message.to.add(user)
+                    message.save()
+                    print(message.to.all())
+
+            message.save()
         except Exception as inst:
             print(inst)
             return HttpResponse(status=404)
         print("Create")
         return HttpResponse(status=200)
-
-def get_messages(request, project_id):
+    return HttpResponse(status = 404)
+def get_messages(request, project_id, limit= None):
     try:
         project = Project.objects.get(id=project_id)
     except Exception as isnt:
         print(inst)
         return HttpResponse(status=404)
-    limit =None
-    if request.GET.get('limit', False):
+
         try:
-            limit = request.GET.get('limit')
+            limit = int(limit)
         except:
-            limit= 20
+            limit= 30
 
     username = request.user
     user = User.objects.get(username = username)
@@ -72,7 +86,6 @@ def get_messages(request, project_id):
         return render(request,'projects/messages.html',{'messages': messages})
     except:
         return HttpResponse("Error in template")
-
 
 def person_list(request, project_id):
     
