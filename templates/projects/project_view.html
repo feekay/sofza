@@ -635,18 +635,22 @@ $('#message').keypress(function (e) {
  var key = e.which;
  if(key == 13)  // Send on Enter
   {
+    console.log("Send");
     message= $('#message').val();
     $.ajax({
-        url: "/projects/send/{{project.id}}",
-        method:'GET',
-        data:{
-         message: message
-        },
+        url: "/projects/send/{{project.id}}/",
+        method:'POST',
+        data: JSON.stringify({
+         message: message,
+         mentions: mentions
+        }),
+        contentType: "application/json",
         success: function(){
         console.log("Clearing");
         $('#message').val("");
-        text = "<li> You: " + message +"</li>"
-        $('#message-box').append(message);
+        text = "<li class=\"text-right\">" + message +"</li>";
+        $('#message-box').append(text);
+        mentions = [];
         }
     });
   }

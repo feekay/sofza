@@ -12,6 +12,7 @@ from projects.models import Attachment, Project, Milestone, Staff, Allocation, M
 import os
 import json
 import mimetypes
+import decimal
 from django.http import StreamingHttpResponse
 from django.core.servers.basehttp import FileWrapper
 from django.core import serializers
@@ -283,7 +284,6 @@ def projects(request, year=0,month=None):
     else:
         current_month = MONTHS[month]+1
 
-    print month
 
     projects = Project.objects.filter(start_date__month = current_month, start_date__year = year).order_by('completed','start_date')
     
@@ -530,7 +530,7 @@ def staff(request):
     return render(request, "projects/staff.html", {'staff': staff, 'user_form': user_form, 'staff_form': staff_form})
 
 @user_passes_test(lambda u: u.is_superuser)  
-def analytics(request):
+def analytics(request, year=0, month=None):
     MONTHS = {
     'jan' : 0,
     'feb':1,
@@ -569,18 +569,57 @@ def analytics(request):
     else:
         current_month = MONTHS[month]+1
 
-    prev_month = (current_month-1)%12
+    prev_month = ((current_month-2)%12)+1 #Current month is one ahead of the ordinal month list so prev month is 2 behind is actual position; additional 1 to convert it back to cardinal 
 
-    if prev_month > current_year:
-        prev_year = current_year-1
+    print("prev month", prev_month)
+    if prev_month > current_month:
+        prev_year = year-1
     else:
-        prev_year = current_year
+        prev_year = year
 
 
     projects_current = Project.objects.filter(start_date__month = current_month, start_date__year = year).order_by('completed','start_date')
     projects_prev = Project.objects.filter(start_date__month = prev_month, start_date__year = prev_year).order_by('completed','start_date')
 
-    return HttpResponse("WOW")
+    context_dic={}
+    current_month -=1
+    prev_month -=1 
+    next_month = (current_month+1)%12
+
+    context_dic["current_month"] = MONTH_NAMES[current_month]
+    context_dic["prev_month"] = str(prev_year) + '/' + MONTH_NAMES[prev_month]
+        
+    if next_month < current_month:
+        context_dic["next_month"] = str(year+1) + '/' + MONTH_NAMES[next_month]
+    else:
+        context_dic["next_month"] = str(year) + '/' + MONTH_NAMES[next_month]
+
+
+    revenue= 0
+    profit=0
+
+    for project in projects_current:
+        revenue += project.cost
+        profit += project.revenue
+
+    context_dic['revenue'] =float(revenue)/ 100
+    context_dic['profit'] = float(profit)/100
+
+    current_growth = len(projects_current.filter(completed=True))
+    prev_growth = len(projects_prev.filter(completed=True))
+    current_activity = len(projects_current)
+    prev_activity = len(projects_prev)
+    try:
+        context_dic['activity'] = (decimal.Decimal(current_activity-prev_activity)/decimal.Decimal(current_activity))*100
+    #except DivisionByZero:
+    except:
+        context_dic['activity'] = 0
+    try:
+        context_dic['growth'] = (decimal.Decimal(current_growth-prev_growth)/decimal.Decimal(current_growth))*100
+    except:
+    #except DivisionByZero:
+        context_dic['growth'] = 0
+    return render(request, 'projects/analytics.html', context_dic)
 
 
 def logout_view(request):

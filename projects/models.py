@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 from datetime import datetime
 import uuid
 import os
+import decimal
 # Create your models here.
 
 CHOICES = (('$', "Dollar"),(u'\u00A3',"Pound"),(u'\u20AC', "Euro"))
@@ -27,7 +28,7 @@ class Staff(models.Model):
         for fail in failed:
             lost += fail.pay
         #Not complete yet
-        self.rating =  (completed/total)*50
+        self.rating =  (decimal.Decimal(completed)/decimal.Decimal(total))*50
         print(self.rating)
         print("Rating")
         self.save()

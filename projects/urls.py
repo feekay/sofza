@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^persons/(?P<person_id>[\w\-\_]+)/$', views.get_person, name = 'person_detail'),
     url(r'^(?P<year>[2][0][0-9][0-9])/(?P<month>[a-z][a-z][a-z])/$', views.projects, name= 'projects'),# Valid till 2099
     url(r'^analytics/$', views.analytics, name='analytics'),
+    url(r'^analytics/(?P<year>[2][0][0-9][0-9])/(?P<month>[a-z][a-z][a-z])/$', views.analytics, name= 'analytics'),# Valid till 2099
     url(r'^staff/$', views.staff, name='staff'),
     url(r'^(?P<project_id>[\w\-]+)/invoice/$', views.invoice, name= 'invoice'),
     url(r'^(?P<project_id>[\w\-]+)/(?P<mile_id>[\w\-]+)/$', views.milestone_page, name= 'milestone_page'),
