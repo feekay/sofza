@@ -12,7 +12,6 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   {% load staticfiles %}
-  <script src="{% static "js/jquery.timeago.js"%}"></script>
 <style>
 
     .add-btn{
@@ -175,12 +174,6 @@
   
     
 </style>
-
-<script>
-jQuery(document).ready(function() {
-  jQuery("time.timeago").timeago();
-});
-</script>
 </head>
 <body id="start" data-spy="scroll" data-target=".navbar" data-offset="50">
 
@@ -215,7 +208,7 @@ jQuery(document).ready(function() {
     <div class="row">
     <div class="col-sm-8">Milestones</div>
     <div class="col-sm-4 text-right">
-        <time class="timeago" datetime={{updated}}>{{updated}}</time>
+        <span>Last Updated: {{ project.last_updated|timesince }} Ago</span>
     </div>
     </div>
 </div>
@@ -313,6 +306,7 @@ jQuery(document).ready(function() {
     {% endfor %}
     {% if user.is_superuser %}
     <tr>
+        <td></td>
         <td></td>
         <td>Total</td>
         <td>{{project.cost}}</td>
@@ -519,9 +513,20 @@ $(this).attr("data-name")
                 var tr_e = "</tr>";
                 
                 if(data[i]){
-                    col = td_s + data[i]['person'] + td_e
-                    col1= td_s + data[i]['milestone'] + td_e
-                    col2= td_s + data[i]['active'] + td_e
+                    col = td_s + data[i]['person'] + td_e;
+                    col1= td_s + data[i]['milestone'] + td_e;
+                    if(data[i]['active']== true)
+                    {
+                        {% if project.completed %}
+                        col2= td_s + "Completed" + td_e;
+                        {% else %}
+                        col2= td_s + "Engaged" + td_e;
+                        {% endif %}
+                    }
+                    
+                    else{
+                        col2= td_s +"Detained" + td_e
+                    }
                     row = col+ col1+ col2
                     {% if user.is_superuser %}
                         col3= td_s + data[i]['cost'] + td_e

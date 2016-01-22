@@ -167,18 +167,30 @@
 </div>
 
 <div class ="container-fluid table-responsive">
+    <h2>{{invoice.id}}</h2>
+    <h3>{{invoice.project.client}}</h3>
+    <h3>{{invoice.project.client_mail}}</h3>
+
     <table class= "table table-hover">
     <tr>
-        <td>Invoice Id</td>
-        <td>Project Id</td>
+        <td>Title</td>
+        <td>Description</td>
+        <td>Cost</td>
+        <td>Qty</td>
+        <td>Amount</td>
     </tr>
-    {% for invoice  in invoices %}
+    {% for entry in details %}
         <tr>
-        <td><a href =/projects/invoices/{{invoice.id}}>{{invoice.id}}</a></td>
-        <td><a href =/projects/invoices/{{invoice.id}}>{{invoice.id}}</a></td>
+        <td>{{entry.title}}</td>
+        <td>{{entry.desc}}</td>
+        <td>{{entry.type}}{{entry.cost}}</td>
+        <td>{{entry.qty}}</td>
         </tr> 
     {% endfor %}
     </table>
+    
+    <p>Discount:  {{invoice.discount}}<p>
+    <p>Total:  {{invoice.total}}</p>
 </div>
 </div>
 

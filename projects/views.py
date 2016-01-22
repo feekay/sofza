@@ -8,7 +8,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.views.generic.edit import FormView
 from datetime import datetime,date
 from django.db.models import Q
-from projects.models import Attachment, Project, Milestone, Staff, Allocation, Message, Invoice
+from projects.models import Attachment, Project, Milestone, Staff, Allocation, Message, Invoice, Details
 import os
 import json
 import mimetypes
@@ -492,7 +492,7 @@ def milestone_form(request, project_id, context_dic={}):
     else:
         form2 = milestoneForm()
         form = MyForm()
-    print(project.last_updated)
+
     context_dic['updated'] = project.last_updated.isoformat()
     context_dic['form'] = form
     context_dic['form2'] = form2
@@ -628,8 +628,14 @@ def logout_view(request):
     return HttpResponseRedirect('/')
 
 @user_passes_test(lambda u: u.is_superuser)  
-def invoice_page(request):
-    pass
+def invoice_page(request, invoice_id):
+    try:
+        invoice = Invoice.objects.get(id= invoice_id)
+        details = Details.objects.filter(invoice = invoice)
+    except:
+        return HttpResponse(status=404)
+    return render(request, "projects/invoice_view.html", {'invoice': invoice, 'details':details})
+
 @user_passes_test(lambda u: u.is_superuser)  
 def invoice_list(request):
     invoices = Invoice.objects.all()
@@ -718,7 +724,7 @@ def generate(invoice):
     
     point = 7.5
     
-    c.setfont("Courier-Bold", 10)
+    c.setFont("Courier-Bold", 10)
     c.drawString(1*inch, point*inch, 'Title')
     c.drawString(3*inch, point*inch, 'Title')
     c.drawString(5*inch, point*inch, 'Cost')
@@ -727,7 +733,7 @@ def generate(invoice):
     point -= 0.1
     c.line(0, point*inch, 8*inch, point*inch)
     
-    c.setfont("Courier", 10)
+    c.setFont("Courier", 10)
     for x in data:
         point -= 0.2
         if point < 1:
@@ -741,7 +747,7 @@ def generate(invoice):
         c.line(0, point*inch, 8*inch, point*inch)
     point -= 0.3
 
-    c.setfont("Courier-Bold", 10)
+    c.setFont("Courier-Bold", 10)
     c.drawString(1*inch, point*inch, "Total: "+x.type +str(total))
     point -= 0.3
     
