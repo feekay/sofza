@@ -18,6 +18,15 @@ def portfolio(request):
         return HttpResponseRedirect('/')
     return render(request, 'mysite/portfolio.html',{'form':form})
 
+def portfolio_details(request, name):
+    portfolio = ["logo", "banners"]
+    if name in portfolio:
+        pass
+    else:
+        name=""
+
+    return render(request,'mysite/portfolio_'+name, {} )
+
 def about(request):
     form = modal_check(request)
     if form is True:

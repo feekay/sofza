@@ -76,7 +76,25 @@
     font-weight: bold;
 }
 
+.thumbnail{
+    background-image: url("{% static "images/design4.jpg" %}");
+    background-size: contain;
+    padding-bottom:0px;
+    margin-bottom:30px;
+}
 
+.thumbnail>img:hover{
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+
+.thumbnail>p{
+    margin:0px;
+    padding:10px 0px;
+    
+    background-color: white;
+}
 </style>
 
 {% endblock %}
@@ -99,32 +117,25 @@
       <div class="item active">
         <img src="{% static "images/cars3.jpg" %}" alt="Flower">
         <div class="carousel-caption">
-          <h3>Flowers</h3>
-          <p>Beatiful flowers in Kolymbari, Crete.</p>
+          
         </div>
       </div>
 
       <div class="item">
         <img src="{% static "images/cars2.jpg" %}" alt="Flower">
         <div class="carousel-caption">
-          <h3>Flowers</h3>
-          <p>Beatiful flowers in Kolymbari, Crete.</p>
-        </div>
+                  </div>
       </div>
       <div class="item">
         <img src="{% static "images/cars4.jpg" %}" alt="Flower">
         <div class="carousel-caption">
-          <h3>Flowers</h3>
-          <p>Beatiful flowers in Kolymbari, Crete.</p>
-        </div>
+          </div>
       </div>
 
       <div class="item">
         <img src={% static "images/cars1.jpg" %} alt="Flower" >
         <div class="carousel-caption">
-          <h3>Flowers</h3>
-          <p>Beatiful flowers in Kolymbari, Crete.</p>
-        </div>
+          </div>
       </div>
   
     </div>
@@ -259,7 +270,11 @@
 <!--Reviews Section -->
 <div class = "container-fluid message">
     <p id="customer-name" ><span id="swap"></span></p>
-    <p id="quote text" class="text-center"><span id="swap-quote"></span></p>
+    <svg width="400" height="180">
+  <rect x="50" y="20" rx="20" ry="20" width="150" height="150"
+  style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
+<p id="quote text"><span id="swap-quote"></span></p>
+</svg>
 </div>
 <script>
 /*Shamless copying from Stack Overflow ;)*/
