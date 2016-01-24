@@ -292,7 +292,7 @@ def projects(request, year=0,month=None):
     prev_month = (current_month-1)%12
     next_month = (current_month+1)%12
 
-    context_dic["current_month"] = MONTH_NAMES[current_month]
+    context_dic["current_month"] = context_dic["current_month"] = datetime(year, current_month+1, 1)
     if prev_month > current_month:
         context_dic["prev_month"] = str(year-1) + '/' + MONTH_NAMES[prev_month]
     else:
@@ -586,7 +586,7 @@ def analytics(request, year=0, month=None):
     prev_month -=1 
     next_month = (current_month+1)%12
 
-    context_dic["current_month"] = MONTH_NAMES[current_month]
+    context_dic["current_month"] = datetime(year, current_month+1, 1)
     context_dic["prev_month"] = str(prev_year) + '/' + MONTH_NAMES[prev_month]
         
     if next_month < current_month:
@@ -694,7 +694,7 @@ def invoice(request, project_id):
     else:
         unpaid = project.milestone_set.all().filter(paid=False)
         if(len(unpaid)>0):
-            return render(request,'projects/invoice.html', {'unpaid':unpaid, 'project_id':project.id})
+            return render(request,'projects/invoice.html', {'unpaid':unpaid, 'project':project})
         else:
             return HttpResponseRedirect('/projects/'+str(project.id))
 

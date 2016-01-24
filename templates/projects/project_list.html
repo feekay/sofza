@@ -173,7 +173,7 @@
             <a href = "/projects/{{prev_month}}">Prev </a>
         </div>
         <div class=col-sm-1>
-            {{current_month}}
+            {{ current_month|date:"F" }}
         </div>
         <div class=col-sm-1>
             <a href = "/projects/{{next_month}}">Next </a>

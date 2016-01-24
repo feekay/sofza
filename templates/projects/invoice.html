@@ -24,6 +24,17 @@
       color: #000;
   }
   
+       .navbar {
+      font-family: Montserrat, sans-serif;
+      margin-bottom: 0;
+      background-color: #2d2d30;
+      border: 0;
+      font-size: 11px !important;
+      letter-spacing: 4px;
+      opacity: 1;
+      background-color: #ffffff;
+  }
+  
    .navbar li a, .navbar .navbar-brand { 
       color: #d5d5d5 !important;
   }
@@ -68,7 +79,9 @@
     list-style-type: none;
   }
   
-  
+  h3{
+    color: royalblue;
+  }
   </style>
 </head>
 <body>
@@ -101,7 +114,9 @@
 
 
 <div class="container">
-    <form role ="form" method = "post" action ="/projects/{{project_id}}/invoice/">
+   <h3>Client: {{project.client}}</h3>
+   <h3>E-Mail: {{project.client_mail}}</h3>   
+    <form role ="form" method = "post" action ="/projects/{{project.id}}/invoice/" name="invoice" onsubmit="return validate()">
         {% csrf_token %}
         <div class="form-group">
         <label>Address</label>
@@ -123,18 +138,31 @@
             <td><lable>{{ milestone.description | truncatewords:4}}</label></td>
             
             <td>
-                <input type= "number" name="{{milestone.title}}_qty" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+                <input type= "number" name="{{milestone.title}}_qty" min="1" value =1 onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
             </td>
         </tr>
         {% endfor %}
         </table>
         <br>
         <label>Discount</label>
-        <input type = "number" name = "discount" pattern="[0-9]{0,6}" />
+        <input type = "number" name = "discount" min="0" value ="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
         <br>
-        <input type = "submit" />
+        <br>
+        <input class="btn" type = "submit" />
     </form>
 </div>
 
 </body>
+<script>
+function validate(){
+
+    var checked = $("input:checked").length;
+    
+    if (checked === 0){
+        alert("No milestone checked")
+        return false;
+    }
+}
+
+</script>
 </html>
