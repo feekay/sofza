@@ -7,17 +7,22 @@
 <link rel="stylesheet" href="{% static "css/index.css" type="text/css"%}">
 <style>
 
-.holder h3{
-    color: #fff;
-    padding-top: 15px;
-}
+
 .jumbotron{
     background-color:#fff;
     margin: 0px
 }
+
+.jumbotron.text-center {
+    overflow: hidden;
+}
 .portfolio{
+    background: #2d2d30;
+    color: #bdbdbd;
     padding: 80px 120px;
 }
+.portfolio h3 {color: #fff;}
+.portfolio p {font-style: italic;}
 
 .message{
         width:100%;
@@ -30,35 +35,7 @@
         color: #111;
     } 
 
-.bg-1 {
-    background: #2d2d30;
-    color: #bdbdbd;
-}
-.bg-1 h3 {color: #fff;}
-.bg-1 p {font-style: italic;}
 
-.img-holder{
-/*
-    width: 340px;
-    height: 300px;*/
-    width:340px;
-    height: 300px;
-    margin: 0px 20px;
-}
-
-.img-holder img{
-    position:absolute;
-    top:0;
-    left:0;
-    width: 100%;
-    max-height: 100%;
-    -webkit-transition: opacity 1.1s ease;
-    transition: opacity 1.1s ease;
-}
-
-.img-holder:hover .image1 {
-    opacity:0;
-}
 
 #swap, #swap-quote {
     vertical - align: top;
@@ -215,31 +192,30 @@
  </div>
 </div>
 -->
-<div class="bg-1">
   <div class="container-fluid portfolio">
     <h2 class="text-center">LOREM IPSUM</h2>
-<br>
+    <br>
     <br>
     <div class="row text-center">
-  <div class="col-sm-4">
-    <div class="thumbnail">
-      <img src="{% static "images/design1.jpg" %}"/>
-      <p><strong>Lorem ipsum</strong></p>
+        <div class="col-sm-4">
+        <div class="thumbnail">
+            <img src="{% static "images/design1.jpg" %}"/>
+            <p><strong>Lorem ipsum</strong></p>
+        </div>
+        </div>
+        <div class="col-sm-4">
+        <div class="thumbnail">
+            <img src="{% static "images/design2.jpg" %}"/>
+            <p><strong>Lorem ipsum</strong></p>
+            </div>
+            </div>
+        <div class="col-sm-4">
+        <div class="thumbnail">
+            <img src="{% static "images/design3.jpg" %}"/>
+            <p><strong>Lorem ipsum</strong></p>
+        </div>
+        </div>
     </div>
-  </div>
-  <div class="col-sm-4">
-     <div class="thumbnail">
-      <img src="{% static "images/design2.jpg" %}"/>
-      <p><strong>Lorem ipsum</strong></p>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="thumbnail">
-      <img src="{% static "images/design3.jpg" %}"/>
-      <p><strong>Lorem ipsum</strong></p>
-    </div>
-  </div>
-</div>
 
 
 <div class="row text-center">
@@ -266,15 +242,10 @@
  </div>
 </div>
 
-
 <!--Reviews Section -->
 <div class = "container-fluid message">
     <p id="customer-name" ><span id="swap"></span></p>
-    <svg width="400" height="180">
-  <rect x="50" y="20" rx="20" ry="20" width="150" height="150"
-  style="fill:red;stroke:black;stroke-width:5;opacity:0.5" />
-<p id="quote text"><span id="swap-quote"></span></p>
-</svg>
+    <span id="swap-quote"></span></p>
 </div>
 <script>
 /*Shamless copying from Stack Overflow ;)*/
