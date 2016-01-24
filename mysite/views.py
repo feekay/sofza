@@ -66,7 +66,7 @@ def modal_check(request):
             ip  =request.META['REMOTE_ADDR']
             browser =request.META['HTTP_USER_AGENT']
             email = form.cleaned_data['email']
-            mail = eMail.object.get_or_create(email = email)
+            mail = eMail.objects.get_or_create(email = email)
             mail.name = form.cleaned_data['name']
             mail.details = "IP: "+ip+ "\n"+ "Browser and client info: " + browser
             mail.time = datetime.now()
