@@ -121,8 +121,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 #E-MAIL HOST SETTINGS
-EMAIL_HOST = 'smtp.domain.com'
-EMAIL_HOST_USER = 'your_email@domain.com'
-EMAIL_HOST_PASSWORD = 'app_specific_password'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'mfaiq1996@gmail.com'
+EMAIL_HOST_PASSWORD = 'ffzmsnmnmzaezkiv'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

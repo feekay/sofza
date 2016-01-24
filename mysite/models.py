@@ -12,5 +12,5 @@ class eMail(models.Model):
         super(eMail, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.name + "  "+ str(self.email)
+        return  str(self.email)
 
