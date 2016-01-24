@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- Theme Made By www.w3schools.com - No Copyright -->
-  <title>{{milestone.title}}</title>
+  <title>Generate Invoice</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -11,17 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   {% load staticfiles %}
-  <style>
-      .header{
-        margin-top: 40px;
-        width:100%;
-        background:#000000;
-        font-family: Calibre;
-        font-style: bold;
-        font-size: 20px;
-        color: #eee;
-    }
-    
+  <style>    
     .btn {
       padding: 10px 20px;
       color: #333;
@@ -85,8 +75,6 @@
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
-  <div class =row>
-    <div class= col-sm-6>
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
@@ -95,9 +83,10 @@
       </button>
       <a class="navbar-brand">Sofza</a>
     </div>
-    </div>
-<div class="nav2">
+  </div>
+</nav>
 
+<div class="nav2">
   <div class="container-fluid">
     <div>
       <ul class="nav navbar-nav">
@@ -111,24 +100,41 @@
 </div>
 
 
-    <form class ="form" method = "post" action ="/projects/{{project_id}}/invoice/">
+<div class="container">
+    <form role ="form" method = "post" action ="/projects/{{project_id}}/invoice/">
         {% csrf_token %}
+        <div class="form-group">
         <label>Address</label>
         <input type = "text" name = "address" />
+        </div>
+        <table class= "table table-hover">
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>QTY</th>
+        </tr>
+        
         {% for milestone in unpaid %}
         <br>
-        <label class="checkbox-inline"><input type= "checkbox" name = "{{milestone.title}}" />{{milestone.title}}</label><span>   </span>
-        <lable>{{ milestone.description | truncatewords:4}}</label>
+        <tr>
+           <td>
+                <label class="checkbox-inline"><input type= "checkbox" name = "{{milestone.title}}" />{{milestone.title}}</label><span>   </span>
+           </td>
+            <td><lable>{{ milestone.description | truncatewords:4}}</label></td>
+            
+            <td>
+                <input type= "number" name="{{milestone.title}}_qty" min="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+            </td>
+        </tr>
+        {% endfor %}
+        </table>
         <br>
-        <label>Qty</label>
-        <input type= "number" name="{{milestone.title}}_qty" min=1 pattern="[0-9]{0,6}"/>
-        {% endfor %}<br>
         <label>Discount</label>
         <input type = "number" name = "discount" pattern="[0-9]{0,6}" />
         <br>
         <input type = "submit" />
     </form>
-
+</div>
 
 </body>
 </html>

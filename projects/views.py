@@ -681,6 +681,7 @@ def invoice(request, project_id):
                  type = project.pay_type,
                  qty= qty)
 
+        
         invoice.total = total
         invoice.save()
         name = generate(invoice)
@@ -692,8 +693,10 @@ def invoice(request, project_id):
         return response
     else:
         unpaid = project.milestone_set.all().filter(paid=False)
-        return render(request,'projects/invoice.html', {'unpaid':unpaid, 'project_id':project.id})
-
+        if(len(unpaid)>0):
+            return render(request,'projects/invoice.html', {'unpaid':unpaid, 'project_id':project.id})
+        else:
+            return HttpResponseRedirect('/projects/'+str(project.id))
 
 def generate(invoice):
     print ("Generating PDF")
@@ -748,14 +751,14 @@ def generate(invoice):
     point -= 0.3
 
     c.setFont("Courier-Bold", 10)
-    c.drawString(1*inch, point*inch, "Total: "+x.type +str(total))
+    c.drawString(1*inch, point*inch, "Total: "+project.pay_type +str(total))
     point -= 0.3
     
     if discount:
-        c.drawString(1*inch, point*inch, "Discount: "+x.type + str(discount))
+        c.drawString(1*inch, point*inch, "Discount: "+project.pay_type + str(discount))
         point -= 0.3
         total-=discount
-    c.drawString(1*inch, point*inch, "Due amount: "+x.type +str(total))
+    c.drawString(1*inch, point*inch, "Due amount: "+project.pay_type +str(total))
     point -= 0.3
     c.save()
     return name

@@ -29,8 +29,8 @@ class Staff(models.Model):
             lost += fail.pay
         #Not complete yet
         self.rating =  (decimal.Decimal(completed)/decimal.Decimal(total))*50
-        print(self.rating)
-        print("Rating")
+        #print(self.rating)
+        #print("Rating")
         self.save()
 
     def save(self, *args, **kwargs):

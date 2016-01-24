@@ -1,23 +1,144 @@
 <!DOCTYPE html>
-{% load static %}
+{% load staticfiles %}
 <html lang="en-US" class=" js cssanimations csstransforms csstransforms3d csstransitions js_active  vc_desktop  vc_transform  vc_transform "><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="UTF-8">
 <title>Sofza</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<!--[if lte IE 8]><style>.ss-container, .header-white,.hidden, #nav, .right-bottom-nav, .ss-row-clear{display:none;} .support-note .note-ie{display:block;}</style><![endif]-->
- 
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+
 <link rel="stylesheet" id="ab_tf_fontawesome-css" href="{% static "css/font-awesome.css" %}" type="text/css" media="all">
 <link rel="stylesheet" id="ab_tf_mainstyle-css" href="{% static "css/style.css" %}" type="text/css" media="all">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery-migrate.min.js" %}"></script>
-</head>
-
-<body class="home page page-id-2734 page-template-default wpb-js-composer js-comp-ver-4.3.3 vc_responsive">
 <style>
+ .nav2{
+    padding-top: 50px;
+    background: #111311;
+  }
+  
+  .nav2 li a{ 
+      color: #d5d5d5 !important;
+  }
+  .nav2 li a:hover {
+      color: #000 !important;
+  }
+  .nav2 li.active a {
+      color: #000 !important;
+      background-color: #29292c !important;
+  }
 
+
+  .categories li a{ 
+      color: #fff !important;
+      
+  }
+  .categories li a:hover {
+      color: #000 !important;
+  }
+  .categories li.active {
+      color: #000 !important;
+      padding: 3px;
+      list-style-type: none;
+  }
+  .categories li.active:hover {
+      background-color: #d5d5d5 !important;
+  }
+
+  .caption{
+
+    min-height: 200px;
+  }
+
+
+  footer {
+      background-color: #2d2d30;
+      color: #f5f5f5;
+      margin: 0px;
+      padding: 32px 0px;
+  }
+  footer a {
+      color: #f5f5f5;
+  }
+  footer a:hover {
+      color: #777;
+      text-decoration: none;
+  }
+  footer li
+  {
+    list-style-type: none;
+  }
+  
+  .categories{
+    background: #111212;
+    padding: 20px;
+  }
 </style>
+
+</head>
+<body id="start">
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand">Sofza</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+            <li><button type="button" class= "btn btn-primary order-btn" data-toggle="modal" data-target="#myModal" data-keyboard="true">Place Order</button></li>
+        </ul>
+    </div>
+  </div>
+</nav>
+
+<div class>
+    <div class="modal fade" id="myModal" role="dialog" tabindex=-1>
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">What do you need?</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="errors"></p>
+                    <form name="contact" method= "POST" action=/site/ onsubmit="return validateData()">
+                        {% csrf_token %}
+        
+                        {{ form.as_p}}
+                        <input type ='submit' class="btn btn-primary" value ='Done'>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="nav2">
+
+  <div class="container-fluid">
+    <div>
+      <ul class="nav navbar-nav">
+        <li><a href="/site">HOME</a></li>
+        <li><a href="/site/portfolio/">PORTFOLIO</a></li>
+        <li><a href="/site/faq/">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>
+
+<div class="body home page page-id-2734 page-template-default wpb-js-composer js-comp-ver-4.3.3 vc_responsive">
 <script>
 jQuery(document).ready(function($){
 		'use strict';
@@ -476,19 +597,17 @@ jQuery(document).ready(function($){
 	}
 }('bespoke', this, document));
 </script>
-
-<div id="main2" style="height: 700px; " class="carousel  woocommerce amysliderheight ">
-	<article id="articlehold2" class="scene bespoke-parent">
-	 
-                  
-                         
-
-			<section class="grid clearfix  sunflower bespoke-slide bespoke-inactive bespoke-before bespoke-before-2" rel="0">
-				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+<div id="main2" style="height: 300px; " class="carousel  woocommerce amysliderheight ">
+	<article id="articlehold2" class="scene bespoke-parent" style="
+    height: 500px;
+    position: inherit;
+">
+	    <section class="grid clearfix  sunflower bespoke-slide bespoke-inactive bespoke-before bespoke-before-2" rel="0">
+			<div class="layer tt-cn-style  center-content " data-depth="1.5">
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 
@@ -504,7 +623,7 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" alt="3D Project 1 (23)">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 			</figcaption>            
@@ -519,7 +638,7 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" alt="3D Project 1 (15)">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 			</figcaption>            
@@ -534,7 +653,7 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" alt="3D Project 1 (14)">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 			</figcaption>            
@@ -549,7 +668,7 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="3D Project 1 (9)">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 
@@ -565,7 +684,7 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="Office 3">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 			</figcaption>            
@@ -580,7 +699,7 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 
@@ -596,47 +715,47 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer" > 
 					<h2 class="content-title">IMAGE</h2>
 				
 			</figcaption>            
 		</figure>
 	</div>
-                                    </div>
-			</section>
+     </div>
+	</section>
                    
 
-			<section class="grid clearfix  midnightblue bespoke-slide bespoke-inactive bespoke-after bespoke-after-6" rel="8">
+	<section class="grid clearfix  midnightblue bespoke-slide bespoke-inactive bespoke-after bespoke-after-6" rel="8">
 				<div class="layer tt-cn-style  center-content " data-depth="1.5">
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" >			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400" >
 			<figcaption class="layer" > 
 					<h2 class="content-title">IMAGE</h2>
 				
 			</figcaption>            
 		</figure>
 	</div>
-                                    </div>
-			</section>
+    </div>
+	</section>
                    
 
-			<section class="grid clearfix  wisteria bespoke-slide bespoke-inactive bespoke-after bespoke-after-7" rel="9">
-				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+	<section class="grid clearfix  wisteria bespoke-slide bespoke-inactive bespoke-after bespoke-after-7" rel="9">
+		<div class="layer tt-cn-style  center-content " data-depth="1.5">
                                             
-	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+	    <div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="7- Baan Thai">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 				
 			</figcaption>            
 		</figure>
 	</div>
-                                    </div>
-			</section>
+    </div>
+    </section>
                    
 
 			<section class="grid clearfix  peterriver bespoke-slide bespoke-inactive bespoke-after bespoke-after-8" rel="10">
@@ -644,14 +763,14 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-25-300x400.jpg"%}" width="300" height="400" alt="6- The Decorator">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 
 			</figcaption>            
 		</figure>
 	</div>
-                                    </div>
+    </div>
 			</section>
                    
 
@@ -660,91 +779,90 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="4- Alrahla">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400" alt="4- Alrahla">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 			</figcaption>            
 		</figure>
 	</div>
-                                    </div>
-			</section>
+    </div>
+	</section>
                    
 
-			<section class="grid clearfix  sunflower bespoke-slide bespoke-inactive bespoke-after bespoke-after-10" rel="12">
-				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+	<section class="grid clearfix  sunflower bespoke-slide bespoke-inactive bespoke-after bespoke-after-10" rel="12">
+		<div class="layer tt-cn-style  center-content " data-depth="1.5">
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="2- Fresh Eggloo">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE</h2>
 
 			</figcaption>            
 		</figure>
 	</div>
-                                    </div>
-			</section>
+   </div>
+	</section>
                    
 
-			<section class="grid clearfix  asbestos bespoke-slide bespoke-inactive bespoke-after bespoke-after-11" rel="13">
-				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+	<section class="grid clearfix  asbestos bespoke-slide bespoke-inactive bespoke-after bespoke-after-11" rel="13">
+		<div class="layer tt-cn-style  center-content " data-depth="1.5">
                                             
-	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+    	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
-			<figcaption class="layer"> 
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
+				<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE7</h2>
 			</figcaption>            
 		</figure>
 	</div>
-                                    </div>
-			</section>
+    </div>
+	</section>
                    
 
-			<section class="grid clearfix  greensea bespoke-slide bespoke-inactive bespoke-after bespoke-after-12" rel="14">
-				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+	<section class="grid clearfix  greensea bespoke-slide bespoke-inactive bespoke-after bespoke-after-12" rel="14">
+		<div class="layer tt-cn-style  center-content " data-depth="1.5">
+                                            
+	    <div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+	    	<figure>
+	    		<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
+	    			<figcaption class="layer"> 
+				    	<h2 class="content-title">IMAGE6</h2>
+			        </figcaption>            
+		    </figure>
+	    </div>
+       </div>
+	</section>
+                   
+
+	<section class="grid clearfix  belizehole bespoke-slide bespoke-inactive bespoke-after bespoke-after-13" rel="15">
+	<div class="layer tt-cn-style  center-content " data-depth="1.5">
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400">
-			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 205.6 L 180 182 L 180 0 L 0 0 z "></path></svg>
-			<figcaption class="layer"> 
-					<h2 class="content-title">IMAGE6</h2>
-			</figcaption>            
-		</figure>
-	</div>
-                                    </div>
-			</section>
-                   
-
-			<section class="grid clearfix  belizehole bespoke-slide bespoke-inactive bespoke-after bespoke-after-13" rel="15">
-				<div class="layer tt-cn-style  center-content " data-depth="1.5">
-                                            
-	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
-		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 3 c">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE5</h2>
 			 </figcaption>            
 		</figure>
-	</div>
-                                    </div>
-			</section>
+	 </div>
+    </div>
+	</section>
                    
 
-			<section class="grid clearfix  pomegranate bespoke-slide bespoke-inactive bespoke-after bespoke-after-14" rel="16">
-				<div class="layer tt-cn-style  center-content " data-depth="1.5">
+	<section class="grid clearfix  pomegranate bespoke-slide bespoke-inactive bespoke-after bespoke-after-14" rel="16">
+		<div class="layer tt-cn-style  center-content " data-depth="1.5">
                                             
-	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
+	    <div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 5 a">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE4</h2>
 
 			</figcaption>            
 		</figure>
 	</div>
-                            </div>
+    </div>
 	</section>
                    
 
@@ -753,7 +871,7 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 1">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400" >
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE3</h2>
 			</figcaption>            
@@ -768,13 +886,13 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 3 a">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer"> 
 					<h2 class="content-title">IMAGE2</h2>
 			</figcaption>            
 		</figure>
 	</div>
-                                    </div>
+    </div>
 </section>
                    
 
@@ -783,39 +901,142 @@ jQuery(document).ready(function($){
                                             
 	<div class="slelement" data-path-hover="M 0,0 0,0 90,0 180.5,0 180,0 z">
 		<figure>
-			<img class="" src="{% static "images/3D-Project-1-9-300x400.jpg"%}" width="300" height="400" alt="UI Design 5 a">			<svg viewBox="0 0 180 280" preserveAspectRatio="none"><path d="M 0 0 L 0 182 L 90 156.5 L 180 182 L 180 0 L 0 0 z "></path></svg>
+			<img class="" src="{% static "images/design1.jpg"%}" width="300" height="400">
 			<figcaption class="layer" > 
 					<h2 class="content-title">IMAGE1</h2>
 			</figcaption>            
 		</figure>
 	</div>
-                                    </div>
-			</section>
+    </div>
+	</section>
                         
     </article>
     
-       <!-- START NAVIGATION ARROWS -->
-       <div id="arrownav2">
-			<div class="ss-nav-arrows-next">
-				<i class="icon-angle-right next-arrow"></i>
-			</div>
-			<div class="ss-nav-arrows-prev">
-				<i class="icon-angle-left prev-arrow"></i>
-			</div>
-         </div>
-			<!-- END NAVIGATION ARROWS -->
+
 </div> 
+
+<!-- START NAVIGATION ARROWS -->
+       <div id="arrownav2 text-center">			
+			<div class="ss-nav-arrows-prev"  style="display:inline">
+				<span class="prev-arrow"><img src="{% static "images/previous.png" %}" width="40px"  height= "40px"/></span>
+			</div>
+            <div class="ss-nav-arrows-next"  style="display:inline">
+				<span class="next-arrow"><img src="{% static "images/next.png" %}" width="40px"  height= "40px" /></span>
+			</div>
+        </div>
+         
+			<!-- END NAVIGATION ARROWS -->
 		</div> 
 	</div> 
 </div></div>
-
 
 </li>
                 </div></div></div></div>		</div> 
 	</div>   
 </div>
+       
 </div>
 </div>
+
+</div> <!--End division Body-->
+
+<!-- Category Links -->
+<div class="conatianer-fluid categories">
+<div class="row">
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-2">
+        <ul>
+        <li class="active"><a href="/portfolio/#">Logo</a></li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!--Caption Section-->
+<div class="container-fluid caption">
+    
+</div>
+
+<!--Footer-->
+<footer class="footer text-right">
+<div class="row">
+
+  <div class= col-sm-10>
+    <ul class="text-left">
+       <li><a href="/site">Home</a></li>
+       <li><a href="/site/portfolio/">Portfolio</a></li>
+       <li><a href="/site/about/">About</a></li>
+       <li><a href="/site/policy/">Policy</a></li>
+       <li><a href="/site/faq/">FAQ</a></li>
+    </ul>
+  </div>
+    <div class= "col-sm-2">
+      <a class="up-arrow" href="#start" data-toggle="tooltip" title="TO TOP">
+    <img class="up-scroll" src="{% static "images/scroll.png" %}" width="64px" height="64px"></img>
+  </a>
+  </div>
+</div>
+</footer>
+
 <script type="text/javascript" src="{% static "js/modernizr.custom.79639.js"%}"></script>
 </body>
 </html>

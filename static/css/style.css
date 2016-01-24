@@ -22,19 +22,15 @@ img {
 	height: auto;
 }
 
-body {
+.body {
 	font-family: Open Sans, Geneva, sans-serif;
 	font-size: 12px;
 	color: #777;
 	font-weight: normal;
-	background-color: #F1F1F1;
+	background-color: #000;
 	/*-webkit-touch-callout: none;
 	-webkit-user-select: none;*/
 }
-input, textarea {
-	-webkit-user-select: text;
-}
-
 p {
 	padding: 8px 0 8px 0;
 }
@@ -941,7 +937,7 @@ figure.nobgcolor, .wpb_wrapper figure.nobgcolor{
 	position: relative;
 	display: block;
 	width: 100%;
-	opacity: 0.2;
+	opacity: 1;
 	z-index: 1;
 	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
 	transition: opacity 0.3s, transform 0.3s;
@@ -979,14 +975,14 @@ figure.nobgcolor, .wpb_wrapper figure.nobgcolor{
 	position: absolute;
 	top: 0;
 	z-index: 1;
-	padding-top: 1px;
+	padding-top: 0px;
 	width: 100%;
 	height: 100%;
 	text-align: center;
 }
 
 .grid figcaption h2 {
-	margin: 10px 0 10px 0;
+	margin: 0px 0 00px 0;
 	display: inline-block;
 	color: #3498db;
 	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
@@ -1103,42 +1099,6 @@ figure.nobgcolor, .wpb_wrapper figure.nobgcolor{
 	transition: none;
 }
 
-.grid .woocommerce .clickimg {
-	width: 30%;
-	right: 14%;
-	font-size: 14px;
-}
-
-.grid .woocommerce .clicklink {
-	width: 56%;
-	font-size: 14px;
-	padding-left: 10px;
-	padding-right: 10px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.grid .woocommerce .clickimg .star-rating, .grid .clickimg .star-rating {
-	margin-top: 13px;
-	font-size: 12px;
-	margin-left: -30px;
-}
-
-.grid .woocommerce .woopriceh {
-	font-size: 20px;
-	font-weight: 300;
-}
-
-.grid .woocommerce .clicklink div {
-	overflow: hidden;
-	position: relative;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
 
 .as_black_style .clickimg {
 	background-color: #282828;
@@ -1168,33 +1128,6 @@ figure.nobgcolor, .wpb_wrapper figure.nobgcolor{
 	box-sizing: border-box;
 }
 
-.grid .clickaddtocart:after {
-	position: absolute;
-	margin-left: -18px;
-	z-index: 1;
-	font-family: FontAwesome;
-	content: "\f164";
-	width: 20%;
-	height: auto;
-	visibility: hidden;
-}
-
-.grid .added_to_cart {
-	display: none!important;
-}
-
-.grid .added .clickaddtocart:after {
-	visibility: visible;
-}
-
-.grid .added .clickaddtocart i {
-	visibility: hidden;
-}
-
-.as_black_style .clickaddtocart {
-	background-color: #282828;
-	background-color: rgba(40,40,40,0.85);
-}
 
 .imghoverfxbg.grid .clickimg {
 	width: 100%;
@@ -1245,11 +1178,6 @@ figure.nobgcolor, .wpb_wrapper figure.nobgcolor{
 	-webkit-backface-visibility: hidden;
 }
 
-.grid svg path {
-	fill: #fff;
-	fill: rgba(255,255,255,0.95);
-}
-
 .as_black_style .grid svg path {
 	fill: #282828;
 	fill: rgba(40,40,40,0.85);
@@ -1268,21 +1196,7 @@ figure.nobgcolor, .wpb_wrapper figure.nobgcolor{
 	transform: translateY(2px);
 }
 
-.grid  .slelement:hover svg {
-	-webkit-transform: translateY(-354px);
-	-moz-transform: translateY(-354px);
-	-ms-transform: translateY(-354px);
-	-o-transform: translateY(-354px);
-	transform: translateY(-354px);
-	-webkit-transition: all 0.7s, -webkit-transform 0.7s;
-	transition: all 0.7s, transform 0.7s;
-	-webkit-transition-timing-function: cubic-bezier(0.250, 0.250, 0.115, 3);
-	-webkit-transition-timing-function: cubic-bezier(0.250, 0.250, 0.115, 1.445);
-	-moz-transition-timing-function: cubic-bezier(0.250, 0.250, 0.115, 1.445);
-	-ms-transition-timing-function: cubic-bezier(0.250, 0.250, 0.115, 1.445);
-	-o-transition-timing-function: cubic-bezier(0.250, 0.250, 0.115, 1.445);
-	timing-function: cubic-bezier(0.250, 0.250, 0.115, 1.445);
-}
+
 
 .grid  svg {
 	-webkit-transition: all 0.4s, -webkit-transform 0.4s;
@@ -1303,6 +1217,7 @@ figure.nobgcolor, .wpb_wrapper figure.nobgcolor{
 }
 
 .grid .slelement:hover figcaption h2 {
+	
 	-webkit-transform: translateY(8px);
 	transform: translateY(8px);
 	white-space: nowrap;
