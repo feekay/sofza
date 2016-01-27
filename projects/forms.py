@@ -31,11 +31,13 @@ class MyForm(forms.Form):
 
 class projectForm(forms.ModelForm):
     CHOICES = (('$', "Dollar"),(u'\u00A3',"Pound"),(u'\u20AC', "Euro"))
+    SITES = (("fb","Facebook"),("sk", "Skype"),("fvr","Fivrr"),("mail", "Mail"),("pph","P/Hour"),("etc","Others"))
+    
     client = forms.CharField(max_length = 50, label= "Client Name", widget=forms.TextInput(attrs={'required': ''}))
     client_mail = forms.EmailField(widget=forms.EmailInput(attrs={'required': ''}))
     title = forms.CharField(max_length=50, label = "Project Title", widget=forms.TextInput(attrs={'required': '', 'autocomplete':'off'}))
+    source = forms.ChoiceField(choices = SITES, widget= forms.RadioSelect(attrs={'required':''}))
     pay_type = forms.ChoiceField(choices = CHOICES, label="Payment Currency", initial='', widget=forms.Select(), required=True)
-    estimated_end_date= forms.DateField(widget=SelectDateWidget())
     start_date = forms.DateField(widget=SelectDateWidget())
 
     class Meta:

@@ -431,6 +431,10 @@ def project_page(request, project_id, month=0):
     except:
         return HttpResponseRedirect('/')
     context_dic['project'] = project;
+    try:
+        context_dic['revenue'] = float(project.revenue)/float(project.cost)*100
+    except:
+        context_dic['revenue'] =0
 #        print project.id
 
     if request.GET.get("success", False):

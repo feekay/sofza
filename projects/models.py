@@ -41,7 +41,7 @@ class Staff(models.Model):
         return str(self.full_name)
 
 class Project(models.Model):
-    
+    SITES = (("fb","Facebook"),("sk", "Skype"),("fvr","Fivrr"),("mail", "Mail"),("pph","P/Hour"),("etc","Others"))
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=50)
     client = models.CharField(max_length = 50)
@@ -51,11 +51,11 @@ class Project(models.Model):
     pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
     start_date = models.DateField()
     last_updated = models.DateTimeField(default=datetime.now)
-    estimated_end_date = models.DateField()
     completed = models.BooleanField(default= False)
     completed_date = models.DateField(null = True)
     success = models.BooleanField(default=False)
-
+    source = models.CharField(choices = SITES, default='etc', max_length =5)
+    
     def save(self, *args, **kwargs):
         if not self.id:
             self.id = uuid.uuid4()

@@ -61,6 +61,9 @@ input:focus {
     color: black;
 }
 
+.feedback{
+    padding-top: 40px;
+}
 .section-head{
     color: #4682B4;
     font-family: serif;
@@ -71,6 +74,13 @@ input:focus {
     margin-bottom: 0px;
 }
 
+textarea{
+    margin-top: 20px;
+    padding: 6px 12px;
+    border-radius: 4px;
+
+}
+
 </style>
 {% endblock %}
 
@@ -78,7 +88,7 @@ input:focus {
 <!--Questions-->
 <div class= "container section">
 
-<img src="{% static "images/add_project.png"%}" width=60px heigth= 60px></img>
+<img src="{% static "images/why_icon.png"%}" width=60px heigth= 60px></img>
 <h2  class="section-head">Frequestly Asked Questions</h2>
 
 <div id="questions">
@@ -113,17 +123,17 @@ input:focus {
 </div>
 <!--Feedback form-->
 <div class= "container section">
-<img src="#"></img>
+<img src="{% static "images/why_icon.png"%}" width=60px heigth= 60px"></img>
 <h2 class="section-head">Ask something else?</h2>
-<div class="row">
+<div class="row feedback">
 <div class="col-sm-6">
 <p class="question">Have something else to ask?</p>
 <p>Just ask below and you will get it with in a day.</p>
 
-<form method="post" action="">
+<form role="form" method="post" action="">
 {% csrf_token %}
-<input type ="email" name="email" placeholder="Your E-mail"/>
-<input type = "text" name="message" placeholder= "Your message">
+<textarea  rows="3" name="message" placeholder= "Your message" required></textarea><br>
+<input type ="email" name="email" placeholder="Your E-mail" required/><br>
 <input type= "submit" >
 </form>
 
@@ -131,7 +141,7 @@ input:focus {
 </div>
 
 <div class="col-sm-6 text-center">
-    <img src=# alt="Envelope"></img>
+    <img src="{% static "images/faq-icon.png"%}" alt="Envelope"></img>
 </div>
 </div>
 </div>

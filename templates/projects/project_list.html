@@ -102,16 +102,23 @@
       background-color: #fff;
       color: #000;
   }
-  .modal-header, h4, .close {
-      background-color: #333;
-      color: #fff !important;
-      text-align: center;
-      font-size: 30px;
+  .form-row{
+    margin: 10px;
   }
-  .modal-header, .modal-body {
-      padding: 40px 50px;
+  .form-label{
+    padding: 4px 0px;
   }
   
+  .img_radio> input{ /* HIDE RADIO */
+  display:none;
+    }
+  .img_radio > input + img{ /* IMAGE STYLES */
+  cursor:pointer;
+  border:2px solid transparent;
+    }
+  .img_radio > input:checked + img{ /* (CHECKED) IMAGE STYLES */
+  border:2px solid #00f;
+    }
   footer {
       background-color: #2d2d30;
       color: #f5f5f5;
@@ -128,7 +135,7 @@
   {
     list-style-type: none;
   }
-  
+
 </style>
   
 </head>
@@ -184,7 +191,7 @@
 <div class= "container main">
 <div class= "container add-btn">
     <div class="add_project">
-	<a href="#myModal" role="button" class="btn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img> New Project</a>
+	<a href="#myModal" role="button" data-toggle="modal" data-keyboard="true"><img src="{% static "images/add_project.png" %}" width="32px" height="32px"></img> New Project</a>
     </div>
 </div>
 
@@ -200,9 +207,29 @@
                     <p id="errors">
                     </p>
                     
-                    <form action="" method="post" enctype="multipart/form-data" name ="project" onsubmit="return validateData()">
+                    <form role="form" action="" method="post" enctype="multipart/form-data" name ="project" onsubmit="return validateData()">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {% for field in form %}
+                        {% if field.name == "source" %}
+                            <p>
+                            {% for radio in form.source %}
+                            <label class="img_radio" for="{{ radio.id_for_label }}">
+                            {{ radio.tag }}
+                            <img src="{% static "images/" %}{{radio.choice_value}}.png"/>
+                            </label>
+                            {% endfor %}
+                            </p>
+                        {% else %}
+                        <div class="row form-row">
+                        <div class= "col-sm-2 form-label">
+                        {{ field.label }}
+                        </div>
+                        <div class="col-sm-5">
+                        {{ field}}
+                        </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
                     <input type="submit" class="btn" value="Add" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </form>
@@ -220,9 +247,9 @@
     <th>Email</th>
     <th>Task</th>
     <th>Start Date</th>
-    <th>End Date</th>
     <th>Cost</th>
     <th>Last Updated</th>
+    <th>Source</th>
     </tr>
 
     {% for project in projects %}
@@ -235,9 +262,9 @@
         <td><a href =/projects/{{project.id}}>{{project.client_mail}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.title}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.start_date}}</a></td>
-        <td class="deadline"><a href =/projects/{{project.id}}>{{project.estimated_end_date}}</a></td>
         <td><a href =/projects/{{project.id}}>{{project.pay_type}}{{project.cost}}</a></td>
         <td><a href=/projects/{{project.id}}>{{project.last_updated}}</a></td>
+        <td ><a href =/projects/{{project.id}}><img src ="{% static "images/" %}{{project.source}}.png" width= "40px" height="40px" /></a></td>
         </tr>
     
     {% endfor %}
