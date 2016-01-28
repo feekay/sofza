@@ -465,6 +465,7 @@ def project_page(request, project_id, month=0):
 
     milestones = Milestone.objects.filter(project=project_id).order_by("completed", "start_date")
     context_dic['milestones'] = milestones
+    context_dic['allotment'] = abs(project.cost - project.alloted)
     return milestone_form(request, project_id, context_dic)
 
 

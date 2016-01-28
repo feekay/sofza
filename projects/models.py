@@ -47,6 +47,7 @@ class Project(models.Model):
     client = models.CharField(max_length = 50)
     client_mail = models.EmailField()
     cost = models.PositiveIntegerField(default=0)
+    alloted = models.PositiveIntegerField(default=0)
     revenue = models.PositiveIntegerField(default=0)
     pay_type = models.CharField(choices = CHOICES, default = '$', max_length =2)
     start_date = models.DateField()
@@ -71,9 +72,9 @@ class Project(models.Model):
 
     def update_cost(self):
         milestones = self.milestone_set.all()
-        self.cost = 0
+        self.alloted = 0
         for milestone in milestones:
-            self.cost += milestone.cost
+            self.alloted += milestone.cost
         self.save()
 
     def calculate_revenue(self):

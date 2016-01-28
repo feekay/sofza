@@ -161,6 +161,7 @@
         <li><a href="/projects/staff/">Staff</a></li>
         <li><a href="/projects/analytics/">Analytics</a></li>
         <li><a href="/projects/invoices/">Invoices</a></li>
+        <li><a id="mail" href="/site/mails/">Mails</a></li>
       </ul>
     </div>
   </div>
@@ -188,33 +189,6 @@
 </body>
 
 <script>
-{% if user.is_superuser %}
-function validateData(){
-
-    var x = document.forms["project"]["client_mail"].value;
-    var atpos = x.indexOf("@");
-    var dotpos = x.lastIndexOf(".");
-    if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
-        $("#errors").html("Enter a valid e-mail address");
-        return false;
-    }
-
-
-    var start_m = document.forms["project"]["start_date_month"].value;
-    var end_m = document.forms["project"]["estimated_end_date_month"].value;
-    
-    var start_d = document.forms["project"]["start_date_day"].value;
-    var end_d = document.forms["project"]["estimated_end_date_day"].value;
-    
-    var start_y = document.forms["project"]["start_date_year"].value;
-    var end_y = document.forms["project"]["estimated_end_date_year"].value;
-
-    if (start_y> end_y || (start_y === end_y && start_m > end_m) ||(start_y === end_y && start_m === end_m && start_d > end_d)){
-        $("#errors").html("Invalid dates, can't end before start!");
-        return false;
-    }
-}
-{% endif %}
 
 $(document).ready(function(){
 
@@ -243,29 +217,6 @@ $(document).ready(function(){
   });
 
 
-  //Add Deadlines
-  $('td.deadline a').bind('change keyup', function(){
-        var tr=$(this).closest('tr');
-
-        var deadline = new Date($(this).text());
-        var today = new Date();
-        today.setHours(0,0,0,0);
-        
-        if(!tr.hasClass('success'))
-        {
-            if (deadline.valueOf() === today.valueOf())
-            {
-                tr.addClass('warning');
-            }   
-            else if(deadline<today)
-            {            
-                tr.addClass('danger');
-            }
-
-        }
-    }).trigger('change');
-
-});
 </script>
 
 

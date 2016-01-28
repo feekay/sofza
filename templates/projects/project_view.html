@@ -259,6 +259,7 @@
         <span class="icon-bar"></span>                        
       </button>
       <a class="navbar-brand">Sofza</a>
+      
     </div>
 </div>
 <div class="nav2">
@@ -270,6 +271,7 @@
         <li><a id="staff" href="/projects/staff/">Staff</a></li>
         <li><a id="analytics" href="/projects/analytics/">Analytics</a></li>
         <li><a id="invoices" href="/projects/invoices/">Invoices</a></li>
+        <li><a id="mail" href="/site/mails/">Mails</a></li>
       </ul>
     </div>
   </div>
@@ -301,7 +303,11 @@
         <a href="#completeModal" role="button" class="mybtn" data-toggle="modal" data-keyboard="true"><img src="{% static "images/completed.png" %}" width="32px" height="32px"></img> Complete</a>
     {% endif%}
     </div>
-
+    {% if project.alloted > project.cost %}
+    <span>Addition: {{allotment}}</span>
+    {% else %}
+    <span>Remaining: {{allotment}}</span>
+    {% endif %}
 </div>
 {% endif %}
 
@@ -789,6 +795,14 @@ document.getElementById("invoices").onclick = function () {
 document.getElementById("staff").onclick = function () {
     location.href = "/projects/staff";
 };
+document.getElementById("mail").onclick = function () {
+    location.href = "/site/mails";
+};
+
+document.getElementById("logout").onclick = function () {
+    location.href = "/projects/logout/";
+};
+
 
 </script>
 </body>

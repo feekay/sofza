@@ -37,12 +37,13 @@ class projectForm(forms.ModelForm):
     client_mail = forms.EmailField(widget=forms.EmailInput(attrs={'required': ''}))
     title = forms.CharField(max_length=50, label = "Project Title", widget=forms.TextInput(attrs={'required': '', 'autocomplete':'off'}))
     source = forms.ChoiceField(choices = SITES, widget= forms.RadioSelect(attrs={'required':''}))
+    cost = forms.IntegerField(widget=forms.NumberInput(attrs={'required': '', 'min':'1', 'onkeypress':'return event.charCode >= 48 && event.charCode <= 57'}))
     pay_type = forms.ChoiceField(choices = CHOICES, label="Payment Currency", initial='', widget=forms.Select(), required=True)
     start_date = forms.DateField(widget=SelectDateWidget())
 
     class Meta:
         model = Project
-        exclude = ['id', 'cost', 'last_updated', 'completed','completed_date', 'revenue', 'success']
+        exclude = ['id', 'alloted', 'last_updated', 'completed','completed_date', 'revenue', 'success']
 
 class milestoneForm(forms.ModelForm):
     title = forms.CharField(max_length = 50, label ="Task", widget=forms.TextInput(attrs={'required': '', 'autocomplete':'off'}))

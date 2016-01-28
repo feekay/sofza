@@ -6,7 +6,7 @@ urlpatterns = patterns('',
         url(r'^portfolio/$', views.portfolio, name= 'portfolio'),
         url(r'^portfolio/(?P<name>[\w]+)/$', views.portfolio_details, name= 'portfolio'),#CHECK PATTERN
         url(r'^faq/$', views.faq, name ='faq'),
-        url(r'^email_data/$', views.emails, name ='emails'),
+        url(r'^mails/$', views.emails, name ='emails'),
         url(r'^about/$', views.about, name ='about'),
         url(r'^policy/$', views.policy, name ='policy'),
 )
