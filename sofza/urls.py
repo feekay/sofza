@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^portfolio$', site_views.portfolio, name="portfolio"),
     url(r'^about$', site_views.about, name="about"),
     url(r'^policy$', site_views.policy, name="policy"),
+    url(r'^contact$', site_views.contact, name="contact"),
 ]
 
 if settings.DEBUG:
