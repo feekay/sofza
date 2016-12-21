@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+         {% load staticfiles %}
+        <title>Agency - Start Bootstrap Theme</title>
+        <!-- Bootstrap Core CSS -->
+        <link href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+        <!-- Custom Fonts -->
+        <link href="{% static "vendor/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+        <!-- Theme CSS -->
+        <link href="{% static "css/agency.css" %}" rel="stylesheet">
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    </head>
+    <body id="page-top" class="order">
+        
+        <!-- Navigation -->
+        <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top affix-top">
+            <div id="home" class="header-top">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="navbar-header">
+                                <a class="navbar-brand" href="/">
+                                <img src="{% static "img/logos/logo.png" %}" alt="logo" class="img-responsive logo"></a>
+                                <a href="index.html">
+                                    <button type="button" class="menu navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                    <span class="sr-only">Toggle navigation</span> <i class="fa fa-home fa-2x" aria-hidden="true"></i>
+                                    </button>
+                                </a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid no-padding">
+                <div class="row">
+                    <div class="col-sm-2 xs-no-padding">
+                        <div class="menu collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li class="active">
+                                    <a class="first-item" href="/"><i class="fa fa-home fa-2x" aria-hidden="true"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <h3 class="order-title">Place your Order</h3>
+                    </div>
+                    <div class="col-sm-2">
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+        <div class="gap-top"></div>
+        <!-- Header -->
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="info text-center">
+                        <h2>Your are just one step away</h2>
+                        <input type="text" name="name" value="" placeholder="Name"><br>
+                        <input type="text" name="email" value="" placeholder="Email">
+                    </div>
+                    <form action="action_page.php" method="get">
+                        <div id="TextBoxesGroup" class="all-items">
+                            <div class="type">
+                                <hr>
+                                <div class="row required-files-wrapper">
+                                    <div class="col-md-5 col-md-offset-1 col-sm-6  col-xs-12 xs-center">
+                                        <select name="" >
+                                            <option value="0">Logo design0</option>
+                                            <option value="1">Logo design1</option>
+                                        </select>
+                                        <br>
+                                        <textarea name="" rows="7" cols="30">
+                                        
+                                        </textarea>
+                                    </div>
+                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                        <div class="row urgent-wrapper">
+                                            <div class="col-xs-12">
+                                                <div class="urgent">
+                                                    <div class="checkbox">
+                                                        <input type="checkbox" id="Urgent" name="cb">
+                                                        <label for="Urgent">Urgent</label>
+                                                    </div>
+                                                </div>
+                                                <div class="price pull-right">$24.5</div>
+                                            </div>
+                                        </div>
+                                        <div class="row required-files">
+                                            
+                                            <div class="col-xs-12">
+                                                <p>Required files</p>
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="JPEG" name="cb">
+                                                    <label for="JPEG">JPEG</label>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="PNG" name="cb">
+                                                    <label for="PNG">PNG</label>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="PDF" name="cb">
+                                                    <label for="PDF">PDF</label>
+                                                </div>
+                                                <div class="checkbox"><br>
+                                                    <input type="checkbox" id="PSD" name="cb">
+                                                    <label for="PSD">PSD</label>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="EPS" name="cb">
+                                                    <label for="EPS">EPS</label>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <input type="checkbox" id="Al" name="cb">
+                                                    <label for="Al">Al</label>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class=" row required-size-wrapper">
+                                    <div class="required-size">
+                                        <div class="col-md-10 col-md-offset-1 col-xs-12">
+                                            <p>Required sizes</p>
+                                            <div class="checkbox">
+                                                <input type="checkbox" id="A1" name="cb">
+                                                <label for="A1">A1</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" id="A2" name="cb">
+                                                <label for="A2">A2</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" id="A3" name="cb">
+                                                <label for="A3">A3</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" id="A4" name="cb">
+                                                <label for="A4">A4</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" id="A5" name="cb">
+                                                <label for="A5">A5</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <input type="checkbox" id="A6" name="cb">
+                                                <label for="A6">A6</label>
+                                            </div>
+                                            <br>
+                                            <div class="checkbox">
+                                                <input type="checkbox" id="Custom" name="cb">
+                                                <label for="Custom">Custom</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row custom-filds text-center">
+                                    <div class="col-xs-12" id="field">
+                                        <div id="field1" >
+                                            <form role="form" action="/wohoo" method="POST">
+                                                <div class="multi-field-wrapper">
+                                                    <div class="multi-fields">
+                                                        <div class="multi-field">
+                                                            <input type="number" name="width" value="Bike">
+                                                            <input type="number" name="height" value="Bike">
+                                                            <select name="" class="select">
+                                                                <option value="0">Unite0</option>
+                                                                <option value="1">Unite1</option>
+                                                            </select>
+                                                            <button type="button" class="remove-field">-</button>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="add-field">+</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <input type="button" id="removeButton" class="remove-item-btn" value="Remove item" />
+                            <input type="button" id="addButton" class="add-btn" value="Add item" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="attach text-left">Attachments (132MB of 600MB)</p>
+                            <input name="files[]" type="file" multiple="multiple" class="maxsize-1024" id="our-test" />
+                        </div>
+                    </div>
+                    <hr class="hr">
+                    <div class="row text-center">
+                        <div class="col-xs-12">
+                            <p class="ammount">Total ammount <span>$24.5</span></p>
+                            <div class="row">
+                                <div class="col-sm-3 cart">
+                                    <input type="radio" id="pp" name="gender" value="male">
+                                    <label for="pp"><img src="{% static "img/pp.jpg" %}" alt=""></label>
+                                </div>
+                                
+                                <div class="col-sm-3 cart">
+                                    <input type="radio" id="visa" name="gender" value="female">
+                                    <label for="visa"><img src="{% static "img/visa.jpg" %}" alt=""></label>
+                                </div>
+                                <div class="col-sm-3 cart">
+                                    <input type="radio" id="pp1" name="gender" value="male">
+                                    <label for="pp1"><img src="{% static "img/pp.jpg" %}" alt=""></label>
+                                </div>
+                                <div class="col-sm-3 cart">
+                                    <input type="radio" id="visa1" name="gender" value="female">
+                                    <label for="visa1"><img src="{% static "img/visa.jpg" %}" alt=""></label>
+                                </div>
+                            </div>
+                            <button type="submit" class="add-btn margin">Checkout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Portfolio Grid Section -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <ul class="quicklinks">
+                            <li><a href="" title="">About us</a></li>
+                            <li><a href="" title="">Privacy policy</a></li>
+                            <li><a href="" title="">Terms and conditions</a></li>
+                            <li><a href="" title="">FAQ</a></li>
+                            <li><a href="" title="">Contact us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        
+        <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+            <!-- Back To Top -->
+            <a href="#top" id="back-to-top" class="hover-bgc"></a>
+            <!-- /Back To Top -->
+            <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+            <script src="{% static "vendor/jquery/jquery-migrate-1.4.1.min.js" %}"></script>
+            <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+            <script src="{% static "vendor/jquery/jQuery.MultiFile.min.js" %}"></script>
+            <script src="{% static "js/agency.js" %}"></script>
+        </body>
+    </html>

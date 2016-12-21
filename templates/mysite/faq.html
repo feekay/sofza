@@ -1,156 +1,168 @@
-{% extends 'mysite/base.html' %}
-{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title%}FAQ{% endblock %}
+<head>
 
-{% block import%}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<style>
-h2 {
-  font-family:sans-serif;
-}
+    <title>Agency - Start Bootstrap Theme</title>
+    {% load staticfiles %}
+    <!-- Bootstrap Core CSS -->
+    <link "{% static href="css/bootstrap.min.css" %}" rel="stylesheet">
 
-.section{
-    margin-top: 20px;
-    margin-bottom:20px;
+    <!-- Custom CSS -->
+    <link href="{% static "css/agency.css" %}" rel="stylesheet">
 
-}
-#questions{
-    min-height: 100px;
-}
-.list {
-  list-style-type:none;
-  font-family:sans-serif;
-  margin:0;
-  padding:20px 0 0;
-}
-.list > li {
-  padding:10px;
-  padding-right: 30px;
-  box-shadow: inset 0 1px 0 #fff;
-}
-.avatar {
-  max-width: 150px;
-}
-img {
-  max-width: 100%;
-}
-h3 {
-  font-size: 16px;
-  margin:0 0 0.3rem;
-  font-weight: normal;
-  font-weight:bold;
-}
-p {
-  margin:0;
-}
+    <link href="{% static "css/bootstrap1.min.css" %}" rel="stylesheet">
 
-input {
-  border:solid 1px #ccc;
-  border-radius: 5px;
-  padding:7px 14px;
-  margin-bottom:10px
-}
-input:focus {
-  outline:none;
-  border-color:#aaa;
-}
+    <!-- Custom Fonts -->
+    <link href="{% static "font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
-.question{
-    font-weight: bolder;
-    color: black;
-}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-.feedback{
-    padding-top: 40px;
-}
-.section-head{
-    color: #4682B4;
-    font-family: serif;
-    display: inline;
-    display: -webkit-inline-box;
-    padding-left: 10px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
+</head>
 
-textarea{
-    margin-top: 20px;
-    padding: 6px 12px;
-    border-radius: 4px;
+<body id="page-top" class="index">
 
-}
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <div class="col-md-5"  style="color: #fff;"><i class="fa fa-home fa-3x"></i></div>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="index.html">HOME</a></li>
+      <li><a href="portfolio.html">PORTFOLIO</a></li> 
+    <li><a href="faq.html">FAQ</a></li> 
+    <li><a href="order page.html">ORDER</a></li> 
+    <li><a href="order.html">ORDER UPDATE</a></li> 
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><img src="{% static "img/fb.png" %}"></a></li>
+      <li><a href="#"><img src="{% static "img/twit.png" %}"></a></li>
+      <li><a href="#"><img src="{% static "img/in.png" %}"></a></li>
+      <li><a href="#"><img src="{% static "img/p.png" %}"></a></li>
+      <li><a href="#"><img src="{% static "img/a.png" %}"></a></li>
+    
+    </ul>
+  </div>
+</nav>
+    <!-- Header -->
 
-</style>
-{% endblock %}
+	<section id="faq">
 
-{% block body %}
-<!--Questions-->
-<div class= "container section">
+	<div class="container-fluid">
+	<p class="fontfaq"><img src="{% static "img/ques.png" %}">&nbsp Frequently Asked Question</p>
+	</div>
+	</div>
+	</section>
 
-<img src="{% static "images/why_icon.png"%}" width=60px heigth= 60px></img>
-<h2  class="section-head">Frequestly Asked Questions</h2>
+	<section id="faq-search">
 
-<div id="questions">
-<!--Search Bar-->
-  <div class="row">
-  <div class="col-sm-6"></div>
-  <div class="col-sm-6">
-  <input class="search" placeholder="Search Question" />
-   </div>
-   </div>
-   <!--Questions List-->
-  <ul class="list">
-    <li>
-      <p class="question">You think you can tell heaven from hell?</p>
-      <p class="answer">What douchbaggery is this, you can't even spell or write or talk or say or what not. Is there anything that you can do? Oh you can rant. Just rant, keep ranting for the rest of you stupid life. And why are you even reading this, I didn't have the internet to generate lorem ipsum, stop readig ffs.</p>
-    </li>
-    <li>
-      <p class="question">Blu skies from pain?</p>
-      <p class="answer">What douchbaggery is this, you can't even spell or write or talk or say or what not. Is there anything that you can do? Oh you can rant. Just rant, keep ranting for the rest of you stupid life. And why are you even reading this, I didn't have the internet to generate lorem ipsum, stop readig ffs.</p>
-    </li>
-    <li>
-      <p class="question">Green Field from a cold steel rail?</p>
-      <p class="answer">What douchbaggery is this, you can't even spell or write or talk or say or what not. Is there anything that you can do? Oh you can rant. Just rant, keep ranting for the rest of you stupid life. And why are you even reading this, I didn't have the internet to generate lorem ipsum, stop readig ffs.</p>
-    </li>
-    <li>
-      <p class="question">Did you exchange?</p>
-      <p class="answer">What douchbaggery is this, you can't even spell or write or talk or say or what not. Is there anything that you can do? Oh you can rant. Just rant, keep ranting for the rest of you stupid life. And why are you even reading this, I didn't have the internet to generate lorem ipsum, stop readig ffs.</p>
-    </li>
-  </ul>
+	<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12" align="center">
+			<input class="input-search" type="text" name="search" placeholder="search question"> <button class="btn-search">
+			</button></input>
+		</div>
 
-</div>
-</div>
-<!--Feedback form-->
-<div class= "container section">
-<img src="{% static "images/why_icon.png"%}" width=60px heigth= 60px"></img>
-<h2 class="section-head">Ask something else?</h2>
-<div class="row feedback">
-<div class="col-sm-6">
-<p class="question">Have something else to ask?</p>
-<p>Just ask below and you will get it with in a day.</p>
+	</div>
+	
 
-<form role="form" method="post" action="">
-{% csrf_token %}
-<textarea  rows="3" name="message" placeholder= "Your message" required></textarea><br>
-<input type ="email" name="email" placeholder="Your E-mail" required/><br>
-<input type= "submit" >
-</form>
+	
+
+	<div class="row">
+		<div class="col-md-12" id="faq-para">
+			<p class="faq-head"> This is another sample question</p>
+			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets</p>
+		</div>
+
+		<div class="col-md-12" id="faq-para">
+			<p class="faq-head"> This is another sample question</p>
+			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets</p>
+		</div>
+
+		<div class="col-md-12" id="faq-para">
+			<p class="faq-head"> This is another sample question</p>
+			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets</p>
+		</div>
+
+		<div class="col-md-12" id="faq-para">
+			<p class="faq-head"> This is another sample question</p>
+			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets .</p>
+		</div>
 
 
-</div>
+	</div>
+	
 
-<div class="col-sm-6 text-center">
-    <img src="{% static "images/faq-icon.png"%}" alt="Envelope"></img>
-</div>
-</div>
-</div>
-<script src="{%static "js/list.min.js" %}"></script>
-<script>
-var options = {
-  valueNames: ['question', 'answer']
-};
+	<div class="col-md-12" id="second">
+		<p class="fontfaq"><img src="{% static "img/ques.png" %}" >&nbsp Ask something else?</p>
+	</div>
+	<div class="row">
+		<div class="col-md-12" id="faq-para">
+			<p class="faq-head"> Have something else to ask?</p>
+			<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets</p>
+		</div>
+	</div>
 
-var userList = new List('questions', options);
-</script>
-{% endblock %}
+<!--contact-form-->
+
+	 <div class="container-fuid">
+      <div id="contact_form" class="row">
+        <div class="col-md-8">
+          <form role="form" id="feedbackForm"  data-toggle="validator" data-disable="false">
+            
+            
+            <div class="form-group">
+              <label class="control-label" for="message">Message *</label>
+              <div class="input-group">
+                <textarea rows="5" cols="32" class="form-control" id="message" name="message" placeholder="Enter your message" required></textarea>
+                <span><i class="glyphicon glyphicon-unchecked form-control-feedback"></i></span>
+              </div>
+
+              <div class="form-group">
+              <label class="control-label" for="email">Email Address *</label>
+              <div class="input-group">
+                <input type="email" rows="5"  id="email" name="email" placeholder="Enter your email" required/>
+                <span><i class="glyphicon glyphicon-unchecked form-control-feedback"></i></span>
+              </div>
+              <span class="help-block" style="display: none;">Please enter a valid e-mail address.</span>
+            </div>
+
+              <span class="help-block" style="display: none;">Please enter a message.</span>
+            </div>
+            <div class="form-group">
+              <div class="g-recaptcha" data-sitekey="your_site_key"></div>
+              <span class="help-block" style="display: none;">Please check that you are not a robot.</span>
+            </div>
+            <span class="help-block" style="display: none;">Please enter a the security code.</span>
+            <button type="submit" id="feedbackSubmit" class="btn btn-primary btn-lg" data-loading-text="Sending..." style="display: block; margin-top: 10px;">Send Feedback</button>
+          </form>
+
+          <!--/span-->
+      </div>
+       <div class="col-md-4">
+           <img src="{% static "img/msg.JPG" %}">
+        </div><!--/row-->
+      <hr>
+    </div><!--/.container-->
+	<script src="https://www.google.com/recaptcha/api.js"></script>
+	</section>
+
+
+
+	

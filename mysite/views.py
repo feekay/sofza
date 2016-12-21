@@ -6,19 +6,19 @@ from django.contrib.auth.decorators import user_passes_test
 from mysite.models import eMail
 from datetime import datetime
 # Create your views here.
-
+#------------------------------------------------------------------------------#
 def index(request):
     form = modal_check(request)
     if form is True:
         return HttpResponseRedirect('/site/')
     return render(request, 'mysite/index.html',{'form':form})
-
+#------------------------------------------------------------------------------#
 def portfolio(request):
     form = modal_check(request)
     if form is True:
         return HttpResponseRedirect('/')
     return render(request, 'mysite/portfolio.html',{'form':form})
-
+#------------------------------------------------------------------------------#
 def portfolio_details(request, name):
     portfolio = ["logo", "banners"]
     if name in portfolio:
@@ -27,19 +27,19 @@ def portfolio_details(request, name):
         name=""
 
     return render(request,'mysite/portfolio_'+name, {} )
-
+#------------------------------------------------------------------------------#
 def about(request):
     form = modal_check(request)
     if form is True:
         return HttpResponseRedirect('/')
     return render(request, 'mysite/about.html',{'form':form})
-
+#------------------------------------------------------------------------------#
 def policy(request):
     form = modal_check(request)
     if form is True:
         return HttpResponseRedirect('/')
     return render(request, 'mysite/policy.html',{'form':form})
-
+#------------------------------------------------------------------------------#
 def faq(request):
     if request.method == 'POST':
         if "message" in request.POST:
@@ -50,16 +50,31 @@ def faq(request):
             browser =request.META['HTTP_USER_AGENT']
             
             message_body  = "E-mail from: "+ email+ "\n"+ message + "\n" + "IP: "+ip+ "\n"+ "Browser and client info: " + browser
-            print(message_body)
+            #print(message_body)
             send_mail('Development Test', message_body, 'mfaiq1996@gmail.com',['m_faiq@live.co.uk'], fail_silently=False)
-            print("Sent")
+            #print("Sent")
 
     form= modal_check(request)
 
     if form is True:
         return HttpResponseRedirect('/')
     return render(request, 'mysite/faq.html', {'form': form})
-
+#------------------------------------------------------------------------------#
+def order(request):
+    #if request.method =='POST':
+        #print request.POST
+    return render(request, 'mysite/order.html',{})
+#------------------------------------------------------------------------------#
+def contact(request):
+    if request.method =='POST':
+        email =  request.POST['email']
+        message = request.POST['question']
+        message_body  = "E-mail from: "+ email+ "\n"+ message #+ "\n" + "IP: "+ip+ "\n"+ "Browser and client info: " + browser
+        #print(message_body)
+        send_mail('Feedback', message_body, 'mfaiq1996@gmail.com',['m_faiq@live.co.uk'], fail_silently=False)
+            
+    return render(request, 'mysite/contact.html', {})
+#------------------------------------------------------------------------------#
 def modal_check(request):
     if request.method == 'POST':
         form = mailForm(request.POST)
@@ -104,7 +119,7 @@ def modal_check(request):
 
     form = mailForm()
     return form
-
+#------------------------------------------------------------------------------#
 @user_passes_test(lambda u: u.is_superuser)
 def emails(request):
     emails = eMail.objects.all().order_by('time')
