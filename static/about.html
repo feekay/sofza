@@ -1,5 +1,5 @@
-<!DOCTYPE>
- lang="en">
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,18 +8,17 @@
         <meta name="author" content="">
         <title>Agency - Start Bootstrap Theme</title>
         <!-- Bootstrap Core CSS -->
-        {% load static %}
-        <link href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
-        <link href="{% static "vendor/carousel/owl.carousel.css" %}" rel="stylesheet">
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="vendor/carousel/owl.carousel.css" rel="stylesheet">
         <!-- Custom Fonts -->
-        <link href="{% static "vendor/font-awesome/css/font-awesome.min.css"%}" rel="stylesheet" type="text/css">
+        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
         <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
         <!-- Theme CSS -->
-        <link href="{% static "css/agency.css" %}" rel="stylesheet">
-        <script src="https://oss.maxcdn.com/libs5shiv/3.7.05shiv.js"></script>
+        <link href="css/agency.css" rel="stylesheet">
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     </head>
     <body id="page-top" class="index">
@@ -31,7 +30,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="navbar-header page-scroll">
-                                <a class="navbar-brand page-scroll" href="/"><img src="{% static "img/logos/logo.jpg" %}" alt="logo" class="img-responsive"></a>
+                                <a class="navbar-brand page-scroll" href="#page-top"><img src="img/logos/logo.jpg" alt="logo" class="img-responsive"></a>
                                 <button type="button" class="menu navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                 <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                                 </button>
@@ -55,22 +54,22 @@
                                     <a href="#login-box" class="login-window btn btn-primary order-btn"> Place Order </a>
                                 </li>
                                 <li>
-                                    <a class="page-scroll first-item" href="/">Home</a>
+                                    <a class="page-scroll first-item" href="index.html">Home</a>
                                 </li>
                                 <li>
-                                    <a class="page-scroll first-item" href="/#services">Services</a>
+                                    <a class="page-scroll first-item" href="index.html#services">Services</a>
                                 </li>
                                 <li>
-                                    <a class="page-scroll first-item" href="/#testimonials">Testimonials</a>
+                                    <a class="page-scroll first-item" href="index.html#testimonials">Testimonials</a>
                                 </li>
                                 <li>
-									<a class="page-scroll first-item" href="portfolio">Portfolio</a>
+									<a class="page-scroll first-item" href="portfolio.html">Portfolio</a>
                                 </li>
                                 <li class="active">
                                     <a class="page-scroll first-item" href="#page-top">About</a>
                                 </li>
                                 <li>
-                                    <a class="page-scroll first-item" href="contact">Contact</a>
+                                    <a class="page-scroll first-item" href="contact.html">Contact</a>
                                 </li>
                                 <li class="social-icon">
                                     <ul>
@@ -120,11 +119,11 @@
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="quicklinks">
-                            <li><a href="about" title="">About us</a></li>
+                            <li><a href="about.html" title="">About us</a></li>
                             <li><a href="" title="">Privacy policy</a></li>
                             <li><a href="" title="">Terms and conditions</a></li>
                             <li><a href="" title="">FAQ</a></li>
-                            <li><a href="contact" title="">Contact us</a></li>
+                            <li><a href="contact.html" title="">Contact us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -138,20 +137,20 @@
             <form method="post" class="signin" action="#">
                 <fieldset class="textbox">
                     <div class="emvelope">
-                        <img src="{% static "img/order-icon.png" %}" alt="">
+                        <img src="img/order-icon.png" alt="">
                     </div>
                     <p>
-                     {% csrf_token %}
                         <label class="username hidden-xs">Full Name</label>
-                        <input id="name" name="name" value="" type="text" autocomplete="on" placeholder="Full Name">
+                        <input id="username" name="username" value="" type="text" autocomplete="on" placeholder="Full Name">
                     </p>
                     <br>
                     <p>
                         <label class="password hidden-xs">Email</label>
                         <input id="email" type="text" name="email" value="" placeholder="mail@youremail.com">
                     </p>
+
                 </fieldset>
-                <div class="submit"><input class="btn btn-primary" type="submit" value="Done"/></div>
+                <div class="submit"><button class="btn btn-primary" type="button">Done</button></div>
             </form>
         </div>
         <!-- END # login-box -->
@@ -181,7 +180,7 @@
                                                                 <i class="fa fa-plus fa-3x"></i>
                                                             </div>
                                                         </div>
-                                                        <img src="{% static "img/portfolio/roundicons.png" %}" class="img-responsive" alt="">
+                                                        <img src="img/portfolio/roundicons.png" class="img-responsive" alt="">
                                                     </a>
                                                     <div class="portfolio-caption">
                                                         <h4>Round Icons</h4>
@@ -195,7 +194,7 @@
                                                                 <i class="fa fa-plus fa-3x"></i>
                                                             </div>
                                                         </div>
-                                                        <img src="{% static "img/portfolio/startup-framework.png" %}" class="img-responsive" alt="">
+                                                        <img src="img/portfolio/startup-framework.png" class="img-responsive" alt="">
                                                     </a>
                                                     <div class="portfolio-caption">
                                                         <h4>Startup Framework</h4>
@@ -209,7 +208,7 @@
                                                                 <i class="fa fa-plus fa-3x"></i>
                                                             </div>
                                                         </div>
-                                                        <img src="{% static "img/portfolio/treehouse.png" %}" class="img-responsive" alt="">
+                                                        <img src="img/portfolio/treehouse.png" class="img-responsive" alt="">
                                                     </a>
                                                     <div class="portfolio-caption">
                                                         <h4>Treehouse</h4>
@@ -225,7 +224,7 @@
                                                                 <i class="fa fa-plus fa-3x"></i>
                                                             </div>
                                                         </div>
-                                                        <img src="{% static "img/portfolio/golden.png" %}" class="img-responsive" alt="">
+                                                        <img src="img/portfolio/golden.png" class="img-responsive" alt="">
                                                     </a>
                                                     <div class="portfolio-caption">
                                                         <h4>Golden</h4>
@@ -239,7 +238,7 @@
                                                                 <i class="fa fa-plus fa-3x"></i>
                                                             </div>
                                                         </div>
-                                                        <img src="{% static "img/portfolio/escape.png" %}" class="img-responsive" alt="">
+                                                        <img src="img/portfolio/escape.png" class="img-responsive" alt="">
                                                     </a>
                                                     <div class="portfolio-caption">
                                                         <h4>Escape</h4>
@@ -253,7 +252,7 @@
                                                                 <i class="fa fa-plus fa-3x"></i>
                                                             </div>
                                                         </div>
-                                                        <img src="{% static "img/portfolio/dreams.png" %}" class="img-responsive" alt="">
+                                                        <img src="img/portfolio/dreams.png" class="img-responsive" alt="">
                                                     </a>
                                                     <div class="portfolio-caption">
                                                         <h4>Dreams</h4>
@@ -273,13 +272,12 @@
             <!-- Back To Top -->
             <a href="#top" id="back-to-top" class="hover-bgc"></a>
             <!-- /Back To Top -->
-            <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
-            <script src="{% static "vendor/jquery/jquery-migrate-1.4.1.min.js" %}"></script>
-            <script src="{% static "vendor/bootstrap/js/bootstrap.js" %}"></script>
-            <script src="{% static "js/main.js" %}"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" %}"></script>
-            <script src="{% static "vendor/carousel/owl.carousel.min.js" %}"></script>
-            <script src="{% static "vendor/jquery/jQuery.MultiFile.min.js" %}"></script>
-            <script src="{% static "js/agency.js" %}"></script>
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="vendor/jquery/jquery-migrate-1.4.1.min.js"></script>
+            <script src="vendor/bootstrap/js/bootstrap.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+            <script src="vendor/carousel/owl.carousel.min.js"></script>
+            <script src="vendor/jquery/jQuery.MultiFile.min.js"></script>
+            <script src="js/agency.js"></script>
         </body>
-    <>
+    </html>

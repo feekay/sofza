@@ -1,5 +1,8 @@
 // Agency Theme JavaScript
 $( document ).ready(function() {
+
+$(".remove-item-btn").attr('disabled','disabled()');
+	
     $('a.page-scroll').bind('click', function(event) {
         var $anchor = $(this);
         $('html, body').stop().animate({
@@ -105,6 +108,8 @@ $( document ).ready(function() {
     // Dynamically Add and Remove full Form
     $(function () {
         $("#addButton").on("click", function () {
+
+
             var counter = $(".type").length;
 
             if (counter > 10) {
@@ -112,9 +117,17 @@ $( document ).ready(function() {
 
                 return false;
             }
-
+$(".remove-item-btn" ).prop( "disabled", false );
+			$("body").addClass("multiple_forms")
             var newType = $(".type").first().clone().addClass("newAdded");
-            var newName = $(".name").first().clone().addClass("newAdded");
+           var newName = $(".name").first().clone().addClass("newAdded");
+           // var newType = $(".type").first().clone().addClass("newAdded");
+           // var newName = $(".name").first().clone().addClass("newAdded");
+
+            //$(newType).find("input[type=text], input[type=number], select, textarea").val("");
+                //$(newType).find("input[type=checkbox],input[type=radio]").prop('checked', false);
+
+
 
             newType.appendTo("#TextBoxesGroup");
             newName.appendTo("#TextBoxesGroup");
@@ -124,10 +137,13 @@ $( document ).ready(function() {
             var counter = $(".type").length;
 
             if (counter == 1) {
-                alert("No more textbox to remove");
+              //  alert("No more textbox to remove");
+							$(".remove-item-btn").attr('disabled','disabled()');
 
                 return false;
             }
+			
+			
 
             $(".type").last().remove();
             $(".name").last().remove();
@@ -195,4 +211,24 @@ $( document ).ready(function() {
         $('body,html').animate({scrollTop:0},1000);
         return false;
     });
-});
+
+
+/*    var id;
+     $("a").click(function() {
+         id = $(this).attr('href');
+         $(id).css("padding-top", "80px");
+         //alert(id);
+
+    });*/
+
+
+    $(".nav-tabs > li > a").click(function(){
+        var href = $(this).attr('href');
+        //alert(href);
+        $('.tab-content>.tab-pane').hide();
+        $(href).show();
+
+    });
+
+
+    });

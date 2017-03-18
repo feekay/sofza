@@ -1,6 +1,6 @@
 
 .navbar-brand>img {
-  max-width: 180px;
+  max-width: 160px;
 }
 
 
@@ -95,7 +95,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-top {
-  padding: 15px 0px 15px 0px;
+  padding: 7px 0px 7px 0px;
   background-color: #ffffff;
 }
 .header-top .navbar-brand {
@@ -224,7 +224,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (min-width: 768px) {
   .nav-bar {
-    margin-top: 108px;
+    margin-top: 82px;
   }
   .navbar-custom.affix {
     width: 100%;
@@ -308,11 +308,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .order_button_wrap{
-  margin:18px 0 0;
+  margin: 10px 0 0;
 }
 
 .gap-top {
-  height: 152px;
+  height: 128px;
 }
 
 .slider .item > .homeSlider {
@@ -878,17 +878,6 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
   border-bottom: 2px solid #488ff7;
   border-radius: 0px;
-  height: 43px;
-}
-
-.service-menu .nav>li>a:focus {
-  text-decoration: none;
-  border: none;
-  background-color: #252525;
-  color: #fff;
-  border-bottom: 2px solid #488ff7;
-  border-radius: 0px;
-  height: 43px;
 }
 
 .slider-bottom-content h3 {
@@ -902,13 +891,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .service-menu.affix {
   position: fixed;
-  top: 106px;
+  top: 82px;
   width: 100%;
   z-index: 111;
 }
 
 .portfolio .slider .item > img {
-  height: 480px !important;
+  /* height: 480px !important; */
   min-height: auto;
 }
 
@@ -940,7 +929,7 @@ h1, h2, h3, h4, h5, h6 {
     position: absolute;
     width: 400px;
     right: 0px;
-    top: 112px;
+    top: 126px;
     background: #151515;
     margin: 0px;
     padding: 0px 10px;
@@ -970,7 +959,7 @@ h1, h2, h3, h4, h5, h6 {
   .portfolio .menu-service .menu.navbar-toggle {
     position: absolute;
     right: 15px;
-    top: 111px;
+    top: 85px;
   }
   .portfolio .menu-service .no-height {
     min-height: 0px;
@@ -1016,12 +1005,12 @@ h1, h2, h3, h4, h5, h6 {
   }
   .portfolio .nav-tabs.navbar-collapse {
     overflow-y: Scroll;
-    /*max-height: 186px;*/
+    /* max-height: 186px; */
   }
   .portfolio .service-menu {
     position: fixed;
     width: 100%;
-    top: 121px;
+    top: 115px;
     background-color: #000;
     z-index: 20;
   }

@@ -1998,12 +1998,12 @@ if (typeof jQuery === 'undefined') {
 
     var active = $(selector)
       .parents('li')
-      .addClass('active')
+      //.addClass('active')
 
     if (active.parent('.dropdown-menu').length) {
       active = active
         .closest('li.dropdown')
-        .addClass('active')
+        //.addClass('active')
     }
 
     active.trigger('activate.bs.scrollspy')
@@ -2012,7 +2012,7 @@ if (typeof jQuery === 'undefined') {
   ScrollSpy.prototype.clear = function () {
     $(this.selector)
       .parentsUntil(this.options.target, '.active')
-      .removeClass('active')
+      //.removeClass('active')
   }
 
 
@@ -2092,7 +2092,7 @@ if (typeof jQuery === 'undefined') {
       selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
     }
 
-    if ($this.parent('li').hasClass('active')) return
+   if ($this.parent('li').hasClass('active')) return
 
     var $previous = $ul.find('.active:last a')
     var hideEvent = $.Event('hide.bs.tab', {
@@ -2132,13 +2132,13 @@ if (typeof jQuery === 'undefined') {
       $active
         .removeClass('active')
         .find('> .dropdown-menu > .active')
-          .removeClass('active')
+          //.removeClass('active')
         .end()
         .find('[data-toggle="tab"]')
           .attr('aria-expanded', false)
 
       element
-        .addClass('active')
+        //.addClass('active')
         .find('[data-toggle="tab"]')
           .attr('aria-expanded', true)
 
@@ -2152,7 +2152,7 @@ if (typeof jQuery === 'undefined') {
       if (element.parent('.dropdown-menu').length) {
         element
           .closest('li.dropdown')
-            .addClass('active')
+            //.addClass('active')
           .end()
           .find('[data-toggle="tab"]')
             .attr('aria-expanded', true)

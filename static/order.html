@@ -6,20 +6,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-         {% load static %}
         <title>Agency - Start Bootstrap Theme</title>
         <!-- Bootstrap Core CSS -->
-        <link href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom Fonts -->
-        <link href="{% static "vendor/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
         <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
         <!-- Theme CSS -->
-        <link href="{% static "css/agency.css" %}" rel="stylesheet">
+        <link href="css/agency.css" rel="stylesheet">
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.css">
     </head>
     <body id="page-top" class="order">
         
@@ -30,9 +30,9 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="navbar-header">
-                                <a class="navbar-brand" href="/">
-                                <img src="{% static "img/logos/logo.png" %}" alt="logo" class="img-responsive logo"></a>
-                                <a href="/">
+                                <a class="navbar-brand" href="index.html">
+                                <img src="img/logos/logo.jpg" alt="logo" class="img-responsive logo"></a>
+                                <a href="index.html">
                                     <button type="button" class="menu navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                                     <span class="sr-only">Toggle navigation</span> <i class="fa fa-home fa-2x" aria-hidden="true"></i>
                                     </button>
@@ -49,7 +49,7 @@
                         <div class="menu collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li class="active">
-                                    <a class="first-item" href="/"><i class="fa fa-home fa-2x" aria-hidden="true"></i></a>
+                                    <a class="first-item" href="index.html"><i class="fa fa-home fa-2x" aria-hidden="true"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -84,13 +84,11 @@
                                             <option value="1">Logo design1</option>
                                         </select>
                                         <br>
-                                        <textarea name="" rows="7" cols="30">
-                                        
-                                        </textarea>
+                                        <textarea name="" rows="7" cols="30"></textarea>
                                     </div>
-                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                    <div class="col-md-5 col-sm-6 col-xs-12 urgent_required_files">
                                         <div class="row urgent-wrapper">
-                                            <div class="col-xs-12">
+                                            <div class="col-xs-9 urgent_box">
                                                 <div class="urgent">
                                                     <div class="checkbox">
                                                         <input type="checkbox" id="Urgent" name="cb">
@@ -101,7 +99,7 @@
                                             </div>
                                         </div>
                                         <div class="row required-files">
-                                            
+
                                             <div class="col-xs-12">
                                                 <p>Required files</p>
                                                 <div class="checkbox">
@@ -116,7 +114,7 @@
                                                     <input type="checkbox" id="PDF" name="cb">
                                                     <label for="PDF">PDF</label>
                                                 </div>
-                                                <div class="checkbox"><br>
+                                                <div class="checkbox">
                                                     <input type="checkbox" id="PSD" name="cb">
                                                     <label for="PSD">PSD</label>
                                                 </div>
@@ -129,11 +127,11 @@
                                                     <label for="Al">Al</label>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class=" row required-size-wrapper">
                                     <div class="required-size">
                                         <div class="col-md-10 col-md-offset-1 col-xs-12">
@@ -213,23 +211,23 @@
                     <div class="row text-center">
                         <div class="col-xs-12">
                             <p class="ammount">Total ammount <span>$24.5</span></p>
-                            <div class="row">
+                            <div class="row order_options">
                                 <div class="col-sm-3 cart">
                                     <input type="radio" id="pp" name="gender" value="male">
-                                    <label for="pp"><img src="{% static "img/pp.jpg" %}" alt=""></label>
+                                    <label for="pp"><img src="img/pp.jpg" alt=""></label>
                                 </div>
                                 
                                 <div class="col-sm-3 cart">
                                     <input type="radio" id="visa" name="gender" value="female">
-                                    <label for="visa"><img src="{% static "img/visa.jpg" %}" alt=""></label>
+                                    <label for="visa"><img src="img/visa.jpg" alt=""></label>
                                 </div>
                                 <div class="col-sm-3 cart">
                                     <input type="radio" id="pp1" name="gender" value="male">
-                                    <label for="pp1"><img src="{% static "img/pp.jpg" %}" alt=""></label>
+                                    <label for="pp1"><img src="img/pp.jpg" alt=""></label>
                                 </div>
                                 <div class="col-sm-3 cart">
                                     <input type="radio" id="visa1" name="gender" value="female">
-                                    <label for="visa1"><img src="{% static "img/visa.jpg" %}" alt=""></label>
+                                    <label for="visa1"><img src="img/visa.jpg" alt=""></label>
                                 </div>
                             </div>
                             <button type="submit" class="add-btn margin">Checkout</button>
@@ -251,6 +249,11 @@
                             <li><a href="" title="">Contact us</a></li>
                         </ul>
                     </div>
+
+                    <!-- Back To Top -->
+                    <a href="#top" id="back-to-top" class="hover-bgc"></a>
+                    <!-- /Back To Top -->
+					
                 </div>
             </div>
         </footer>
@@ -259,11 +262,12 @@
             <!-- Back To Top -->
             <a href="#top" id="back-to-top" class="hover-bgc"></a>
             <!-- /Back To Top -->
-            <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
-            <script src="{% static "vendor/jquery/jquery-migrate-1.4.1.min.js" %}"></script>
-            <script src="{% static "vendor/bootstrap/js/bootstrap.min.js" %}"></script>
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="vendor/jquery/jquery-migrate-1.4.1.min.js"></script>
+            <script src="vendor/bootstrap/js/bootstrap.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-            <script src="{% static "vendor/jquery/jQuery.MultiFile.min.js" %}"></script>
-            <script src="{% static "js/agency.js" %}"></script>
+            <script src="vendor/jquery/jQuery.MultiFile.min.js"></script>
+            <script src="vendor/carousel/owl.carousel.min.js"></script>
+            <script src="js/agency.js"></script>
         </body>
     </html>
